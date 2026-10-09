@@ -4,11 +4,11 @@ import { markText } from "./words.js";
 const FADE_LINES = 2.5;
 
 /**
- * Draws the text on the one screen (DESIGN.md): left-aligned from the top of
- * the padded area, wrapping at the right edge, the caret drawn after the
- * newest character. When the text passes the bottom, the screen scrolls up so
- * the newest line stays in view, and the lines above the current one fade out
- * with their distance from it.
+ * Draws the text on the one screen (DESIGN.md): left-aligned and anchored to
+ * the bottom of the padded area, wrapping at the right edge, the caret drawn
+ * after the newest character. As the text grows the older lines move up and
+ * leave at the top, and the lines above the current one fade out with their
+ * distance from it.
  */
 export function createRender({ screen, wordsFor }) {
   const textEl = document.createElement("div");

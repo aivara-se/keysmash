@@ -24,8 +24,9 @@ The text keeps clear of every edge: the screen is inset by its padding on all fo
 
 ## the caret
 
-- The caret is a thin bar in the ink, one text-height tall, drawn immediately after the newest character.
-- It moves with the text: every character is written before it. It does not blink.
+- The caret is a bar in the ink, about a fourteenth of the text wide and longer than the text, centred on it so it reaches above and below the letters. It is drawn immediately after the newest character.
+- It moves with the text: every character is written before it.
+- It pulses smoothly between full ink and a third of it, one pulse every 1.6 seconds. It holds still when the device asks for less motion.
 
 ## marking a real word
 
