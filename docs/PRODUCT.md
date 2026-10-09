@@ -21,13 +21,14 @@ Two keys down at once, or any press while a key is down — that press answers n
 
 No sound, no text, no shake, no colour change. A mash is not scolded and not made into a game.
 
-A mash never takes back a letter already written. What the child has typed is what the child has typed; the app does not edit it.
+A mash never takes back a letter already written. What the child has typed is what the child has typed; the app does not remove or rewrite it.
 
 ## words and numbers
 
 - Half a second after the child stops, the text is read against the active word lists. Every real word or number is marked; the one just completed is spoken.
 - A marked word is not spoken again until it changes.
 - A marked word reads with a capital first letter. It is a rendering of the mark only: nothing rewrites the characters the child typed.
+- When a word is complete — the child has stopped and it is marked at the end of the text — the app writes a space after it, so the next letter starts a new word instead of growing the one just read. That one space is the only character the app adds, and it can only lengthen the text.
 - A digit alone is spoken as its name ("three"); digits in a row as one number ("thirty-three"). Numbers are names, never counts.
 - Marking asks nothing of the child.
 
@@ -66,7 +67,7 @@ Lessons, levels, scoring, rewards, streaks, curriculum, profiles, sync, a parent
 4. A held key → one letter, no repeat.
 5. Network off, half an hour, no route to settings or the OS.
 6. No sound on a mash, at any speed.
-7. Nothing typed is ever changed: no press removes or rewrites a character already written.
+7. Nothing typed is ever changed: no press removes or rewrites a character already written, and the only character the app adds is the space after a completed word.
 
 ## name
 

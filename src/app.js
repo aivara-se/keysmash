@@ -51,10 +51,18 @@ function tick() {
   write(classifier.tick(now()));
 }
 
+/**
+ * After the child stops: read the marks, then finish a completed word with a
+ * space, so the next letter starts a new word instead of growing the one just
+ * read. It waits for the stop, so a word still being typed — "cats" on its way
+ * — is left alone.
+ */
 function readWords() {
-  for (const utterance of newUtterances(markText(render.text(), activeWords), spoken)) {
-    speech.word(utterance);
-  }
+  const text = render.text();
+  const marks = markText(text, activeWords);
+  for (const utterance of newUtterances(marks, spoken)) speech.word(utterance);
+  const last = marks[marks.length - 1];
+  if (last !== undefined && last.end === text.length) render.insert(" ");
 }
 
 function noteStop() {
