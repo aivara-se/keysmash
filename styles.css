@@ -2,6 +2,18 @@
   color-scheme: light;
   --surface: #ffffff;
   --ink: #000000;
+  /* The word colours, one per list, each measured against the surface
+     (docs/DESIGN.md). A word the lists give no colour is drawn in the ink. */
+  --ink-animals: #b45309;
+  --ink-fruit: #b91c1c;
+  --ink-food: #c2410c;
+  --ink-weather: #0369a1;
+  --ink-vehicles: #6d28d9;
+  --ink-toys: #be185d;
+  --ink-home: #0f766e;
+  --ink-people: #15803d;
+  /* A number is never drawn in a word's colour. */
+  --ink-number: #4338ca;
   /* The pill outline, the caret and the word outline are drawn at the same
      thickness, and track the text size. Whole pixels: the browser rounds a
      border to a whole pixel but paints a caret's background at any width, so
@@ -95,9 +107,33 @@ body {
      the top is trimmed further: the word sits high in the pill. */
   padding: 0.08em 0.32em 0.15em;
   margin-right: 0.16em;
+  /* A pill is one piece: nothing inside it wraps, so its emoji stays with its
+     word and its outline is never cut in two at a line break. */
+  white-space: nowrap;
   /* A marked word reads with a capital first letter. That is a rendering of the
      mark only; the text the child typed is untouched. */
   text-transform: capitalize;
+}
+
+/* A marked word is drawn in the colour its list gave it, its outline included:
+   the outline is `currentColor`. */
+.mark[data-color="animals"] { color: var(--ink-animals); }
+.mark[data-color="fruit"] { color: var(--ink-fruit); }
+.mark[data-color="food"] { color: var(--ink-food); }
+.mark[data-color="weather"] { color: var(--ink-weather); }
+.mark[data-color="vehicles"] { color: var(--ink-vehicles); }
+.mark[data-color="toys"] { color: var(--ink-toys); }
+.mark[data-color="home"] { color: var(--ink-home); }
+.mark[data-color="people"] { color: var(--ink-people); }
+
+/* A number is always its own colour, so a number pill never reads as a word. */
+.mark[data-kind="number"] { color: var(--ink-number); }
+
+/* The word's emoji, drawn inside the pill before the word. It comes from the
+   mark's own data attribute, so the child's text is what sits in the DOM. */
+.mark[data-emoji]::before {
+  content: attr(data-emoji);
+  margin-right: 0.12em;
 }
 
 /* The caret is a bar in the ink, as thick as a word's outline and taller than

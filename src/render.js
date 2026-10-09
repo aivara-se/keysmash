@@ -49,6 +49,9 @@ export function createRender({ screen, wordsFor }) {
       const word = document.createElement("span");
       word.className = "mark";
       word.textContent = text.slice(mark.start, mark.end);
+      if (mark.kind === "number") word.dataset.kind = "number";
+      if (mark.emoji !== undefined) word.dataset.emoji = mark.emoji;
+      if (mark.color !== undefined) word.dataset.color = mark.color;
       nodes.push(word);
       cursor = mark.end;
     }

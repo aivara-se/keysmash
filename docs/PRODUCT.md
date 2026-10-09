@@ -15,6 +15,9 @@ A mash is not scolded and not made into a game. It is written, and only the lett
 - Half a second after the child stops, the text is read against the active word lists. Every real word or number is marked; the one just completed is spoken.
 - A marked word is not spoken again until it changes.
 - A marked word reads with a capital first letter. It is a rendering of the mark only: nothing rewrites the characters the child typed.
+- A marked word is drawn in the colour its list gives it, or the colour the word names for itself, or the plain ink when neither does.
+- A word that can be drawn as an emoji is drawn with it inside the pill, before the word. A word with none is drawn with none.
+- A number is drawn in its own colour, never a word's, so a number pill never reads as a word.
 - When a word is complete — the child has stopped and it is marked at the end of the text — the app writes a space after it, so the next letter starts a new word instead of growing the one just read. That one space is the only character the app adds, and it can only lengthen the text.
 - A digit alone is spoken as its name ("three"); digits in a row as one number ("thirty-three"). Numbers are names, never counts.
 - Marking asks nothing of the child.
@@ -27,9 +30,9 @@ Text is anchored to the bottom, inside padding on every side: the newest charact
 
 ## word lists
 
-The parent picks the active lists in settings; the app speaks only words on them. An allow-list, never "whatever letters make".
+The parent picks the active lists in settings; the app speaks only words on them. An allow-list, never "whatever letters make". The lists hold what a small child knows: animals, fruit and vegetables, food, weather and sky, vehicles, toys and play, home and things, people, and doing words.
 
-A two-year-old at two and three letters reaches rude words inside a session. One small, safe list is on by default, so the app works when opened.
+A two-year-old at two and three letters reaches rude words inside a session. A small, safe set of lists is on by default, so the app works when opened.
 
 ## leaving and locking
 
