@@ -81,9 +81,11 @@ button {
   color: var(--ink-older);
 }
 
+/* A marked word is outlined in the line's own ink: the outline is the mark. */
 .mark {
-  font-weight: 800;
-  text-decoration: underline;
+  border: 0.05em solid currentColor;
+  border-radius: 0.25em;
+  padding: 0 0.14em;
 }
 
 /* The caret sits on the 2:1 point, immediately after the newest character. */
