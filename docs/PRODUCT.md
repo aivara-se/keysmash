@@ -34,7 +34,7 @@ A two-year-old at two and three letters reaches rude words inside a session. One
 ## leaving and locking
 
 - The child is given no way out of the app and nothing to open in it: no settings, no second screen, no dialogs, and no browser chrome while it runs full screen.
-- The parent leaves by holding two named keys for three seconds. Behind it: settings and Stop.
+- The parent leaves by holding two named keys for three seconds. Behind it: the word lists, and Close.
 - The parent's controls sit in the top corner: full screen, and clear. Both go away while the app is full screen, leaving the child nothing to tap. Clear blanks the screen at the parent's ask; nothing else ever edits what the child typed.
 - Full screen is not a lock: the OS still answers Esc, its shortcuts, notifications, and the volume and power keys, and the app does not pretend otherwise.
 
