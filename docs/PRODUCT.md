@@ -13,7 +13,7 @@ The pair is the product. Answering everything is noise; answering nothing leaves
 
 A press is a babble when it is one key, released before the next press. A held key answers on its own after 150 ms, and gives one babble, no repeat.
 
-Each babble speaks the letter **name** and writes the character at the caret. One fixed, low voice; a new letter cuts off the last, so sounds never stack and the volume never rises.
+Each babble writes the character at the caret, and says the letter **name** only when the child is not typing fast: the name is spoken when no other letter follows it within 150 ms, so a flurry is written but not read aloud. One fixed, low voice; a new letter cuts off the last, so sounds never stack and the volume never rises.
 
 ## mash
 
@@ -32,9 +32,9 @@ A mash never takes back a letter already written. What the child has typed is wh
 
 ## screen
 
-One screen; nothing to tap but the keyboard.
+One screen; the full-screen button in the top corner is the only thing to tap.
 
-Text starts at the top left, inside padding on every side, and fills the screen. The newest character is written after the last and the caret moves with it; the lines above the current one fade out with their distance from it, and older lines leave at the top. Pixels and spacing: `docs/DESIGN.md`.
+Text is anchored to the bottom, inside padding on every side: the newest character is written after the last and the caret moves with it, and older lines move up as the text grows. Pixels and spacing: `docs/DESIGN.md`.
 
 ## word lists
 
@@ -46,7 +46,7 @@ A two-year-old at two and three letters reaches rude words inside a session. One
 
 - The child is given no way out of the app and nothing to open in it: no settings, no second screen, no dialogs, and no browser chrome while it runs full screen.
 - The parent leaves by holding two named keys for three seconds. Behind it: settings and Stop.
-- The parent opens it full screen (one step, in the app's own instructions). Full screen is not a lock: the OS still answers Esc, its shortcuts, notifications, and the volume and power keys, and the app does not pretend otherwise.
+- The parent opens it full screen from the button in the top corner; the button hides once the app is full screen. The button is the one thing drawn to tap. Full screen is not a lock: the OS still answers Esc, its shortcuts, notifications, and the volume and power keys, and the app does not pretend otherwise.
 
 ## offline and private
 

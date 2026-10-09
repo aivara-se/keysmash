@@ -4,7 +4,7 @@ What the app draws and the values that are fixed. `PRODUCT.md` owns behaviour; t
 
 ## the screen
 
-One screen, the whole viewport, no chrome. Nothing drawn is tappable; the keyboard is the only input. The surface is white and the ink is greyscale only.
+One screen, the whole viewport, no chrome. The keyboard is the input; the only thing drawn to tap is the full-screen button in the top corner — a black outline icon, hidden while the app is full screen. The surface is white and the ink is greyscale only.
 
 ## padding
 
@@ -12,10 +12,10 @@ The text keeps clear of every edge: the screen is inset by its padding on all fo
 
 ## flow
 
-- Text is left-aligned and starts at the top left of the padded area.
+- Text is left-aligned and anchored to the bottom of the padded area: the newest line sits on the bottom padding and older lines move up as the text grows.
 - A new character is written at the caret; the text grows rightward and wraps at the right edge.
-- A wrapped line starts back at the left edge, one line down.
-- When the text passes the bottom of the padded area, the screen scrolls up so the newest line stays in view; older lines leave at the top.
+- A wrapped line starts back at the left edge, one line further up.
+- When the text fills the padded area, the older lines leave at the top and the newest line stays on the bottom padding.
 
 ## aging
 
