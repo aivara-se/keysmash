@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Keysmash</title>
+  <meta name="theme-color" content="#111111" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <section id="start" class="panel">
+    <h1>Keysmash</h1>
+    <p>Two steps for the parent:</p>
+    <ol>
+      <li>Install the app (Add to Home Screen) so it opens full screen with no browser chrome, or press Start.</li>
+      <li>To leave, hold the left and right Shift keys together for three seconds.</li>
+    </ol>
+    <button id="start-button" type="button">Start</button>
+  </section>
+
+  <section id="play" hidden>
+    <main id="screen" aria-label="Keysmash"></main>
+  </section>
+
+  <section id="parent" class="panel" hidden>
+    <h1>Parent</h1>
+    <fieldset>
+      <legend>Word lists</legend>
+      <div id="lists"></div>
+    </fieldset>
+    <button id="stop" type="button">Stop</button>
+  </section>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
