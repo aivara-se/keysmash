@@ -8,6 +8,10 @@ describe("the lists", () => {
     for (const id of DEFAULT_LIST_IDS) expect(ids).toContain(id);
   });
 
+  test("have every list on by default", () => {
+    expect(DEFAULT_LIST_IDS).toEqual(LISTS.map((list) => list.id));
+  });
+
   test("hold single lower-case words only", () => {
     // The tokenizer matches one letter run at a time, so an entry with a space
     // or a capital could never be found in the text.

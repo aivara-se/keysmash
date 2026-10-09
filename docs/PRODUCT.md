@@ -32,7 +32,7 @@ Text is anchored to the bottom, inside padding on every side: the newest charact
 
 The parent picks the active lists in settings; the app speaks only words on them. An allow-list, never "whatever letters make". The lists hold what a small child knows: animals, fruit and vegetables, food, weather and sky, vehicles, toys and play, home and things, people, and doing words.
 
-A two-year-old at two and three letters reaches rude words inside a session. A small, safe set of lists is on by default, so the app works when opened.
+A two-year-old at two and three letters reaches rude words inside a session. Every list is on by default, so the app works whatever the child types; the parent turns off the ones they do not want.
 
 ## leaving and locking
 
