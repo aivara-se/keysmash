@@ -4,7 +4,7 @@ What the app draws and the values that are fixed. `PRODUCT.md` owns behaviour; t
 
 ## the screen
 
-One screen, the whole viewport, no chrome. The keyboard is the input; the only thing drawn to tap is the full-screen button in the top corner — a black outline icon, hidden while the app is full screen. The surface is white and the ink is greyscale only.
+One screen, the whole viewport, no chrome. The keyboard is the input; the only things drawn to tap are the parent's two controls in the top corner — a full-screen icon and a clear icon, black outlines, both gone while the app is full screen. The surface is white and the ink is greyscale only.
 
 ## padding
 

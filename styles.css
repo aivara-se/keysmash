@@ -57,14 +57,20 @@ body {
   margin-top: auto;
 }
 
-/* The one control: full screen, black, top right. It hides once it is in full
-   screen, so a child cannot leave it by tapping. */
-#fullscreen {
+/* The parent's controls: full screen and clear, black outlines in the top
+   right. Both go away while the app is full screen, so the child is left with
+   nothing to tap. */
+#controls {
   position: absolute;
   top: 3vmin;
   right: 3vmin;
-  width: 9vmin;
-  height: 9vmin;
+  display: flex;
+  gap: 2vmin;
+}
+
+#controls button {
+  width: 4.5vmin;
+  height: 4.5vmin;
   padding: 0;
   border: 0;
   background: none;
@@ -72,7 +78,7 @@ body {
   cursor: pointer;
 }
 
-#fullscreen svg {
+#controls button svg {
   width: 100%;
   height: 100%;
   display: block;
