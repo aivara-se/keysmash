@@ -1,75 +1,77 @@
 import { describe, expect, test } from "bun:test";
 import { createClassifier } from "./babble.js";
+import { HELD_ANSWER_MS } from "./thresholds.js";
 
-type Action = { type: "babble"; key: string } | { type: "undo"; count: number };
-type Event = ["press" | "release", string, number];
+type Event = ["press" | "release" | "tick", string, number];
 
-/** Replays events and reports both the actions and the text left on the screen. */
-function replay(events: Event[]): { actions: Action[]; text: string } {
+/** Replays events and reports the answer stream and the text left on screen. */
+function replay(events: Event[]): { answered: string[]; text: string } {
   const classifier = createClassifier();
-  const actions: Action[] = [];
+  const answered: string[] = [];
   let text = "";
   for (const [kind, key, now] of events) {
-    const out = (kind === "press" ? classifier.press(key, now) : classifier.release(key)) as Action[];
-    for (const action of out) {
-      actions.push(action);
-      text = action.type === "babble" ? text + action.key : text.slice(0, text.length - action.count);
+    const out = kind === "press" ? classifier.press(key, now) : kind === "release" ? classifier.release(key, now) : classifier.tick(now);
+    for (const letter of out) {
+      answered.push(letter.key);
+      text += letter.key;
     }
   }
-  return { actions, text };
+  return { answered, text };
 }
 
 describe("babble", () => {
-  test("a deliberate press is answered at once", () => {
-    expect(replay([["press", "a", 0]]).actions).toEqual([{ type: "babble", key: "a" }]);
-    expect(replay([["press", "a", 0]]).text).toBe("a");
+  test("a tap is answered when it comes up", () => {
+    expect(replay([["press", "a", 0], ["release", "a", 40]]).answered).toEqual(["a"]);
   });
 
   test("a held key gives one letter, no repeat", () => {
-    expect(replay([["press", "b", 0], ["press", "b", 400], ["release", "b", 700]]).text).toBe("b");
+    expect(replay([["press", "b", 0], ["press", "b", 400], ["tick", "", HELD_ANSWER_MS], ["tick", "", 500], ["release", "b", 700]]).answered).toEqual(["b"]);
   });
 
-  test("presses at least the gap apart each stand", () => {
-    expect(replay([["press", "a", 0], ["release", "a", 50], ["press", "b", 200], ["release", "b", 250]]).text).toBe("ab");
+  test("a key held alone answers without waiting for the release", () => {
+    expect(replay([["press", "c", 0], ["tick", "", HELD_ANSWER_MS - 1]]).answered).toEqual([]);
+    expect(replay([["press", "c", 0], ["tick", "", HELD_ANSWER_MS]]).answered).toEqual(["c"]);
   });
 });
 
 describe("mash", () => {
-  test("two keys down at once take back the press that began the burst", () => {
-    const { actions, text } = replay([["press", "a", 0], ["press", "b", 20], ["release", "a", 40], ["release", "b", 60]]);
-    expect(actions).toEqual([{ type: "babble", key: "a" }, { type: "undo", count: 1 }]);
-    expect(text).toBe("");
+  test("two keys down at once answer nothing", () => {
+    expect(replay([["press", "a", 0], ["press", "b", 10], ["release", "a", 40], ["release", "b", 60]]).answered).toEqual([]);
   });
 
-  test("a press inside the gap takes back the one before it", () => {
-    const { actions, text } = replay([["press", "a", 0], ["release", "a", 50], ["press", "b", 100], ["release", "b", 140]]);
-    expect(actions).toEqual([{ type: "babble", key: "a" }, { type: "undo", count: 1 }]);
-    expect(text).toBe("");
-  });
-
-  test("a drag across the keyboard leaves nothing", () => {
+  test("a drag across the keyboard answers nothing", () => {
     const events: Event[] = [];
     let now = 0;
-    for (const key of ["a", "s", "d", "f", "g", "h", "j", "k"]) events.push(["press", key, (now += 10)]);
-    for (const key of ["a", "s", "d", "f", "g", "h", "j", "k"]) events.push(["release", key, (now += 5)]);
-    expect(replay(events).text).toBe("");
+    for (const key of ["a", "s", "d", "f", "g", "h"]) events.push(["press", key, (now += 8)]);
+    for (const key of ["a", "s", "d", "f", "g", "h"]) events.push(["release", key, (now += 6)]);
+    expect(replay(events).answered).toEqual([]);
+  });
+});
+
+describe("never edit what the child typed", () => {
+  test("fast typing keeps every letter", () => {
+    const events: Event[] = [];
+    let now = 0;
+    for (const key of "asdaaaaaaaaaaaaaa") events.push(["press", key, (now += 30)], ["release", key, (now += 20)]);
+    const { answered, text } = replay(events);
+    expect(text).toBe("asdaaaaaaaaaaaaaa");
+    expect(answered).toEqual([..."asdaaaaaaaaaaaaaa"]);
   });
 
-  test("five presses inside the window take back the whole flurry", () => {
-    const events: Event[] = [];
-    "abcde".split("").forEach((key, i) => {
-      events.push(["press", key, i * 200], ["release", key, i * 200 + 60]);
-    });
-    const { actions, text } = replay(events);
-    expect(text).toBe("");
-    expect(actions.at(-1)).toEqual({ type: "undo", count: 4 });
-  });
-
-  test("four presses inside the window are not a flurry", () => {
-    const events: Event[] = [];
-    "abcd".split("").forEach((key, i) => {
-      events.push(["press", key, i * 200], ["release", key, i * 200 + 60]);
-    });
-    expect(replay(events).text).toBe("abcd");
+  test("a letter once answered is never taken back", () => {
+    const classifier = createClassifier();
+    const events: Event[] = [
+      ["press", "a", 0], ["release", "a", 20],
+      ["press", "b", 40], ["press", "c", 50], ["release", "b", 60], ["release", "c", 80],
+      ["press", "d", 100], ["release", "d", 120],
+    ];
+    let text = "";
+    for (const [kind, key, now] of events) {
+      const out = kind === "press" ? classifier.press(key, now) : kind === "release" ? classifier.release(key, now) : classifier.tick(now);
+      const before = text.length;
+      for (const letter of out) text += letter.key;
+      expect(text.length).toBeGreaterThanOrEqual(before);
+    }
+    expect(text).toBe("ad");
   });
 });

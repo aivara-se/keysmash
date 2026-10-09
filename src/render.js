@@ -55,7 +55,8 @@ export function createRender({ screen, wordsFor }) {
     for (let i = 0; i < lines.length; i++) {
       const index = lines.length - 1 - i;
       const { el } = lines[i];
-      el.style.top = `${Math.round(pointY - index * step_)}px`;
+      // The current line sits on the caret, not below it.
+      el.style.top = `${Math.round(pointY - (index + 1) * step_)}px`;
       el.className = `line ${index === 0 ? "current" : index === 1 ? "previous" : "older"}`;
     }
     caret.style.top = `${Math.round(pointY - step_)}px`;
@@ -92,35 +93,6 @@ export function createRender({ screen, wordsFor }) {
         while (lines.length > MAX_LINES) {
           const gone = lines.shift();
           gone.el.remove();
-        }
-      }
-      layout();
-    },
-
-    /** Takes back the last characters written, unwrapping a line if it empties. */
-    removeTail(count) {
-      let remaining = count;
-      while (remaining > 0 && lines.length > 0) {
-        const line = lines[lines.length - 1];
-        if (line.text.length === 0) {
-          if (lines.length > 1) {
-            line.el.remove();
-            lines.pop();
-            continue;
-          }
-          break;
-        }
-        if (line.text.length > remaining) {
-          line.text = line.text.slice(0, line.text.length - remaining);
-          remaining = 0;
-        } else {
-          remaining -= line.text.length;
-          line.text = "";
-        }
-        paint(line);
-        if (line.text.length === 0 && lines.length > 1) {
-          line.el.remove();
-          lines.pop();
         }
       }
       layout();

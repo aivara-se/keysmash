@@ -55,11 +55,6 @@ export function createSpeech() {
       if (synth !== null) synth.onvoiceschanged = pickVoice;
     },
 
-    /** Stops whatever is sounding, for a burst that turns out to be a mash. */
-    cut() {
-      cutOffLast();
-    },
-
     /** Speaks a letter's name: the device voice, or the clip when there is none. */
     letter(name) {
       const letter = name.toLowerCase();

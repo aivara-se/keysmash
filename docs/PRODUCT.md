@@ -5,23 +5,23 @@ A typing app for a two-year-old. A deliberate keypress gets an answer: the lette
 ## babble and mash
 
 - **babble** — one key, pressed on purpose. Answered: the letter is spoken and written.
-- **mash** — many keys at once, or a flurry. Answered with silence, and no text.
+- **mash** — two keys down at once, or a press while a key is down. Answered with silence, and no text.
 
 The pair is the product. Answering everything is noise; answering nothing leaves the child nothing to control.
 
 ## babble
 
-A press is a babble when it is one key, released before the next, at least 150 ms after the previous press. A held key gives one babble, no repeat.
-
-150 ms is provisional: set it from a recording of a real two-year-old, then freeze it.
+A press is a babble when it is one key, released before the next press. A held key answers on its own after 150 ms, and gives one babble, no repeat.
 
 Each babble speaks the letter **name** and writes the character at the caret. One fixed, low voice; a new letter cuts off the last, so sounds never stack and the volume never rises.
 
 ## mash
 
-Two keys down at once, five presses in one second, or any press while a key is down — the whole burst is a mash, including the presses that began it.
+Two keys down at once, or any press while a key is down — that press answers nothing, and neither does the key it interrupted.
 
 No sound, no text, no shake, no colour change. A mash is not scolded and not made into a game.
+
+A mash never takes back a letter already written. What the child has typed is what the child has typed; the app does not edit it.
 
 ## words and numbers
 
@@ -66,6 +66,7 @@ Lessons, levels, scoring, rewards, streaks, curriculum, profiles, sync, a parent
 4. A held key → one letter, no repeat.
 5. Network off, half an hour, no route to settings or the OS.
 6. No sound on a mash, at any speed.
+7. Nothing typed is ever changed: no press removes or rewrites a character already written.
 
 ## name
 
