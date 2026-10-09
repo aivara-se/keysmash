@@ -33,6 +33,7 @@ The text keeps clear of every edge: the screen is inset by its padding on all fo
 - A recognised word is enclosed in a rounded outline, drawn in the ink at the one stroke thickness — the same as the caret.
 - The outline is the mark. The letters keep their normal weight, with no underline, and the mark is never carried by colour alone.
 - The word inside reads with a capital first letter. That is a rendering of the mark only; the text the child typed is untouched.
+- The word sits high in the pill: less room above the letters than below them.
 
 ## type and colour
 

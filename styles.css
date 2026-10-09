@@ -2,10 +2,11 @@
   color-scheme: light;
   --surface: #ffffff;
   --ink: #000000;
-  /* The pill outline and the caret are drawn at the same thickness. Whole
-     pixels: the browser rounds a border to a whole pixel but paints a caret's
-     background at any width, so only px keeps the two identical. */
-  --stroke: 5px;
+  /* The pill outline, the caret and the word outline are drawn at the same
+     thickness, and track the text size. Whole pixels: the browser rounds a
+     border to a whole pixel but paints a caret's background at any width, so
+     only px keeps the two identical. */
+  --stroke: 8px;
 }
 
 * {
@@ -44,7 +45,7 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  font-size: 8vmin;
+  font-size: 12vmin;
   line-height: 2.2;
   letter-spacing: 0.06em;
   word-spacing: 0.08em;
@@ -90,9 +91,9 @@ body {
 .mark {
   border: var(--stroke) solid currentColor;
   border-radius: 0.35em;
-  /* The font carries empty space above and below the letters, so the vertical
-     padding is smaller: the gap you see is the same on all sides. */
-  padding: 0.15em 0.32em;
+  /* The font carries empty space above and below the letters either way, and
+     the top is trimmed further: the word sits high in the pill. */
+  padding: 0.08em 0.32em 0.15em;
   margin-right: 0.16em;
   /* A marked word reads with a capital first letter. That is a rendering of the
      mark only; the text the child typed is untouched. */
