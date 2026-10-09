@@ -34,9 +34,7 @@ A mash never takes back a letter already written. What the child has typed is wh
 
 One screen; nothing to tap but the keyboard.
 
-Text is right-aligned, the caret pinned at the **2:1 point** (two-thirds across), so the newest character always lands in the same place and older text grows left; older lines fade first.
-
-Attention, not reading: the newest letter always lands where the child is already looking, and nothing moves. The line is anchored at its end and grows leftward, which is not how writing is laid out — so this is no base for a later reading feature. Pixels and overflow: `docs/DESIGN.md`.
+Text starts at the top left, inside padding on every side, and fills the screen. The newest character is written after the last and the caret moves with it; when the text passes the bottom, older lines leave at the top. Pixels and spacing: `docs/DESIGN.md`.
 
 ## word lists
 

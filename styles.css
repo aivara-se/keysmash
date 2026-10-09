@@ -2,8 +2,6 @@
   color-scheme: light;
   --surface: #ffffff;
   --ink: #000000;
-  --ink-previous: #a3a3a3;
-  --ink-older: #d4d4d4;
 }
 
 * {
@@ -55,49 +53,35 @@ button {
   background: var(--surface);
 }
 
+/* The whole screen is the page: text starts at the top left of the padded
+   area, wraps at the right, and stays clear of every edge. */
 #screen {
   position: absolute;
   inset: 0;
-}
-
-/* Greyscale on white: the current line is black, the two older steps lighter
-   (the concept's three shades). The text ends just left of the caret. */
-.line {
-  position: absolute;
-  right: calc(33.333% + 2px);
-  white-space: pre;
-  text-align: right;
-  font-size: 9.5vmin;
-  line-height: 2.15;
+  padding: 6vmin;
+  overflow: hidden;
+  font-size: 8.5vmin;
+  line-height: 1.5;
   color: var(--ink);
-  transition: color 240ms ease;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
-.line.previous {
-  color: var(--ink-previous);
-}
-
-.line.older {
-  color: var(--ink-older);
-}
-
-/* A marked word is outlined in the line's own ink: the outline is the mark. */
+/* A marked word is outlined in the ink: the outline is the mark. */
 .mark {
   border: 0.05em solid currentColor;
   border-radius: 0.3em;
   padding: 0.12em 0.2em;
 }
 
-/* The caret sits on the 2:1 point, immediately after the newest character. */
+/* The caret is a thin bar, one text-height tall, just after the newest
+   character; it moves with the text. Its negative margin keeps it from
+   affecting where the line wraps. */
 .caret {
-  position: absolute;
-  right: 33.333%;
+  display: inline-block;
   width: 2px;
+  height: 1em;
+  margin-right: -2px;
   background: var(--ink);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .line {
-    transition: none;
-  }
+  vertical-align: text-bottom;
 }
