@@ -86,17 +86,37 @@ body {
   margin-right: 0.16em;
 }
 
-/* The caret is a thin bar, one text-height tall, just after the newest
-   character; it moves with the text. Its margins keep it clear of the
-   character and stop it affecting where the line wraps. */
+/* The caret is a bar in the ink, longer than the text and centred on it, drawn
+   just after the newest character; it moves with the text. Its margins keep it
+   clear of the character and stop it affecting where the line wraps. */
 .caret {
+  --caret-width: 0.07em;
   display: inline-block;
-  width: 2px;
-  height: 1em;
+  width: var(--caret-width);
+  height: 1.5em;
   margin-left: 0.08em;
-  margin-right: calc(-2px - 0.08em);
+  margin-right: calc(-1 * var(--caret-width) - 0.08em);
   background: var(--ink);
-  vertical-align: text-bottom;
+  vertical-align: middle;
+  animation: caret-pulse 1.6s ease-in-out infinite;
+}
+
+/* A smooth pulse, not a blink: full ink to a third and back. */
+@keyframes caret-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret {
+    animation: none;
+  }
 }
 
 /* The parent screen sits over the play screen. */
