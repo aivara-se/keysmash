@@ -112,20 +112,35 @@ body {
   background: var(--ink);
   /* -0.5em puts the bar's middle on the text's middle, so it overhangs a pill. */
   vertical-align: -0.5em;
-  animation: caret-pulse 1.6s ease-in-out infinite;
+  /* Linear timing: the keyframes below carry the wave's shape themselves. */
+  animation: caret-pulse 1.6s linear infinite;
 }
 
-/* A smooth pulse, not a blink: full ink to a third and back. It runs whatever
-   the device's motion setting says — the pulse is the whole point of the bar. */
+/* A sine wave from full ink to none and back, one pulse every 1.6 seconds. The
+   values are (1 + cos) / 2 sampled every 5%, so the fade has no flat spot and
+   no corner at either end. It runs whatever the device's motion setting says. */
 @keyframes caret-pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.3;
-  }
+  0% { opacity: 1; }
+  5% { opacity: 0.976; }
+  10% { opacity: 0.905; }
+  15% { opacity: 0.794; }
+  20% { opacity: 0.655; }
+  25% { opacity: 0.5; }
+  30% { opacity: 0.345; }
+  35% { opacity: 0.206; }
+  40% { opacity: 0.095; }
+  45% { opacity: 0.024; }
+  50% { opacity: 0; }
+  55% { opacity: 0.024; }
+  60% { opacity: 0.095; }
+  65% { opacity: 0.206; }
+  70% { opacity: 0.345; }
+  75% { opacity: 0.5; }
+  80% { opacity: 0.655; }
+  85% { opacity: 0.794; }
+  90% { opacity: 0.905; }
+  95% { opacity: 0.976; }
+  100% { opacity: 1; }
 }
 
 /* The parent screen sits over the play screen. */
