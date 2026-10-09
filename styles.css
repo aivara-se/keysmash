@@ -2,16 +2,21 @@
   color-scheme: light;
   --surface: #ffffff;
   --ink: #000000;
-  /* The word colours, one per list, each measured against the surface
-     (docs/DESIGN.md). A word the lists give no colour is drawn in the ink. */
-  --ink-animals: #b45309;
-  --ink-fruit: #b91c1c;
-  --ink-food: #c2410c;
-  --ink-weather: #0369a1;
-  --ink-vehicles: #6d28d9;
-  --ink-toys: #be185d;
-  --ink-home: #0f766e;
-  --ink-people: #15803d;
+  /* The palette a pill can be drawn in, each measured against the surface
+     (docs/DESIGN.md). A word the lists leave uncoloured is drawn in the ink. */
+  --ink-red: #b91c1c;
+  --ink-orange: #c2410c;
+  --ink-amber: #b45309;
+  --ink-yellow: #a16207;
+  --ink-green: #15803d;
+  --ink-teal: #0f766e;
+  --ink-sky: #0369a1;
+  --ink-blue: #1d4ed8;
+  --ink-indigo: #4338ca;
+  --ink-violet: #6d28d9;
+  --ink-pink: #be185d;
+  --ink-brown: #78350f;
+  --ink-slate: #475569;
   /* A number is never drawn in a word's colour. */
   --ink-number: #4338ca;
   /* The pill outline, the caret and the word outline are drawn at the same
@@ -115,16 +120,22 @@ body {
   text-transform: capitalize;
 }
 
-/* A marked word is drawn in the colour its list gave it, its outline included:
-   the outline is `currentColor`. */
-.mark[data-color="animals"] { color: var(--ink-animals); }
-.mark[data-color="fruit"] { color: var(--ink-fruit); }
-.mark[data-color="food"] { color: var(--ink-food); }
-.mark[data-color="weather"] { color: var(--ink-weather); }
-.mark[data-color="vehicles"] { color: var(--ink-vehicles); }
-.mark[data-color="toys"] { color: var(--ink-toys); }
-.mark[data-color="home"] { color: var(--ink-home); }
-.mark[data-color="people"] { color: var(--ink-people); }
+/* A marked word is drawn in its colour, its outline included: the outline is
+   `currentColor`. The colour is the word's own, or the one its emoji names
+   (src/emoji-colors.js), or its list's, or the ink. */
+.mark[data-color="red"] { color: var(--ink-red); }
+.mark[data-color="orange"] { color: var(--ink-orange); }
+.mark[data-color="amber"] { color: var(--ink-amber); }
+.mark[data-color="yellow"] { color: var(--ink-yellow); }
+.mark[data-color="green"] { color: var(--ink-green); }
+.mark[data-color="teal"] { color: var(--ink-teal); }
+.mark[data-color="sky"] { color: var(--ink-sky); }
+.mark[data-color="blue"] { color: var(--ink-blue); }
+.mark[data-color="indigo"] { color: var(--ink-indigo); }
+.mark[data-color="violet"] { color: var(--ink-violet); }
+.mark[data-color="pink"] { color: var(--ink-pink); }
+.mark[data-color="brown"] { color: var(--ink-brown); }
+.mark[data-color="slate"] { color: var(--ink-slate); }
 
 /* A number is always its own colour, so a number pill never reads as a word. */
 .mark[data-kind="number"] { color: var(--ink-number); }

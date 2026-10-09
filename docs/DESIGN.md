@@ -41,15 +41,21 @@ The text keeps clear of every edge: the screen is inset by its padding on all fo
 
 - One text size, large, one sans-serif at its regular weight. Set and measured at build.
 - Surface `#ffffff`. Ink `#000000`, for the text and for a word no list colours.
-- One colour per list of words, and a word may name its own; the word's own wins, then its list's, then the ink. The outline takes the word's colour too.
+- A word's colour is the one it names for itself, else the one its emoji names, else its list's, else the ink. The outline takes the word's colour too.
+- It takes its emoji's colour where that colour is the thing's colour, so an apple is red and a frog is green. Where the emoji says nothing about the word — a figure is skin-coloured whatever the word is, a book is drawn in whatever colour the font chose — the word keeps its list's colour.
 - A number is drawn in its own colour, never a word's.
 - Every colour is measured against the surface at build; no value ships unmeasured. Contrast against `#ffffff`:
-  - animals `#b45309`, 5.02:1
-  - fruit `#b91c1c`, 6.47:1
-  - food `#c2410c`, 5.18:1
-  - weather `#0369a1`, 5.93:1
-  - vehicles `#6d28d9`, 7.10:1
-  - toys `#be185d`, 6.04:1
-  - home `#0f766e`, 5.47:1
-  - people `#15803d`, 5.02:1
+  - red `#b91c1c`, 6.47:1
+  - orange `#c2410c`, 5.18:1
+  - amber `#b45309`, 5.02:1
+  - yellow `#a16207`, 4.92:1
+  - green `#15803d`, 5.02:1
+  - teal `#0f766e`, 5.47:1
+  - sky `#0369a1`, 5.93:1
+  - blue `#1d4ed8`, 6.70:1
+  - indigo `#4338ca`, 7.90:1
+  - violet `#6d28d9`, 7.10:1
+  - pink `#be185d`, 6.04:1
+  - brown `#78350f`, 9.07:1
+  - slate `#475569`, 7.58:1
   - a number `#4338ca`, 7.90:1

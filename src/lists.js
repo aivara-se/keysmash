@@ -1,3 +1,5 @@
+import { EMOJI_COLORS } from "./emoji-colors.js";
+
 /**
  * The word lists the parent picks from in settings. An allow-list: the app
  * marks and speaks only words on an active list, never "whatever letters
@@ -16,7 +18,7 @@ export const DEFAULT_LIST_IDS = ["animals", "fruit", "toys"];
  * The colour keys a word or a list may name. The values, and their measured
  * contrast against the surface, are in `styles.css` and `docs/DESIGN.md`.
  */
-export const COLORS = ["animals", "fruit", "food", "weather", "vehicles", "toys", "home", "people"];
+export const COLORS = ["red", "orange", "amber", "yellow", "green", "teal", "sky", "blue", "indigo", "violet", "pink", "brown", "slate"];
 
 /**
  * @typedef {{ word: string, emoji?: string, color?: string }} WordEntry
@@ -28,7 +30,7 @@ export const LISTS = [
   {
     id: "animals",
     name: "Animals",
-    color: "animals",
+    color: "amber",
     words: [
       { word: "cat", emoji: "🐱" }, { word: "dog", emoji: "🐶" }, { word: "cow", emoji: "🐮" },
       { word: "pig", emoji: "🐷" }, { word: "duck", emoji: "🦆" }, { word: "hen", emoji: "🐔" },
@@ -37,7 +39,7 @@ export const LISTS = [
       { word: "dolphin", emoji: "🐬" }, { word: "frog", emoji: "🐸" }, { word: "snake", emoji: "🐍" },
       { word: "turtle", emoji: "🐢" }, { word: "snail", emoji: "🐌" }, { word: "bee", emoji: "🐝" },
       { word: "ant", emoji: "🐜" }, { word: "bug", emoji: "🐛" }, { word: "spider", emoji: "🕷️" },
-      { word: "butterfly", emoji: "🦋" }, { word: "bear", emoji: "🐻" }, { word: "lion", emoji: "🦁" },
+      { word: "butterfly", emoji: "🦋", color: "sky" }, { word: "bear", emoji: "🐻" }, { word: "lion", emoji: "🦁" },
       { word: "tiger", emoji: "🐯" }, { word: "fox", emoji: "🦊" }, { word: "mouse", emoji: "🐭" },
       { word: "rabbit", emoji: "🐰" }, { word: "horse", emoji: "🐴" }, { word: "sheep", emoji: "🐑" },
       { word: "goat", emoji: "🐐" }, { word: "monkey", emoji: "🐵" }, { word: "elephant", emoji: "🐘" },
@@ -48,7 +50,7 @@ export const LISTS = [
   {
     id: "fruit",
     name: "Fruit and vegetables",
-    color: "fruit",
+    color: "red",
     words: [
       { word: "apple", emoji: "🍎" }, { word: "banana", emoji: "🍌" }, { word: "orange", emoji: "🍊" },
       { word: "lemon", emoji: "🍋" }, { word: "peach", emoji: "🍑" }, { word: "cherry", emoji: "🍒" },
@@ -63,7 +65,7 @@ export const LISTS = [
   {
     id: "food",
     name: "Food",
-    color: "food",
+    color: "orange",
     words: [
       { word: "bread", emoji: "🍞" }, { word: "milk", emoji: "🥛" }, { word: "egg", emoji: "🥚" },
       { word: "cake", emoji: "🍰" }, { word: "cookie", emoji: "🍪" }, { word: "cheese", emoji: "🧀" },
@@ -76,7 +78,7 @@ export const LISTS = [
   {
     id: "weather",
     name: "Weather and sky",
-    color: "weather",
+    color: "sky",
     words: [
       { word: "sun", emoji: "☀️" }, { word: "moon", emoji: "🌙" }, { word: "star", emoji: "⭐" },
       { word: "cloud", emoji: "☁️" }, { word: "rain", emoji: "🌧️" }, { word: "snow", emoji: "❄️" },
@@ -89,7 +91,7 @@ export const LISTS = [
   {
     id: "vehicles",
     name: "Vehicles",
-    color: "vehicles",
+    color: "blue",
     words: [
       { word: "car", emoji: "🚗" }, { word: "bus", emoji: "🚌" }, { word: "train", emoji: "🚂" },
       { word: "boat", emoji: "⛵" }, { word: "ship", emoji: "🚢" }, { word: "plane", emoji: "✈️" },
@@ -102,7 +104,7 @@ export const LISTS = [
   {
     id: "toys",
     name: "Toys and play",
-    color: "toys",
+    color: "pink",
     words: [
       { word: "ball", emoji: "⚽" }, { word: "teddy", emoji: "🧸" }, { word: "doll", emoji: "🪆" },
       { word: "block", emoji: "🧱" }, { word: "kite", emoji: "🪁" }, { word: "drum", emoji: "🥁" },
@@ -115,7 +117,7 @@ export const LISTS = [
   {
     id: "home",
     name: "Home and things",
-    color: "home",
+    color: "green",
     words: [
       { word: "house", emoji: "🏠" }, { word: "door", emoji: "🚪" }, { word: "bed", emoji: "🛏️" },
       { word: "chair", emoji: "🪑" }, { word: "cup", emoji: "🥤" }, { word: "spoon", emoji: "🥄" },
@@ -130,14 +132,14 @@ export const LISTS = [
   {
     id: "people",
     name: "People and me",
-    color: "people",
+    color: "violet",
     words: [
-      { word: "mum", emoji: "👩" }, { word: "dad", emoji: "👨" }, { word: "baby", emoji: "👶" },
+      { word: "mama", emoji: "👩" }, { word: "papa", emoji: "👨" }, { word: "baby", emoji: "👶" },
       { word: "boy", emoji: "👦" }, { word: "girl", emoji: "👧" }, { word: "hand", emoji: "✋" },
       { word: "foot", emoji: "🦶" }, { word: "eye", emoji: "👁️" }, { word: "ear", emoji: "👂" },
       { word: "nose", emoji: "👃" }, { word: "mouth", emoji: "👄" }, { word: "tooth", emoji: "🦷" },
       { word: "arm", emoji: "💪" }, { word: "leg", emoji: "🦵" }, { word: "face", emoji: "🙂" },
-      { word: "hair" }, { word: "nail" }, { word: "heart", emoji: "❤️", color: "fruit" },
+      { word: "hair" }, { word: "nail" }, { word: "heart", emoji: "❤️" },
     ],
   },
   {
@@ -147,7 +149,7 @@ export const LISTS = [
       { word: "eat", emoji: "🍽️" }, { word: "sleep", emoji: "😴" }, { word: "run", emoji: "🏃" },
       { word: "jump", emoji: "🤸" }, { word: "walk", emoji: "🚶" }, { word: "sing", emoji: "🎤" },
       { word: "sit", emoji: "🪑" }, { word: "clap", emoji: "👏" }, { word: "wash", emoji: "🧼" },
-      { word: "read", emoji: "📖" }, { word: "play" }, { word: "kiss", emoji: "💋" },
+      { word: "read", emoji: "📖" }, { word: "play" }, { word: "lips", emoji: "💋" },
       { word: "cry", emoji: "😢" }, { word: "big" }, { word: "small" }, { word: "hot", emoji: "🥵" },
       { word: "cold", emoji: "🥶" }, { word: "wet" }, { word: "good" }, { word: "tall" },
     ],
@@ -162,7 +164,7 @@ export function wordsFor(listIds) {
     for (const entry of list.words) {
       words.set(entry.word.toLowerCase(), {
         emoji: entry.emoji,
-        color: entry.color ?? list.color,
+        color: entry.color ?? EMOJI_COLORS[entry.emoji] ?? list.color,
       });
     }
   }
