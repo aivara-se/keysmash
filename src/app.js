@@ -80,14 +80,15 @@ function onKeyDown(event) {
   if (EXIT_KEYS.has(event.code)) return holdExit(event.code);
   if (event.repeat || event.key.length !== 1) return;
   noteStop();
-  write(classifier.press(event.key, now()));
+  write(classifier.press(event.code, event.key, now()));
 }
 
 function onKeyUp(event) {
   if (paused) return;
   if (EXIT_KEYS.has(event.code)) return releaseExit(event.code);
-  if (event.key.length !== 1) return;
-  write(classifier.release(event.key, now()));
+  // Always release by code: a capital reports "a" on the way up once Shift is
+  // out, and a press left behind would stop the keyboard answering for good.
+  write(classifier.release(event.code));
 }
 
 function openParent() {
