@@ -36,6 +36,7 @@ The caret is pinned at the **2:1 point**: two-thirds across and two-thirds down.
 ## type and colour
 
 - One text size, large. Set and measured at build.
+- Surface: white. The ink is greyscale only, in three shades — the current line full ink, the two older steps lighter.
 - Every text pair is measured on its surface at build; no value ships unmeasured.
 
 ## reduced motion

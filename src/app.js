@@ -8,6 +8,7 @@ import { READ_IDLE_MS } from "./thresholds.js";
 
 const EXIT_KEYS = new Set(["ShiftLeft", "ShiftRight"]);
 const EXIT_HOLD_MS = 3000;
+const TICK_MS = 16;
 
 const startScreen = document.getElementById("start");
 const playScreen = document.getElementById("play");
@@ -23,11 +24,23 @@ const spoken = new Map();
 let activeWords = wordsFor(settings.activeListIds());
 let classifier = createClassifier();
 let playing = false;
+let tickHandle = null;
 let readTimer = null;
 let exitTimer = null;
 const exitDown = new Set();
 
 const now = () => performance.now();
+
+function write(letters) {
+  for (const letter of letters) {
+    render.insert(letter.key);
+    if (/^[A-Za-z]$/.test(letter.key)) speech.letter(letter.key);
+  }
+}
+
+function tick() {
+  write(classifier.tick(now()));
+}
 
 function readWords() {
   for (const utterance of newUtterances(markText(render.text(), activeWords), spoken)) {
@@ -38,18 +51,6 @@ function readWords() {
 function noteStop() {
   clearTimeout(readTimer);
   readTimer = setTimeout(readWords, READ_IDLE_MS);
-}
-
-function apply(actions) {
-  for (const action of actions) {
-    if (action.type === "undo") {
-      render.removeTail(action.count);
-      speech.cut();
-      continue;
-    }
-    render.insert(action.key);
-    if (/^[A-Za-z]$/.test(action.key)) speech.letter(action.key);
-  }
 }
 
 function holdExit(code) {
@@ -70,18 +71,19 @@ function onKeyDown(event) {
   if (EXIT_KEYS.has(event.code)) return holdExit(event.code);
   if (event.repeat || event.key.length !== 1) return;
   noteStop();
-  apply(classifier.press(event.key, now()));
+  write(classifier.press(event.key, now()));
 }
 
 function onKeyUp(event) {
   if (!playing) return;
   if (EXIT_KEYS.has(event.code)) return releaseExit(event.code);
   if (event.key.length !== 1) return;
-  apply(classifier.release(event.key));
+  write(classifier.release(event.key, now()));
 }
 
 function leaveToParent() {
   playing = false;
+  clearInterval(tickHandle);
   clearTimeout(readTimer);
   exitDown.clear();
   exitTimer = null;
@@ -101,10 +103,12 @@ function start() {
   if (document.documentElement.requestFullscreen) {
     document.documentElement.requestFullscreen().catch(() => {});
   }
+  tickHandle = setInterval(tick, TICK_MS);
 }
 
 function stop() {
   playing = false;
+  clearInterval(tickHandle);
   clearTimeout(readTimer);
   playScreen.hidden = true;
   parentScreen.hidden = true;
