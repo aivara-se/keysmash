@@ -2,6 +2,10 @@
   color-scheme: light;
   --surface: #ffffff;
   --ink: #000000;
+  /* The pill outline and the caret are drawn at the same thickness. Whole
+     pixels: the browser rounds a border to a whole pixel but paints a caret's
+     background at any width, so only px keeps the two identical. */
+  --stroke: 5px;
 }
 
 * {
@@ -78,7 +82,7 @@ body {
    keeps a gap after the outline, so the next character or the caret never
    touches it. */
 .mark {
-  border: 0.05em solid currentColor;
+  border: var(--stroke) solid currentColor;
   border-radius: 0.35em;
   /* The font carries empty space above and below the letters, so the vertical
      padding is smaller: the gap you see is the same on all sides. */
@@ -86,18 +90,19 @@ body {
   margin-right: 0.16em;
 }
 
-/* The caret is a bar in the ink, longer than the text and centred on it, drawn
-   just after the newest character; it moves with the text. Its margins keep it
-   clear of the character and stop it affecting where the line wraps. */
+/* The caret is a bar in the ink, as thick as a word's outline and taller than
+   it, centred on the text so it reaches above and below the letters. It is
+   drawn just after the newest character and moves with the text; its margins
+   keep it clear of the character and stop it affecting where the line wraps. */
 .caret {
-  --caret-width: 0.07em;
   display: inline-block;
-  width: var(--caret-width);
-  height: 1.5em;
+  width: var(--stroke);
+  height: 1.7em;
   margin-left: 0.08em;
-  margin-right: calc(-1 * var(--caret-width) - 0.08em);
+  margin-right: calc(-1 * var(--stroke) - 0.08em);
   background: var(--ink);
-  vertical-align: middle;
+  /* -0.5em puts the bar's middle on the text's middle, so it overhangs a pill. */
+  vertical-align: -0.5em;
   animation: caret-pulse 1.6s ease-in-out infinite;
 }
 
