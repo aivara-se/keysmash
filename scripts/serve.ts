@@ -15,8 +15,9 @@ const port = Number(process.env.PORT ?? 8787);
 Bun.serve({
   port,
   async fetch(request) {
-    const path = new URL(request.url).pathname;
-    const file = Bun.file(join(ROOT, path === "/" ? "index.html" : path));
+    let path = new URL(request.url).pathname;
+    if (path === "/") path = "/index.html";
+    const file = Bun.file(join(ROOT, path));
     if (!(await file.exists())) return new Response("not found", { status: 404 });
     return new Response(file, { headers: { "content-type": TYPES[extname(path)] ?? "application/octet-stream" } });
   },
