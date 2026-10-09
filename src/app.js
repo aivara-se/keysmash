@@ -11,7 +11,9 @@ const EXIT_HOLD_MS = 3000;
 const TICK_MS = 16;
 
 const screen = document.getElementById("screen");
+const controls = document.getElementById("controls");
 const fullscreenButton = document.getElementById("fullscreen");
+const clearButton = document.getElementById("clear");
 const parentScreen = document.getElementById("parent");
 const listContainer = document.getElementById("lists");
 
@@ -110,8 +112,15 @@ async function toggleFullscreen() {
   }
 }
 
-function syncFullscreenButton() {
-  fullscreenButton.hidden = document.fullscreenElement !== null;
+function syncControls() {
+  controls.hidden = document.fullscreenElement !== null;
+}
+
+/** The parent asks for a blank screen. Nothing else ever edits the child's text. */
+function clearScreen() {
+  render.reset();
+  spoken.clear();
+  clearTimeout(readTimer);
 }
 
 function selectLists() {
@@ -134,7 +143,8 @@ function selectLists() {
 }
 
 fullscreenButton.addEventListener("click", toggleFullscreen);
-document.addEventListener("fullscreenchange", syncFullscreenButton);
+clearButton.addEventListener("click", clearScreen);
+document.addEventListener("fullscreenchange", syncControls);
 document.getElementById("close").addEventListener("click", closeParent);
 window.addEventListener("keydown", onKeyDown);
 window.addEventListener("keyup", onKeyUp);
@@ -143,7 +153,7 @@ window.addEventListener("resize", () => render.resize());
 selectLists();
 render.reset();
 speech.ready();
-syncFullscreenButton();
+syncControls();
 setInterval(tick, TICK_MS);
 
 if ("serviceWorker" in navigator) {
