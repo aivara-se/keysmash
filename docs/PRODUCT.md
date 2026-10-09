@@ -34,7 +34,7 @@ A mash never takes back a letter already written. What the child has typed is wh
 
 One screen; nothing to tap but the keyboard.
 
-Text starts at the top left, inside padding on every side, and fills the screen. The newest character is written after the last and the caret moves with it; when the text passes the bottom, older lines leave at the top. Pixels and spacing: `docs/DESIGN.md`.
+Text starts at the top left, inside padding on every side, and fills the screen. The newest character is written after the last and the caret moves with it; the lines above the current one fade out with their distance from it, and older lines leave at the top. Pixels and spacing: `docs/DESIGN.md`.
 
 ## word lists
 

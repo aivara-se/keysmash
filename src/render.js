@@ -1,10 +1,14 @@
 import { markText } from "./words.js";
 
+/** How many lines above the current line the fade runs over. */
+const FADE_LINES = 2.5;
+
 /**
  * Draws the text on the one screen (DESIGN.md): left-aligned from the top of
  * the padded area, wrapping at the right edge, the caret drawn after the
  * newest character. When the text passes the bottom, the screen scrolls up so
- * the newest line stays in view.
+ * the newest line stays in view, and the lines above the current one fade out
+ * with their distance from it.
  */
 export function createRender({ screen, wordsFor }) {
   const textEl = document.createElement("div");
@@ -14,6 +18,28 @@ export function createRender({ screen, wordsFor }) {
   screen.append(textEl);
 
   let text = "";
+
+  /** The top of the line the caret is on, in the screen's own coordinates. */
+  function currentLineTop() {
+    const range = document.createRange();
+    range.selectNodeContents(textEl);
+    const rects = range.getClientRects();
+    return rects.length > 0 ? rects[rects.length - 1].top : screen.clientHeight;
+  }
+
+  /**
+   * Fade the lines above the current one: a mask that is clear above the
+   * current line and solid at it. It moves with the caret, so the fade follows
+   * the newest line however far the text has scrolled.
+   */
+  function fade() {
+    const current = currentLineTop();
+    const lineHeight = parseFloat(getComputedStyle(screen).lineHeight) || 0;
+    const start = Math.max(0, current - lineHeight * FADE_LINES);
+    const gradient = `linear-gradient(to bottom, transparent ${start}px, black ${current}px)`;
+    screen.style.maskImage = gradient;
+    screen.style.setProperty("-webkit-mask-image", gradient);
+  }
 
   function paint() {
     const nodes = [];
@@ -29,6 +55,7 @@ export function createRender({ screen, wordsFor }) {
     nodes.push(document.createTextNode(text.slice(cursor)));
     textEl.replaceChildren(...nodes, caret);
     screen.scrollTop = screen.scrollHeight;
+    fade();
   }
 
   return {
@@ -39,6 +66,7 @@ export function createRender({ screen, wordsFor }) {
 
     resize() {
       screen.scrollTop = screen.scrollHeight;
+      fade();
     },
 
     /** Writes one character at the caret. */
