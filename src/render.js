@@ -12,6 +12,7 @@ export function createRender({ screen, wordsFor }) {
   let columnWidth = 0;
   let pointY = 0;
   let step = 0;
+  let fontPx = 0;
 
   const caret = document.createElement("div");
   caret.className = "caret";
@@ -28,9 +29,12 @@ export function createRender({ screen, wordsFor }) {
     el.className = "line";
     screen.append(el);
     const line = { el, text: "" };
+    const style = getComputedStyle(el);
     if (step === 0) {
-      const height = parseFloat(getComputedStyle(el).lineHeight);
+      const height = parseFloat(style.lineHeight);
       if (Number.isFinite(height) && height > 0) step = height;
+      const size = parseFloat(style.fontSize);
+      if (Number.isFinite(size) && size > 0) fontPx = size;
     }
     return line;
   }
@@ -59,8 +63,11 @@ export function createRender({ screen, wordsFor }) {
       el.style.top = `${Math.round(pointY - (index + 1) * step_)}px`;
       el.className = `line ${index === 0 ? "current" : index === 1 ? "previous" : "older"}`;
     }
-    caret.style.top = `${Math.round(pointY - step_)}px`;
-    caret.style.height = `${Math.round(step_)}px`;
+    // The caret is one text-height tall and sits on the current line, not the
+    // whole line box (the concept's caret is about the cap height).
+    const caretHeight = fontPx > 0 ? fontPx : step_;
+    caret.style.top = `${Math.round(pointY - step_ + (step_ - caretHeight) / 2)}px`;
+    caret.style.height = `${Math.round(caretHeight)}px`;
   }
 
   return {
@@ -68,6 +75,7 @@ export function createRender({ screen, wordsFor }) {
       for (const line of lines) line.el.remove();
       lines = [];
       step = 0;
+      fontPx = 0;
       measure();
       layout();
     },
