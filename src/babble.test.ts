@@ -4,13 +4,16 @@ import { HELD_ANSWER_MS } from "./thresholds.js";
 
 type Event = ["press" | "release" | "tick", string, number];
 
+/** The physical key behind a character: "A" and "a" are the same key. */
+const codeOf = (key: string) => `Key${key.toUpperCase()}`;
+
 /** Replays events and reports the answer stream and the text left on screen. */
 function replay(events: Event[]): { answered: string[]; text: string } {
   const classifier = createClassifier();
   const answered: string[] = [];
   let text = "";
   for (const [kind, key, now] of events) {
-    const out = kind === "press" ? classifier.press(key, now) : kind === "release" ? classifier.release(key, now) : classifier.tick(now);
+    const out = kind === "press" ? classifier.press(codeOf(key), key, now) : kind === "release" ? classifier.release(codeOf(key)) : classifier.tick(now);
     for (const letter of out) {
       answered.push(letter.key);
       text += letter.key;
@@ -48,6 +51,16 @@ describe("mash", () => {
   });
 });
 
+describe("a capital letter", () => {
+  test("a press and its release are the same key whatever case they report", () => {
+    // Shift is up by the time the letter comes up, so the key reports "A" on
+    // the way down and "a" on the way up. The keyboard must not go deaf.
+    const { answered, text } = replay([["press", "A", 0], ["release", "a", 40], ["press", "b", 80], ["release", "b", 120]]);
+    expect(answered).toEqual(["A", "b"]);
+    expect(text).toBe("Ab");
+  });
+});
+
 describe("never edit what the child typed", () => {
   test("fast typing keeps every letter", () => {
     const events: Event[] = [];
@@ -67,7 +80,7 @@ describe("never edit what the child typed", () => {
     ];
     let text = "";
     for (const [kind, key, now] of events) {
-      const out = kind === "press" ? classifier.press(key, now) : kind === "release" ? classifier.release(key, now) : classifier.tick(now);
+      const out = kind === "press" ? classifier.press(codeOf(key), key, now) : kind === "release" ? classifier.release(codeOf(key)) : classifier.tick(now);
       const before = text.length;
       for (const letter of out) text += letter.key;
       expect(text.length).toBeGreaterThanOrEqual(before);
