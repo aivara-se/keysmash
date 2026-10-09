@@ -17,6 +17,11 @@ The text keeps clear of every edge: the screen is inset by its padding on all fo
 - A wrapped line starts back at the left edge, one line down.
 - When the text passes the bottom of the padded area, the screen scrolls up so the newest line stays in view; older lines leave at the top.
 
+## aging
+
+- The current line and anything below it are full ink. A line above the current one is lighter the further it sits from it, fading out over the few lines above the caret.
+- The fade is continuous and follows the caret, not a step per line.
+
 ## the caret
 
 - The caret is a thin bar in the ink, one text-height tall, drawn immediately after the newest character.

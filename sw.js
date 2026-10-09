@@ -1,7 +1,7 @@
 // The shell the app boots and draws its one screen from. Bump CACHE in the
 // same commit as any change to a file here, or a returning device keeps the
 // old copy (SYSTEM.md).
-const CACHE = "keysmash-v14";
+const CACHE = "keysmash-v15";
 
 const SHELL = [
   "./",
