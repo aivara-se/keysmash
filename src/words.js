@@ -7,11 +7,12 @@ const TOKEN = /[A-Za-z]+|[0-9]+/g;
  *
  * A letter run is a word when it is on the active lists — an allow-list, never
  * "whatever letters make". A digit run is always a number. Each mark carries
- * the text it covers and the form to speak (PRODUCT.md).
+ * the text it covers and the form to speak (PRODUCT.md), and a word carries the
+ * emoji and colour its list gave it, for the pill to draw.
  *
  * @param {string} text The child's text so far.
- * @param {Set<string>} words The active list, lower-cased.
- * @returns {{ start: number, end: number, kind: "word" | "number", value: string, spoken: string }[]}
+ * @param {Map<string, { emoji?: string, color?: string }>} words The active lists, lower-cased.
+ * @returns {{ start: number, end: number, kind: "word" | "number", value: string, spoken: string, emoji?: string, color?: string }[]}
  */
 export function markText(text, words) {
   const marks = [];
@@ -20,9 +21,11 @@ export function markText(text, words) {
     const start = match.index;
     if (value[0] >= "0" && value[0] <= "9") {
       marks.push({ start, end: start + value.length, kind: "number", value, spoken: readDigits(value) });
-    } else if (words.has(value.toLowerCase())) {
-      marks.push({ start, end: start + value.length, kind: "word", value, spoken: value.toLowerCase() });
+      continue;
     }
+    const entry = words.get(value.toLowerCase());
+    if (entry === undefined) continue;
+    marks.push({ start, end: start + value.length, kind: "word", value, spoken: value.toLowerCase(), emoji: entry.emoji, color: entry.color });
   }
   return marks;
 }
