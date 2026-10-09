@@ -1,4 +1,3 @@
-import { createClassifier } from "./babble.js";
 import { createRender } from "./render.js";
 import { createSpeech } from "./speech.js";
 import { createSettings } from "./settings.js";
@@ -8,7 +7,6 @@ import { READ_IDLE_MS, SPEAK_DEBOUNCE_MS } from "./thresholds.js";
 
 const EXIT_KEYS = new Set(["ShiftLeft", "ShiftRight"]);
 const EXIT_HOLD_MS = 3000;
-const TICK_MS = 16;
 
 const screen = document.getElementById("screen");
 const controls = document.getElementById("controls");
@@ -23,32 +21,21 @@ const render = createRender({ screen, wordsFor: () => activeWords });
 const spoken = new Map();
 
 let activeWords = wordsFor(settings.activeListIds());
-let classifier = createClassifier();
 let exitTimer = null;
 let readTimer = null;
 let speakTimer = null;
 let paused = false;
 const exitDown = new Set();
 
-const now = () => performance.now();
-
 /**
- * Writes every letter at once, and speaks the last one only if nothing else
- * arrives inside SPEAK_DEBOUNCE_MS — so fast typing is written, not read aloud.
+ * Writes the character at the caret, and speaks its name only when nothing else
+ * follows inside SPEAK_DEBOUNCE_MS — so a flurry is written, not read aloud.
  */
-function write(letters) {
-  let latest = null;
-  for (const letter of letters) {
-    render.insert(letter.key);
-    if (/^[A-Za-z]$/.test(letter.key)) latest = letter.key;
-  }
-  if (latest === null) return;
+function write(character) {
+  render.insert(character);
+  if (!/^[A-Za-z]$/.test(character)) return;
   clearTimeout(speakTimer);
-  speakTimer = setTimeout(() => speech.letter(latest), SPEAK_DEBOUNCE_MS);
-}
-
-function tick() {
-  write(classifier.tick(now()));
+  speakTimer = setTimeout(() => speech.letter(character), SPEAK_DEBOUNCE_MS);
 }
 
 /**
@@ -86,17 +73,15 @@ function releaseExit(code) {
 function onKeyDown(event) {
   if (paused) return;
   if (EXIT_KEYS.has(event.code)) return holdExit(event.code);
+  // Auto-repeat is the same key still down, not a new press: one character.
   if (event.repeat || event.key.length !== 1) return;
   noteStop();
-  write(classifier.press(event.code, event.key, now()));
+  write(event.key);
 }
 
 function onKeyUp(event) {
   if (paused) return;
-  if (EXIT_KEYS.has(event.code)) return releaseExit(event.code);
-  // Always release by code: a capital reports "a" on the way up once Shift is
-  // out, and a press left behind would stop the keyboard answering for good.
-  write(classifier.release(event.code));
+  if (EXIT_KEYS.has(event.code)) releaseExit(event.code);
 }
 
 function openParent() {
@@ -163,7 +148,6 @@ selectLists();
 render.reset();
 speech.ready();
 syncControls();
-setInterval(tick, TICK_MS);
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {

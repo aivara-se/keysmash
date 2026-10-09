@@ -1,7 +1,7 @@
 // The shell the app boots and draws its one screen from. Bump CACHE in the
 // same commit as any change to a file here, or a returning device keeps the
 // old copy (SYSTEM.md).
-const CACHE = "keysmash-v23";
+const CACHE = "keysmash-v24";
 
 const SHELL = [
   "./",
@@ -12,7 +12,6 @@ const SHELL = [
   "./icons/icon-512.png",
   "./icons/apple-touch-icon.png",
   "./src/app.js",
-  "./src/babble.js",
   "./src/lists.js",
   "./src/numbers.js",
   "./src/render.js",

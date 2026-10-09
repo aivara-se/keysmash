@@ -1,27 +1,14 @@
 # Keysmash — product spec
 
-A typing app for a two-year-old. A deliberate keypress gets an answer: the letter spoken and written. A hand dragged across the keyboard gets nothing. The child cannot read or type on purpose; the parent hands over the device.
+A typing app for a two-year-old. Every key the child presses is written down. A deliberate press is answered with the letter's name, and the words the child has made are read back. The child cannot read or type on purpose; the parent hands over the device.
 
-## babble and mash
+## typing
 
-- **babble** — one key, pressed on purpose. Answered: the letter is spoken and written.
-- **mash** — two keys down at once, or a press while a key is down. Answered with silence, and no text.
+Every character key writes its character at the caret the moment it goes down. Nothing the child types is withheld: a hand dragged across the keys is written down like anything else. Holding a key writes one character, not a stream — the system's auto-repeat is ignored.
 
-The pair is the product. Answering everything is noise; answering nothing leaves the child nothing to control.
+What the app holds back is the **voice**, not the text. A letter's name is spoken only when the child is not typing fast: when no other letter follows it within 150 ms. A flurry is written at once and not read aloud — only the letter the child stops on is named. One fixed, low voice; a new letter cuts off the last, so sounds never stack and the volume never rises.
 
-## babble
-
-A press is a babble when it is one key, released before the next press. A held key answers on its own after 150 ms, and gives one babble, no repeat.
-
-Each babble writes the character at the caret, and says the letter **name** only when the child is not typing fast: the name is spoken when no other letter follows it within 150 ms, so a flurry is written but not read aloud. Only the voice waits — input is never debounced, and every character is written the moment its key lands. One fixed, low voice; a new letter cuts off the last, so sounds never stack and the volume never rises.
-
-## mash
-
-Two keys down at once, or any press while a key is down — that press answers nothing, and neither does the key it interrupted.
-
-No sound, no text, no shake, no colour change. A mash is not scolded and not made into a game.
-
-A mash never takes back a letter already written. What the child has typed is what the child has typed; the app does not remove or rewrite it.
+A mash is not scolded and not made into a game. It is written, and only the letter it ends on is named.
 
 ## words and numbers
 
@@ -61,14 +48,14 @@ Lessons, levels, scoring, rewards, streaks, curriculum, profiles, sync, a parent
 
 ## v1 must do
 
-1. One key at a time → the letter name per press, within 150 ms, measured.
-2. A hand dragged across the keyboard → no sound, no text; a recorded trace replays as silence.
+1. One key → its character on the screen, within 150 ms, measured.
+2. A hand dragged across the keyboard → every character it passed, written; no sound.
 3. A real word or number on an active list → marked, nothing asked.
-4. A held key → one letter, no repeat.
+4. A held key → one character, no repeat.
 5. Network off, half an hour, no route to settings or the OS.
-6. No sound on a mash, at any speed.
-7. Nothing typed is ever changed: no press removes or rewrites a character already written, and the only character the app adds is the space after a completed word.
+6. A flurry is written in full at any speed, and read aloud only at the letter it ends on.
+7. Nothing typed is ever withheld: every character the child presses is written, and no press removes or rewrites one already written. The only character the app adds is the space after a completed word.
 
 ## name
 
-The name says "gentle press-and-answer toy for a small child". "Keysmash" names the behaviour the app ignores and reads as the noise. Renaming is cheap now. Code terms stay `babble` and `mash` whatever the product is called.
+The name says "gentle press-and-answer toy for a small child". "Keysmash" names the noise the toy simply writes down. Renaming is cheap now.
