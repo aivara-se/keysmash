@@ -26,6 +26,8 @@ Everything static: the repository is the app, the committed files are the publis
 
 - A service worker precaches the shell — the files the app needs to boot and draw its one screen — so the app opens with the network off.
 - The shell list names that screen and is closed under its imports. A change to a file in it, or to the list, bumps the cache name in the same commit, or a returning device keeps the old file.
+- The shell is fetched past the HTTP cache when it is precached, and the worker is re-checked on every load, so a fresh cache cannot hold a stale file and a returning device notices a new version.
+- When a new worker replaces an older one it reloads the open pages onto itself, so a returning device picks up the change without a second manual reload.
 
 ## storage
 

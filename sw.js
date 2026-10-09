@@ -1,7 +1,7 @@
 // The shell the app boots and draws its one screen from. Bump CACHE in the
 // same commit as any change to a file here, or a returning device keeps the
 // old copy (SYSTEM.md).
-const CACHE = "keysmash-v2";
+const CACHE = "keysmash-v3";
 
 const SHELL = [
   "./",
@@ -49,15 +49,28 @@ const SHELL = [
 ];
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL)).then(() => self.skipWaiting()));
+  // Fetch each shell file past the HTTP cache, or a fresh cache can hold a
+  // stale file it fetched from one.
+  event.waitUntil(
+    caches
+      .open(CACHE)
+      .then((cache) => cache.addAll(SHELL.map((url) => new Request(url, { cache: "reload" }))))
+      .then(() => self.skipWaiting()),
+  );
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key))))
-      .then(() => self.clients.claim()),
+    (async () => {
+      const keys = await caches.keys();
+      // An older keysmash cache means this install replaces one: the open pages
+      // are on the old version, so reload them onto this one at once.
+      const replacesOlder = keys.some((key) => key.startsWith("keysmash-") && key !== CACHE);
+      await Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key)));
+      await self.clients.claim();
+      if (!replacesOlder) return;
+      for (const client of await self.clients.matchAll({ type: "window" })) client.navigate(client.url);
+    })(),
   );
 });
 
