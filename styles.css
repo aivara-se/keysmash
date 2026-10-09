@@ -61,7 +61,7 @@ button {
   padding: 6vmin;
   overflow: hidden;
   font-size: 8.5vmin;
-  line-height: 1.5;
+  line-height: 1.7;
   color: var(--ink);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -75,13 +75,14 @@ button {
 }
 
 /* The caret is a thin bar, one text-height tall, just after the newest
-   character; it moves with the text. Its negative margin keeps it from
-   affecting where the line wraps. */
+   character; it moves with the text. Its margins keep it clear of the
+   character and stop it affecting where the line wraps. */
 .caret {
   display: inline-block;
   width: 2px;
   height: 1em;
-  margin-right: -2px;
+  margin-left: 0.05em;
+  margin-right: calc(-2px - 0.05em);
   background: var(--ink);
   vertical-align: text-bottom;
 }
