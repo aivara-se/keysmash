@@ -46,9 +46,9 @@ A two-year-old at two and three letters reaches rude words inside a session. One
 
 ## leaving and locking
 
-- The child reaches nothing: settings, other windows, browser controls, notifications, volume and brightness keys, the power menu, dialogs. No error screens.
+- The child is given no way out of the app and nothing to open in it: no settings, no second screen, no dialogs, and no browser chrome while it runs full screen.
 - The parent leaves by holding two named keys for three seconds. Behind it: settings and Stop.
-- A browser cannot hold the OS back. The parent opens it in a kiosk (fullscreen or kiosk launch — one parent step, in the app's own instructions). Without that step the first bullet is not promised, and the app says so.
+- The parent opens it full screen (one step, in the app's own instructions). Full screen is not a lock: the OS still answers Esc, its shortcuts, notifications, and the volume and power keys, and the app does not pretend otherwise.
 
 ## offline and private
 
