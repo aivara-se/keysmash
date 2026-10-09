@@ -32,15 +32,14 @@ Everything static: the repository is the app, the committed files are the publis
 - The parent's settings — the active word lists — live in the visitor's `localStorage`, on the device.
 - The child's text is never stored; it is gone when the app closes.
 
-## the kiosk
+## full screen
 
-- The parent opens the app in a kiosk so the child cannot leave it. On a desktop Chrome that is a kiosk launch:
+The parent gives the child the app and nothing else. Two things a web game uses for that:
 
-```sh
-chrome --kiosk https://aivara-se.github.io/keysmash/
-```
+- **install the app** — the manifest asks for the full-screen display, so once the parent installs it and opens it, it runs in its own window with no browser chrome;
+- **the Fullscreen API** — the app takes full screen from the parent's start tap, for when it is opened in a tab.
 
-- Without the kiosk step the app cannot keep the child from the OS, and it says so in its own instructions.
+Neither is a lock. Esc, an OS shortcut, a notification, and the volume or power key still reach the OS. The app holds the screen and hides its own controls; it does not hold the OS, and it says so rather than pretending.
 
 ## checks
 
