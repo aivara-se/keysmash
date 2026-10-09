@@ -112,7 +112,8 @@ body {
   animation: caret-pulse 1.6s ease-in-out infinite;
 }
 
-/* A smooth pulse, not a blink: full ink to a third and back. */
+/* A smooth pulse, not a blink: full ink to a third and back. It runs whatever
+   the device's motion setting says — the pulse is the whole point of the bar. */
 @keyframes caret-pulse {
   0%,
   100% {
@@ -121,12 +122,6 @@ body {
 
   50% {
     opacity: 0.3;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .caret {
-    animation: none;
   }
 }
 
