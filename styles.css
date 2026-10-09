@@ -94,6 +94,9 @@ body {
      padding is smaller: the gap you see is the same on all sides. */
   padding: 0.15em 0.32em;
   margin-right: 0.16em;
+  /* A marked word reads with a capital first letter. That is a rendering of the
+     mark only; the text the child typed is untouched. */
+  text-transform: capitalize;
 }
 
 /* The caret is a bar in the ink, as thick as a word's outline and taller than
