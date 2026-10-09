@@ -25,41 +25,21 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-.panel {
-  min-height: 100%;
-  max-width: 40rem;
-  margin: 0 auto;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.panel ol {
-  line-height: 1.6;
-}
-
-button {
-  font: inherit;
-  font-size: 1.25rem;
-  padding: 0.75rem 1.5rem;
-  align-self: flex-start;
-}
-
 #play {
   position: fixed;
   inset: 0;
   background: var(--surface);
 }
 
-/* The whole screen is the page: text starts at the top left of the padded
-   area, wraps at the right, and stays clear of every edge. */
+/* The whole screen is the page. The text is anchored to the bottom: the newest
+   line sits just above the bottom padding and older lines move up as it grows. */
 #screen {
   position: absolute;
   inset: 0;
   padding: 7vmin;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   font-size: 8vmin;
   line-height: 2.2;
   letter-spacing: 0.06em;
@@ -69,13 +49,40 @@ button {
   overflow-wrap: anywhere;
 }
 
+#text {
+  margin-top: auto;
+}
+
+/* The one control: full screen, black, top right. It hides once it is in full
+   screen, so a child cannot leave it by tapping. */
+#fullscreen {
+  position: absolute;
+  top: 3vmin;
+  right: 3vmin;
+  width: 9vmin;
+  height: 9vmin;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+#fullscreen svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 /* A marked word is outlined in the ink: the outline is the mark. The margin
    keeps a gap after the outline, so the next character or the caret never
    touches it. */
 .mark {
   border: 0.05em solid currentColor;
   border-radius: 0.35em;
-  padding: 0.2em 0.32em;
+  /* The font carries empty space above and below the letters, so the vertical
+     padding is smaller: the gap you see is the same on all sides. */
+  padding: 0.15em 0.32em;
   margin-right: 0.16em;
 }
 
@@ -90,4 +97,25 @@ button {
   margin-right: calc(-2px - 0.08em);
   background: var(--ink);
   vertical-align: text-bottom;
+}
+
+/* The parent screen sits over the play screen. */
+#parent {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  overflow: auto;
+  background: var(--surface);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#parent button {
+  font: inherit;
+  font-size: 1.25rem;
+  padding: 0.75rem 1.5rem;
+  align-self: flex-start;
 }

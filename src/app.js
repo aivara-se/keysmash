@@ -4,16 +4,15 @@ import { createSpeech } from "./speech.js";
 import { createSettings } from "./settings.js";
 import { LISTS, wordsFor } from "./lists.js";
 import { markText, newUtterances } from "./words.js";
-import { READ_IDLE_MS } from "./thresholds.js";
+import { READ_IDLE_MS, SPEAK_DEBOUNCE_MS } from "./thresholds.js";
 
 const EXIT_KEYS = new Set(["ShiftLeft", "ShiftRight"]);
 const EXIT_HOLD_MS = 3000;
 const TICK_MS = 16;
 
-const startScreen = document.getElementById("start");
-const playScreen = document.getElementById("play");
-const parentScreen = document.getElementById("parent");
 const screen = document.getElementById("screen");
+const fullscreenButton = document.getElementById("fullscreen");
+const parentScreen = document.getElementById("parent");
 const listContainer = document.getElementById("lists");
 
 const settings = createSettings();
@@ -23,19 +22,27 @@ const spoken = new Map();
 
 let activeWords = wordsFor(settings.activeListIds());
 let classifier = createClassifier();
-let playing = false;
-let tickHandle = null;
-let readTimer = null;
 let exitTimer = null;
+let readTimer = null;
+let speakTimer = null;
+let paused = false;
 const exitDown = new Set();
 
 const now = () => performance.now();
 
+/**
+ * Writes every letter at once, and speaks the last one only if nothing else
+ * arrives inside SPEAK_DEBOUNCE_MS — so fast typing is written, not read aloud.
+ */
 function write(letters) {
+  let latest = null;
   for (const letter of letters) {
     render.insert(letter.key);
-    if (/^[A-Za-z]$/.test(letter.key)) speech.letter(letter.key);
+    if (/^[A-Za-z]$/.test(letter.key)) latest = letter.key;
   }
+  if (latest === null) return;
+  clearTimeout(speakTimer);
+  speakTimer = setTimeout(() => speech.letter(latest), SPEAK_DEBOUNCE_MS);
 }
 
 function tick() {
@@ -56,7 +63,7 @@ function noteStop() {
 function holdExit(code) {
   exitDown.add(code);
   if (exitDown.size === EXIT_KEYS.size && exitTimer === null) {
-    exitTimer = setTimeout(leaveToParent, EXIT_HOLD_MS);
+    exitTimer = setTimeout(openParent, EXIT_HOLD_MS);
   }
 }
 
@@ -67,7 +74,7 @@ function releaseExit(code) {
 }
 
 function onKeyDown(event) {
-  if (!playing) return;
+  if (paused) return;
   if (EXIT_KEYS.has(event.code)) return holdExit(event.code);
   if (event.repeat || event.key.length !== 1) return;
   noteStop();
@@ -75,44 +82,36 @@ function onKeyDown(event) {
 }
 
 function onKeyUp(event) {
-  if (!playing) return;
+  if (paused) return;
   if (EXIT_KEYS.has(event.code)) return releaseExit(event.code);
   if (event.key.length !== 1) return;
   write(classifier.release(event.key, now()));
 }
 
-function leaveToParent() {
-  playing = false;
-  clearInterval(tickHandle);
+function openParent() {
+  paused = true;
   clearTimeout(readTimer);
   exitDown.clear();
   exitTimer = null;
-  playScreen.hidden = true;
   parentScreen.hidden = false;
 }
 
-function start() {
-  classifier = createClassifier();
-  spoken.clear();
-  startScreen.hidden = true;
+function closeParent() {
   parentScreen.hidden = true;
-  playScreen.hidden = false;
-  render.reset();
-  playing = true;
-  speech.ready();
-  if (document.documentElement.requestFullscreen) {
-    document.documentElement.requestFullscreen().catch(() => {});
-  }
-  tickHandle = setInterval(tick, TICK_MS);
+  paused = false;
 }
 
-function stop() {
-  playing = false;
-  clearInterval(tickHandle);
-  clearTimeout(readTimer);
-  playScreen.hidden = true;
-  parentScreen.hidden = true;
-  startScreen.hidden = false;
+async function toggleFullscreen() {
+  try {
+    if (document.fullscreenElement !== null) await document.exitFullscreen();
+    else await document.documentElement.requestFullscreen();
+  } catch {
+    // The device refused full screen: the app still plays.
+  }
+}
+
+function syncFullscreenButton() {
+  fullscreenButton.hidden = document.fullscreenElement !== null;
 }
 
 function selectLists() {
@@ -134,12 +133,18 @@ function selectLists() {
   }
 }
 
-document.getElementById("start-button").addEventListener("click", start);
-document.getElementById("stop").addEventListener("click", stop);
+fullscreenButton.addEventListener("click", toggleFullscreen);
+document.addEventListener("fullscreenchange", syncFullscreenButton);
+document.getElementById("close").addEventListener("click", closeParent);
 window.addEventListener("keydown", onKeyDown);
 window.addEventListener("keyup", onKeyUp);
 window.addEventListener("resize", () => render.resize());
+
 selectLists();
+render.reset();
+speech.ready();
+syncFullscreenButton();
+setInterval(tick, TICK_MS);
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
