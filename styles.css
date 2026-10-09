@@ -58,10 +58,12 @@ button {
 #screen {
   position: absolute;
   inset: 0;
-  padding: 6vmin;
+  padding: 7vmin;
   overflow: hidden;
-  font-size: 8.5vmin;
-  line-height: 1.7;
+  font-size: 8vmin;
+  line-height: 2.2;
+  letter-spacing: 0.06em;
+  word-spacing: 0.08em;
   color: var(--ink);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -70,8 +72,8 @@ button {
 /* A marked word is outlined in the ink: the outline is the mark. */
 .mark {
   border: 0.05em solid currentColor;
-  border-radius: 0.3em;
-  padding: 0.12em 0.2em;
+  border-radius: 0.35em;
+  padding: 0.2em 0.32em;
 }
 
 /* The caret is a thin bar, one text-height tall, just after the newest
