@@ -1,8 +1,13 @@
 import { DEFAULT_LIST_IDS } from "./lists.js";
 
-const KEY = "keysmash.lists";
+const KEY = "keysmash.lists.v2";
 
-/** The parent's settings, kept on the device in localStorage (SYSTEM.md). */
+/** The parent's settings, kept on the device in localStorage (SYSTEM.md).
+ *
+ * The key carries a version. The default changed from a small set of lists to
+ * every list, and a device holding a choice made against the old default would
+ * otherwise keep the narrow set for ever.
+ */
 export function createSettings() {
   return {
     /** The active list ids: what is stored, or the default when nothing valid is. */

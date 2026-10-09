@@ -12,8 +12,6 @@ import { EMOJI_COLORS } from "./emoji-colors.js";
  * `docs/DESIGN.md`.
  */
 
-export const DEFAULT_LIST_IDS = ["animals", "fruit", "toys"];
-
 /**
  * The colour keys a word or a list may name. The values, and their measured
  * contrast against the surface, are in `styles.css` and `docs/DESIGN.md`.
@@ -155,6 +153,12 @@ export const LISTS = [
     ],
   },
 ];
+
+/**
+ * Every list is on by default, so the app works whatever the child happens to
+ * type. The parent turns off the ones they do not want (PRODUCT.md).
+ */
+export const DEFAULT_LIST_IDS = LISTS.map((list) => list.id);
 
 /** The words of the active lists, lower-cased, each with its emoji and colour. */
 export function wordsFor(listIds) {
