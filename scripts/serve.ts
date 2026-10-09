@@ -1,0 +1,25 @@
+// Serves this directory for local checking. Run: bun run scripts/serve.ts
+import { join, extname } from "node:path";
+
+const ROOT = new URL("..", import.meta.url).pathname;
+const TYPES: Record<string, string> = {
+  ".html": "text/html",
+  ".css": "text/css",
+  ".js": "text/javascript",
+  ".webmanifest": "application/manifest+json",
+  ".png": "image/png",
+  ".wav": "audio/wav",
+};
+const port = Number(process.env.PORT ?? 8787);
+
+Bun.serve({
+  port,
+  async fetch(request) {
+    const path = new URL(request.url).pathname;
+    const file = Bun.file(join(ROOT, path === "/" ? "index.html" : path));
+    if (!(await file.exists())) return new Response("not found", { status: 404 });
+    return new Response(file, { headers: { "content-type": TYPES[extname(path)] ?? "application/octet-stream" } });
+  },
+});
+
+console.log(`serving on http://localhost:${port}`);
