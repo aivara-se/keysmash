@@ -27,6 +27,7 @@ A mash never takes back a letter already written. What the child has typed is wh
 
 - Half a second after the child stops, the text is read against the active word lists. Every real word or number is marked; the one just completed is spoken.
 - A marked word is not spoken again until it changes.
+- A marked word reads with a capital first letter. It is a rendering of the mark only: nothing rewrites the characters the child typed.
 - A digit alone is spoken as its name ("three"); digits in a row as one number ("thirty-three"). Numbers are names, never counts.
 - Marking asks nothing of the child.
 
