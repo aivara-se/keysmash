@@ -69,11 +69,14 @@ button {
   overflow-wrap: anywhere;
 }
 
-/* A marked word is outlined in the ink: the outline is the mark. */
+/* A marked word is outlined in the ink: the outline is the mark. The margin
+   keeps a gap after the outline, so the next character or the caret never
+   touches it. */
 .mark {
   border: 0.05em solid currentColor;
   border-radius: 0.35em;
   padding: 0.2em 0.32em;
+  margin-right: 0.16em;
 }
 
 /* The caret is a thin bar, one text-height tall, just after the newest
@@ -83,8 +86,8 @@ button {
   display: inline-block;
   width: 2px;
   height: 1em;
-  margin-left: 0.05em;
-  margin-right: calc(-2px - 0.05em);
+  margin-left: 0.08em;
+  margin-right: calc(-2px - 0.08em);
   background: var(--ink);
   vertical-align: text-bottom;
 }
