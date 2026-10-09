@@ -15,7 +15,7 @@ A mash is not scolded and not made into a game. It is written, and only the lett
 - Half a second after the child stops, the text is read against the active word lists. Every real word or number is marked; the one just completed is spoken.
 - A marked word is not spoken again until it changes.
 - A marked word reads with a capital first letter. It is a rendering of the mark only: nothing rewrites the characters the child typed.
-- A marked word is drawn in the colour its list gives it, or the colour the word names for itself, or the plain ink when neither does.
+- A marked word is drawn in the colour it names for itself, or the one its emoji names, or its list's, or the plain ink when none does. Where the emoji's colour is the thing's colour the word takes it, so an apple is red and a frog is green.
 - A word that can be drawn as an emoji is drawn with it inside the pill, before the word. A word with none is drawn with none.
 - A number is drawn in its own colour, never a word's, so a number pill never reads as a word.
 - When a word is complete — the child has stopped and it is marked at the end of the text — the app writes a space after it, so the next letter starts a new word instead of growing the one just read. That one space is the only character the app adds, and it can only lengthen the text.

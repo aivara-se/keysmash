@@ -49,16 +49,19 @@ describe("the lists", () => {
 describe("wordsFor", () => {
   test("gives the active lists' words, with their emoji and colour", () => {
     const words = wordsFor(["animals"]);
-    expect(words.get("cat")).toEqual({ emoji: "🐱", color: "animals" });
+    expect(words.get("cat")).toEqual({ emoji: "🐱", color: "amber" });
     expect(words.has("apple")).toBe(false);
   });
 
-  test("takes a word's own colour, else its list's, else none at all", () => {
+  test("takes a word's own colour, else its emoji's, else its list's, else none", () => {
+    const animals = wordsFor(["animals"]);
+    expect(animals.get("butterfly")?.color).toBe("sky");   // the word's own colour wins
+    expect(animals.get("frog")?.color).toBe("green");      // then what its emoji says
+    expect(animals.get("cat")?.color).toBe("amber");       // also the emoji, over the list
     const people = wordsFor(["people"]);
-    expect(people.get("heart")?.color).toBe("fruit");  // the word's own colour wins
-    expect(people.get("mum")?.color).toBe("people");   // the list's colour
-    const actions = wordsFor(["actions"]);             // a list with no colour
-    expect(actions.get("play")?.color).toBeUndefined(); // left to the ink
+    expect(people.get("mama")?.color).toBe("violet");      // a skin-tone emoji says nothing, so the list decides
+    const actions = wordsFor(["actions"]);                 // a list with no colour
+    expect(actions.get("play")?.color).toBeUndefined();    // left to the ink
   });
 
   test("gives nothing for no list", () => {
