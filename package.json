@@ -1,0 +1,14 @@
+{
+  "name": "keysmash",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "serve": "bun run scripts/serve.ts",
+    "test": "bun test",
+    "check": "bun run scripts/check.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.7.2"
+  }
+}
