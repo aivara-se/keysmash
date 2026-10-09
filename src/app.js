@@ -138,5 +138,14 @@ window.addEventListener("resize", () => render.resize());
 selectLists();
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js").catch(() => {});
+  window.addEventListener("load", async () => {
+    try {
+      // Guard the update check against the HTTP cache, so a returning device
+      // notices a new version instead of being handed the old sw.js.
+      const registration = await navigator.serviceWorker.register("sw.js", { updateViaCache: "none" });
+      await registration.update();
+    } catch {
+      // No service worker on this device: the app still plays, it is just not offline.
+    }
+  });
 }
