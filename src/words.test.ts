@@ -6,6 +6,7 @@ const words = new Map([
   ["cats", {}],
   ["dog", { emoji: "🐶", color: "animals" }],
   ["mum", { color: "people" }],
+  ["nana", { image: "data:image/png;base64,AAAA" }],
 ]);
 
 describe("markText", () => {
@@ -29,26 +30,33 @@ describe("markText", () => {
 
   test("matching is case-insensitive, and records the covered range", () => {
     expect(markText("Cat", words)).toEqual([
-      { start: 0, end: 3, kind: "word", value: "Cat", spoken: "cat", emoji: "🐱", color: "animals" },
+      { start: 0, end: 3, kind: "word", value: "Cat", spoken: "cat", emoji: "🐱", color: "animals", image: undefined },
     ]);
   });
 
   test("a word carries the emoji and colour its list gave it", () => {
     expect(markText("cat", words)).toEqual([
-      { start: 0, end: 3, kind: "word", value: "cat", spoken: "cat", emoji: "🐱", color: "animals" },
+      { start: 0, end: 3, kind: "word", value: "cat", spoken: "cat", emoji: "🐱", color: "animals", image: undefined },
     ]);
-    // no emoji, or no colour, is left undefined rather than invented
+    // no emoji, no colour and no picture are left undefined rather than invented
     expect(markText("cats", words)).toEqual([
-      { start: 0, end: 4, kind: "word", value: "cats", spoken: "cats", emoji: undefined, color: undefined },
+      { start: 0, end: 4, kind: "word", value: "cats", spoken: "cats", emoji: undefined, color: undefined, image: undefined },
     ]);
     expect(markText("mum", words)).toEqual([
-      { start: 0, end: 3, kind: "word", value: "mum", spoken: "mum", emoji: undefined, color: "people" },
+      { start: 0, end: 3, kind: "word", value: "mum", spoken: "mum", emoji: undefined, color: "people", image: undefined },
     ]);
   });
 
-  test("a number carries no emoji or colour of its own", () => {
+  test("a number carries no emoji, colour or picture of its own", () => {
     expect(markText("7", words)[0]).not.toHaveProperty("emoji");
     expect(markText("7", words)[0]).not.toHaveProperty("color");
+    expect(markText("7", words)[0]).not.toHaveProperty("image");
+  });
+
+  test("a word carries the picture its list gave it, for the pill to draw instead of an emoji", () => {
+    expect(markText("nana", words)).toEqual([
+      { start: 0, end: 4, kind: "word", value: "nana", spoken: "nana", emoji: undefined, color: undefined, image: "data:image/png;base64,AAAA" },
+    ]);
   });
 });
 

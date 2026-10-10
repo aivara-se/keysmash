@@ -1,0 +1,25 @@
+{
+  "id": "vehicles",
+  "name": "Vehicles",
+  "color": "blue",
+  "words": [
+    { "word": "car", "emoji": "🚗" },
+    { "word": "bus", "emoji": "🚌" },
+    { "word": "train", "emoji": "🚂" },
+    { "word": "boat", "emoji": "⛵" },
+    { "word": "ship", "emoji": "🚢" },
+    { "word": "plane", "emoji": "✈️" },
+    { "word": "rocket", "emoji": "🚀" },
+    { "word": "bike", "emoji": "🚲" },
+    { "word": "truck", "emoji": "🚚" },
+    { "word": "tractor", "emoji": "🚜" },
+    { "word": "taxi", "emoji": "🚕" },
+    { "word": "helicopter", "emoji": "🚁" },
+    { "word": "ambulance", "emoji": "🚑" },
+    { "word": "scooter", "emoji": "🛴" },
+    { "word": "sled", "emoji": "🛷" },
+    { "word": "canoe", "emoji": "🛶" },
+    { "word": "sailboat", "emoji": "⛵" },
+    { "word": "wheel", "emoji": "🛞" }
+  ]
+}

@@ -1,15 +1,19 @@
 import { EMOJI_COLORS } from "./emoji-colors.js";
 
 /**
- * The word lists the parent picks from in settings. An allow-list: the app
- * marks and speaks only words on an active list, never "whatever letters
- * make" (PRODUCT.md).
+ * The rules about word lists: the words an active list holds, and how the
+ * parent's edits change a list.
  *
- * Each list carries the colour its words are drawn in, and each word may carry
- * its own to override it. A word with no colour at all is drawn in the plain
- * ink, and a word with no emoji is drawn without one. The colour names are
- * keys: the values, and their measured contrast, live in `styles.css` and
- * `docs/DESIGN.md`.
+ * The built-in lists are the JSON under `lists/`, read into the device's
+ * database on first run (SYSTEM.md). Everything here is pure — it takes the
+ * lists and returns new ones — so the rules can be read and tested without a
+ * database or a page. Keeping them is `src/store.js`; drawing them is
+ * `src/settings-page.js`.
+ *
+ * A word is `{ word, emoji?, color?, image? }`. A list is
+ * `{ id, name, color?, words }`, and a list may carry `order`, the place the
+ * seed gave it, which nothing here reads. A word's `image` is the alternative
+ * to its `emoji`, drawn in the emoji's place; it is a data URL (SYSTEM.md).
  */
 
 /**
@@ -18,159 +22,109 @@ import { EMOJI_COLORS } from "./emoji-colors.js";
  */
 export const COLORS = ["red", "orange", "amber", "yellow", "green", "teal", "sky", "blue", "indigo", "violet", "pink", "brown", "slate"];
 
-/**
- * @typedef {{ word: string, emoji?: string, color?: string }} WordEntry
- * @typedef {{ id: string, name: string, color?: string, words: WordEntry[] }} WordList
- */
+/** The list the parent's own words go on. It ships empty and the parent fills it. */
+export const CUSTOM_LIST_ID = "custom";
 
-/** @type {WordList[]} */
-export const LISTS = [
-  {
-    id: "animals",
-    name: "Animals",
-    color: "amber",
-    words: [
-      { word: "cat", emoji: "🐱" }, { word: "dog", emoji: "🐶" }, { word: "cow", emoji: "🐮" },
-      { word: "pig", emoji: "🐷" }, { word: "duck", emoji: "🦆" }, { word: "hen", emoji: "🐔" },
-      { word: "chick", emoji: "🐤" }, { word: "bird", emoji: "🐦" }, { word: "owl", emoji: "🦉" },
-      { word: "fish", emoji: "🐟" }, { word: "crab", emoji: "🦀" }, { word: "whale", emoji: "🐳" },
-      { word: "dolphin", emoji: "🐬" }, { word: "frog", emoji: "🐸" }, { word: "snake", emoji: "🐍" },
-      { word: "turtle", emoji: "🐢" }, { word: "snail", emoji: "🐌" }, { word: "bee", emoji: "🐝" },
-      { word: "ant", emoji: "🐜" }, { word: "bug", emoji: "🐛" }, { word: "spider", emoji: "🕷️" },
-      { word: "butterfly", emoji: "🦋", color: "sky" }, { word: "bear", emoji: "🐻" }, { word: "lion", emoji: "🦁" },
-      { word: "tiger", emoji: "🐯" }, { word: "fox", emoji: "🦊" }, { word: "mouse", emoji: "🐭" },
-      { word: "rabbit", emoji: "🐰" }, { word: "horse", emoji: "🐴" }, { word: "sheep", emoji: "🐑" },
-      { word: "goat", emoji: "🐐" }, { word: "monkey", emoji: "🐵" }, { word: "elephant", emoji: "🐘" },
-      { word: "penguin", emoji: "🐧" }, { word: "bat", emoji: "🦇" }, { word: "deer", emoji: "🦌" },
-      { word: "squirrel", emoji: "🐿️" }, { word: "hedgehog", emoji: "🦔" }, { word: "rooster", emoji: "🐓" },
-    ],
-  },
-  {
-    id: "fruit",
-    name: "Fruit and vegetables",
-    color: "red",
-    words: [
-      { word: "apple", emoji: "🍎" }, { word: "banana", emoji: "🍌" }, { word: "orange", emoji: "🍊" },
-      { word: "lemon", emoji: "🍋" }, { word: "peach", emoji: "🍑" }, { word: "cherry", emoji: "🍒" },
-      { word: "grape", emoji: "🍇" }, { word: "melon", emoji: "🍈" }, { word: "pear", emoji: "🍐" },
-      { word: "mango", emoji: "🥭" }, { word: "kiwi", emoji: "🥝" }, { word: "tomato", emoji: "🍅" },
-      { word: "coconut", emoji: "🥥" }, { word: "pineapple", emoji: "🍍" }, { word: "watermelon", emoji: "🍉" },
-      { word: "strawberry", emoji: "🍓" }, { word: "blueberry", emoji: "🫐" }, { word: "olive", emoji: "🫒" },
-      { word: "avocado", emoji: "🥑" }, { word: "chestnut", emoji: "🌰" }, { word: "carrot", emoji: "🥕" },
-      { word: "corn", emoji: "🌽" }, { word: "mushroom", emoji: "🍄" }, { word: "pea", emoji: "🫛" },
-    ],
-  },
-  {
-    id: "food",
-    name: "Food",
-    color: "orange",
-    words: [
-      { word: "bread", emoji: "🍞" }, { word: "milk", emoji: "🥛" }, { word: "egg", emoji: "🥚" },
-      { word: "cake", emoji: "🍰" }, { word: "cookie", emoji: "🍪" }, { word: "cheese", emoji: "🧀" },
-      { word: "honey", emoji: "🍯" }, { word: "pizza", emoji: "🍕" }, { word: "soup", emoji: "🍲" },
-      { word: "rice", emoji: "🍚" }, { word: "noodle", emoji: "🍜" }, { word: "butter", emoji: "🧈" },
-      { word: "salt", emoji: "🧂" }, { word: "pan", emoji: "🍳" }, { word: "juice", emoji: "🧃" },
-      { word: "candy", emoji: "🍬" }, { word: "chocolate", emoji: "🍫" }, { word: "popcorn", emoji: "🍿" },
-    ],
-  },
-  {
-    id: "weather",
-    name: "Weather and sky",
-    color: "sky",
-    words: [
-      { word: "sun", emoji: "☀️" }, { word: "moon", emoji: "🌙" }, { word: "star", emoji: "⭐" },
-      { word: "cloud", emoji: "☁️" }, { word: "rain", emoji: "🌧️" }, { word: "snow", emoji: "❄️" },
-      { word: "wind", emoji: "🌬️" }, { word: "storm", emoji: "⛈️" }, { word: "rainbow", emoji: "🌈" },
-      { word: "ice", emoji: "🧊" }, { word: "fog", emoji: "🌫️" }, { word: "snowman", emoji: "⛄" },
-      { word: "comet", emoji: "☄️" }, { word: "fire", emoji: "🔥" }, { word: "water", emoji: "💧" },
-      { word: "umbrella", emoji: "☂️" }, { word: "gloves", emoji: "🧤" }, { word: "boots", emoji: "🥾" },
-    ],
-  },
-  {
-    id: "vehicles",
-    name: "Vehicles",
-    color: "blue",
-    words: [
-      { word: "car", emoji: "🚗" }, { word: "bus", emoji: "🚌" }, { word: "train", emoji: "🚂" },
-      { word: "boat", emoji: "⛵" }, { word: "ship", emoji: "🚢" }, { word: "plane", emoji: "✈️" },
-      { word: "rocket", emoji: "🚀" }, { word: "bike", emoji: "🚲" }, { word: "truck", emoji: "🚚" },
-      { word: "tractor", emoji: "🚜" }, { word: "taxi", emoji: "🚕" }, { word: "helicopter", emoji: "🚁" },
-      { word: "ambulance", emoji: "🚑" }, { word: "scooter", emoji: "🛴" }, { word: "sled", emoji: "🛷" },
-      { word: "canoe", emoji: "🛶" }, { word: "sailboat", emoji: "⛵" }, { word: "wheel", emoji: "🛞" },
-    ],
-  },
-  {
-    id: "toys",
-    name: "Toys and play",
-    color: "pink",
-    words: [
-      { word: "ball", emoji: "⚽" }, { word: "teddy", emoji: "🧸" }, { word: "doll", emoji: "🪆" },
-      { word: "block", emoji: "🧱" }, { word: "kite", emoji: "🪁" }, { word: "drum", emoji: "🥁" },
-      { word: "balloon", emoji: "🎈" }, { word: "puzzle", emoji: "🧩" }, { word: "bell", emoji: "🔔" },
-      { word: "paint", emoji: "🎨" }, { word: "crayon", emoji: "🖍️" }, { word: "robot", emoji: "🤖" },
-      { word: "book", emoji: "📖" }, { word: "game", emoji: "🎮" }, { word: "dice", emoji: "🎲" },
-      { word: "guitar", emoji: "🎸" }, { word: "song", emoji: "🎵" }, { word: "ticket", emoji: "🎟️" },
-    ],
-  },
-  {
-    id: "home",
-    name: "Home and things",
-    color: "green",
-    words: [
-      { word: "house", emoji: "🏠" }, { word: "door", emoji: "🚪" }, { word: "bed", emoji: "🛏️" },
-      { word: "chair", emoji: "🪑" }, { word: "cup", emoji: "🥤" }, { word: "spoon", emoji: "🥄" },
-      { word: "sock", emoji: "🧦" }, { word: "shoe", emoji: "👟" }, { word: "hat", emoji: "🧢" },
-      { word: "coat", emoji: "🧥" }, { word: "key", emoji: "🔑" }, { word: "light", emoji: "💡" },
-      { word: "clock", emoji: "🕐" }, { word: "phone", emoji: "📞" }, { word: "box", emoji: "📦" },
-      { word: "bag", emoji: "👜" }, { word: "soap", emoji: "🧼" }, { word: "broom", emoji: "🧹" },
-      { word: "tree", emoji: "🌳" }, { word: "flower", emoji: "🌸" }, { word: "leaf", emoji: "🍃" },
-      { word: "bucket", emoji: "🪣" }, { word: "basket", emoji: "🧺" }, { word: "candle", emoji: "🕯️" },
-    ],
-  },
-  {
-    id: "people",
-    name: "People and me",
-    color: "violet",
-    words: [
-      { word: "mama", emoji: "👩" }, { word: "papa", emoji: "👨" }, { word: "baby", emoji: "👶" },
-      { word: "boy", emoji: "👦" }, { word: "girl", emoji: "👧" }, { word: "hand", emoji: "✋" },
-      { word: "foot", emoji: "🦶" }, { word: "eye", emoji: "👁️" }, { word: "ear", emoji: "👂" },
-      { word: "nose", emoji: "👃" }, { word: "mouth", emoji: "👄" }, { word: "tooth", emoji: "🦷" },
-      { word: "arm", emoji: "💪" }, { word: "leg", emoji: "🦵" }, { word: "face", emoji: "🙂" },
-      { word: "hair" }, { word: "nail" }, { word: "heart", emoji: "❤️" },
-    ],
-  },
-  {
-    id: "actions",
-    name: "Doing words",
-    words: [
-      { word: "eat", emoji: "🍽️" }, { word: "sleep", emoji: "😴" }, { word: "run", emoji: "🏃" },
-      { word: "jump", emoji: "🤸" }, { word: "walk", emoji: "🚶" }, { word: "sing", emoji: "🎤" },
-      { word: "sit", emoji: "🪑" }, { word: "clap", emoji: "👏" }, { word: "wash", emoji: "🧼" },
-      { word: "read", emoji: "📖" }, { word: "play" }, { word: "lips", emoji: "💋" },
-      { word: "cry", emoji: "😢" }, { word: "big" }, { word: "small" }, { word: "hot", emoji: "🥵" },
-      { word: "cold", emoji: "🥶" }, { word: "wet" }, { word: "good" }, { word: "tall" },
-    ],
-  },
-];
+/** A word the tokenizer can find: one letter run, lower-case. */
+export function validWord(word) {
+  return typeof word === "string" && /^[a-z]+$/.test(word);
+}
+
+/** The parent's typed word, made matchable: trimmed and lower-cased. */
+export function normalizeWord(word) {
+  return String(word).trim().toLowerCase();
+}
 
 /**
- * Every list is on by default, so the app works whatever the child happens to
- * type. The parent turns off the ones they do not want (PRODUCT.md).
+ * The id of the list that already holds the word, or null. One word lives on
+ * one list, so a second home would give it a second colour and the colour it
+ * won with would depend on the order the lists were read in (PRODUCT.md).
  */
-export const DEFAULT_LIST_IDS = LISTS.map((list) => list.id);
+export function ownerOf(lists, word) {
+  const key = normalizeWord(word);
+  for (const list of lists) {
+    if (list.words.some((entry) => entry.word === key)) return list.id;
+  }
+  return null;
+}
 
-/** The words of the active lists, lower-cased, each with its emoji and colour. */
-export function wordsFor(listIds) {
+/** A word's colour: its own, else its emoji's, else its list's, else none. */
+function colorOf(list, entry) {
+  return entry.color ?? EMOJI_COLORS[entry.emoji] ?? list.color;
+}
+
+/**
+ * The words of the active lists, keyed lower-case, each with the emoji, colour
+ * and image it is drawn with. A word is here only while its list is active, so
+ * the app marks and speaks nothing else.
+ */
+export function wordsFor(listIds, lists) {
   const words = new Map();
-  for (const list of LISTS) {
+  for (const list of lists) {
     if (!listIds.includes(list.id)) continue;
     for (const entry of list.words) {
-      words.set(entry.word.toLowerCase(), {
-        emoji: entry.emoji,
-        color: entry.color ?? EMOJI_COLORS[entry.emoji] ?? list.color,
-      });
+      words.set(entry.word, { emoji: entry.emoji, color: colorOf(list, entry), image: entry.image });
     }
   }
   return words;
+}
+
+/** Replaces one word of one list, leaving every other list as it was. */
+function editWord(lists, listId, word, change) {
+  return lists.map((list) => {
+    if (list.id !== listId) return list;
+    return { ...list, words: list.words.map((entry) => (entry.word === word ? change(entry) : entry)) };
+  });
+}
+
+/**
+ * Adds a word to a list. Returns the new lists and a null error, or the lists
+ * untouched and the reason it was refused: a word is letters only, and one word
+ * lives on one list, so a word another list holds comes back naming that list.
+ */
+export function addWord(lists, listId, typed) {
+  const word = normalizeWord(typed);
+  if (!validWord(word)) return { lists, error: "A word is letters only." };
+  const owner = ownerOf(lists, word);
+  if (owner !== null) {
+    const name = lists.find((list) => list.id === owner)?.name ?? owner;
+    return { lists, error: `Already on ${name}.` };
+  }
+  return {
+    error: null,
+    lists: lists.map((list) => (list.id === listId ? { ...list, words: [...list.words, { word }] } : list)),
+  };
+}
+
+/** Takes a word off a list. */
+export function removeWord(lists, listId, word) {
+  return lists.map((list) => {
+    if (list.id !== listId) return list;
+    return { ...list, words: list.words.filter((entry) => entry.word !== word) };
+  });
+}
+
+/** Sets a word's emoji, or takes it away when the parent leaves the field empty. */
+export function setEmoji(lists, listId, word, typed) {
+  const emoji = String(typed).trim();
+  return editWord(lists, listId, word, (entry) => {
+    const next = { ...entry };
+    if (emoji === "") delete next.emoji;
+    else next.emoji = emoji;
+    return next;
+  });
+}
+
+/** Gives a word a picture, which is drawn instead of its emoji. */
+export function setImage(lists, listId, word, dataUrl) {
+  return editWord(lists, listId, word, (entry) => ({ ...entry, image: dataUrl }));
+}
+
+/** Takes a word's picture away, leaving its emoji or its list's drawing. */
+export function clearImage(lists, listId, word) {
+  return editWord(lists, listId, word, (entry) => {
+    const next = { ...entry };
+    delete next.image;
+    return next;
+  });
 }

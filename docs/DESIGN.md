@@ -4,7 +4,7 @@ What the app draws and the values that are fixed. `PRODUCT.md` owns behaviour; t
 
 ## the screen
 
-One screen, the whole viewport, no chrome. The keyboard is the input; the only things drawn to tap are the parent's two controls in the top corner — a full-screen icon and a clear icon, black outlines, both gone while the app is full screen. The surface is white; the ink and the word colours are set below.
+One screen, the whole viewport, no chrome. The keyboard is the input; the only things drawn to tap are the parent's two controls in the top corner — a full-screen icon and a settings icon, black outlines, both gone while the app is full screen. The surface is white; the ink and the word colours are set below.
 
 ## padding
 
@@ -36,6 +36,23 @@ The text keeps clear of every edge: the screen is inset by its padding on all fo
 - The word sits high in the pill: less room above the letters than below them.
 - A pill is drawn as one piece: its emoji and its word never split across lines.
 - A word that has an emoji is drawn with it inside the pill, before the word. A word with none is drawn with none.
+
+## a word's picture
+
+- A word the parent has given a picture is drawn with the picture in the emoji's place, inside the pill before the word. The picture or the emoji, never both.
+- It is drawn at the text's own size: `height: 1em`, its width from its own proportions and never more than `4em`. Measured: a pill is 152.6px tall whether its word is drawn with an emoji, with a picture, or with neither, so a picture cannot change a pill's height or where a line wraps.
+- It sits on the text's baseline, dropped `0.08em`, and holds a `0.12em` gap before the word — the emoji's gap.
+- It is an element carrying no text, so the pill still holds exactly the characters the child typed.
+
+## the settings page
+
+The parent's page. It covers the play screen and is the app's own surface: white, the ink black, nothing else.
+
+- One text size for the page, `clamp(17px, 2.4vmin, 26px)`; the title is `1.7em` of it and a list's name `1.2em`.
+- The page's rules and every control's outline are one weight, `2px`, and every control the parent presses is an outline and a word: no fill, no colour, no shadow.
+- A list shows its name, whether it is on, how many words it holds, and one control that opens its words.
+- A word shows its letters; its emoji, in a field the parent can change; its picture, as a thumbnail, when it has one; and the controls that give it a picture, take the picture off, and take the word off the list.
+- The page scrolls. It is the one screen in the app that holds more than a screenful.
 
 ## type and colour
 

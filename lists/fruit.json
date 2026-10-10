@@ -1,0 +1,31 @@
+{
+  "id": "fruit",
+  "name": "Fruit and vegetables",
+  "color": "red",
+  "words": [
+    { "word": "apple", "emoji": "🍎" },
+    { "word": "banana", "emoji": "🍌" },
+    { "word": "orange", "emoji": "🍊" },
+    { "word": "lemon", "emoji": "🍋" },
+    { "word": "peach", "emoji": "🍑" },
+    { "word": "cherry", "emoji": "🍒" },
+    { "word": "grape", "emoji": "🍇" },
+    { "word": "melon", "emoji": "🍈" },
+    { "word": "pear", "emoji": "🍐" },
+    { "word": "mango", "emoji": "🥭" },
+    { "word": "kiwi", "emoji": "🥝" },
+    { "word": "tomato", "emoji": "🍅" },
+    { "word": "coconut", "emoji": "🥥" },
+    { "word": "pineapple", "emoji": "🍍" },
+    { "word": "watermelon", "emoji": "🍉" },
+    { "word": "strawberry", "emoji": "🍓" },
+    { "word": "blueberry", "emoji": "🫐" },
+    { "word": "olive", "emoji": "🫒" },
+    { "word": "avocado", "emoji": "🥑" },
+    { "word": "chestnut", "emoji": "🌰" },
+    { "word": "carrot", "emoji": "🥕" },
+    { "word": "corn", "emoji": "🌽" },
+    { "word": "mushroom", "emoji": "🍄" },
+    { "word": "pea", "emoji": "🫛" }
+  ]
+}

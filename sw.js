@@ -1,7 +1,7 @@
 // The shell the app boots and draws its one screen from. Bump CACHE in the
 // same commit as any change to a file here, or a returning device keeps the
 // old copy (SYSTEM.md).
-const CACHE = "keysmash-v29";
+const CACHE = "keysmash-v30";
 
 const SHELL = [
   "./",
@@ -13,13 +13,30 @@ const SHELL = [
   "./icons/apple-touch-icon.png",
   "./src/app.js",
   "./src/emoji-colors.js",
+  "./src/images.js",
   "./src/lists.js",
   "./src/numbers.js",
   "./src/render.js",
+  "./src/settings-page.js",
   "./src/settings.js",
   "./src/speech.js",
+  "./src/store.js",
   "./src/thresholds.js",
   "./src/words.js",
+  // The built-in lists, read into the database on a device's first run. They
+  // are precached with the shell, or an install with the network off would open
+  // with no words on it at all.
+  "./lists/index.json",
+  "./lists/animals.json",
+  "./lists/fruit.json",
+  "./lists/food.json",
+  "./lists/weather.json",
+  "./lists/vehicles.json",
+  "./lists/toys.json",
+  "./lists/home.json",
+  "./lists/people.json",
+  "./lists/actions.json",
+  "./lists/custom.json",
   "./clips/a.wav",
   "./clips/b.wav",
   "./clips/c.wav",

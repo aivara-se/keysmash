@@ -6,6 +6,7 @@ const TYPES: Record<string, string> = {
   ".html": "text/html",
   ".css": "text/css",
   ".js": "text/javascript",
+  ".json": "application/json",
   ".webmanifest": "application/manifest+json",
   ".png": "image/png",
   ".wav": "audio/wav",

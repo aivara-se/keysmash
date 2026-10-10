@@ -1,0 +1,25 @@
+{
+  "id": "food",
+  "name": "Food",
+  "color": "orange",
+  "words": [
+    { "word": "bread", "emoji": "🍞" },
+    { "word": "milk", "emoji": "🥛" },
+    { "word": "egg", "emoji": "🥚" },
+    { "word": "cake", "emoji": "🍰" },
+    { "word": "cookie", "emoji": "🍪" },
+    { "word": "cheese", "emoji": "🧀" },
+    { "word": "honey", "emoji": "🍯" },
+    { "word": "pizza", "emoji": "🍕" },
+    { "word": "soup", "emoji": "🍲" },
+    { "word": "rice", "emoji": "🍚" },
+    { "word": "noodle", "emoji": "🍜" },
+    { "word": "butter", "emoji": "🧈" },
+    { "word": "salt", "emoji": "🧂" },
+    { "word": "pan", "emoji": "🍳" },
+    { "word": "juice", "emoji": "🧃" },
+    { "word": "candy", "emoji": "🍬" },
+    { "word": "chocolate", "emoji": "🍫" },
+    { "word": "popcorn", "emoji": "🍿" }
+  ]
+}

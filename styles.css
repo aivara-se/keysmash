@@ -24,6 +24,9 @@
      border to a whole pixel but paints a caret's background at any width, so
      only px keeps the two identical. */
   --stroke: 8px;
+  /* The settings page draws its rules, its control outlines and its sample
+     pills at one weight, so a page of controls reads as one surface. */
+  --rule: 2px;
 }
 
 * {
@@ -75,7 +78,7 @@ body {
   margin-top: auto;
 }
 
-/* The parent's controls: full screen and clear, black outlines in the top
+/* The parent's controls: full screen and settings, black outlines in the top
    right. Both go away while the app is full screen, so the child is left with
    nothing to tap. */
 #controls {
@@ -147,6 +150,19 @@ body {
   margin-right: 0.12em;
 }
 
+/* The word's picture, drawn in the emoji's place when the parent gave the word
+   one. It is an element rather than a data attribute, and it carries no text,
+   so the pill still reads as exactly the characters the child typed. Sized in
+   em so it grows with the text, like the emoji. */
+.mark img {
+  height: 1em;
+  width: auto;
+  max-width: 4em;
+  object-fit: contain;
+  vertical-align: -0.08em;
+  margin-right: 0.12em;
+}
+
 /* The caret is a bar in the ink, as thick as a word's outline and taller than
    it, centred on the text so it reaches above and below the letters. It is
    drawn just after the newest character and moves with the text; its margins
@@ -191,23 +207,157 @@ body {
   100% { opacity: 1; }
 }
 
-/* The parent screen sits over the play screen. */
-#parent {
+/* The settings page sits over the play screen. It is the parent's, so it holds
+   more than the one screen the child gets — but it is the app's own surface:
+   white, the ink black, one large text size (DESIGN.md). */
+#settings {
   position: fixed;
   inset: 0;
   z-index: 2;
   overflow: auto;
   background: var(--surface);
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
+  color: var(--ink);
+  padding: 3vmin;
+  font-size: clamp(17px, 2.4vmin, 26px);
+  line-height: 1.5;
 }
 
-#parent button {
+#settings header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2vmin;
+  padding-bottom: 0.6em;
+  border-bottom: var(--rule) solid var(--ink);
+}
+
+#settings h1 {
+  margin: 0;
+  font-size: 1.7em;
+  font-weight: 400;
+}
+
+/* Everything the parent can press is the ink on the surface: an outline and a
+   word, the same at every size. */
+#settings button,
+#settings input[type="text"],
+#settings .picture {
   font: inherit;
-  font-size: 1.25rem;
-  padding: 0.75rem 1.5rem;
-  align-self: flex-start;
+  color: var(--ink);
+  background: var(--surface);
+  border: var(--rule) solid var(--ink);
+  border-radius: 0.3em;
+  padding: 0.2em 0.6em;
+}
+
+#settings button {
+  cursor: pointer;
+}
+
+#settings .list {
+  border-bottom: var(--rule) solid var(--ink);
+  padding: 0.7em 0;
+}
+
+#settings .head {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  flex-wrap: wrap;
+}
+
+#settings .switch {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  flex: 1;
+  cursor: pointer;
+}
+
+#settings .switch input {
+  width: 1.1em;
+  height: 1.1em;
+  margin: 0;
+  accent-color: var(--ink);
+  cursor: pointer;
+}
+
+/* A step larger, so a page of lists reads as a page of lists. */
+#settings .switch .name {
+  font-size: 1.2em;
+}
+
+#settings .words {
+  margin-top: 0.6em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+#settings .word {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+
+/* The word's picture, at settings size. It is the same data the pill draws, and
+   it is the only place the picture is shown on this page. */
+#settings .thumb {
+  height: 1.6em;
+  width: auto;
+  max-width: 3em;
+  object-fit: contain;
+  border: var(--rule) solid var(--ink);
+  border-radius: 0.2em;
+}
+
+#settings .word > .name {
+  min-width: 5em;
+}
+
+#settings .emoji {
+  width: 5em;
+  text-align: center;
+}
+
+#settings .picture {
+  cursor: pointer;
+}
+
+#settings .picture input {
+  display: none;
+}
+
+#settings .add {
+  display: flex;
+  gap: 0.5em;
+  margin-top: 0.4em;
+}
+
+#settings .add .new {
+  flex: 1;
+  min-width: 6em;
+}
+
+#settings .error {
+  margin: 0;
+}
+
+#settings .restore {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  flex-wrap: wrap;
+  padding-top: 1em;
+}
+
+#settings .note {
+  margin: 0;
+  flex: 1;
+  min-width: 12em;
+}
+
+#settings .hint {
+  font-size: 0.8em;
 }
