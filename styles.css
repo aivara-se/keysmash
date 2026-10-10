@@ -151,14 +151,17 @@ body {
 }
 
 /* The word's picture, drawn in the emoji's place when the parent gave the word
-   one. It is an element rather than a data attribute, and it carries no text,
-   so the pill still reads as exactly the characters the child typed. Sized in
-   em so it grows with the text, like the emoji. */
+   one. It is drawn as a circle: the box is a square the picture fills, so the
+   crop is the middle of the picture whatever shape it is, rather than a circle
+   drawn round a picture squeezed to fit. It is an element and it carries no
+   text, so the pill still reads as exactly the characters the child typed.
+   Sized in em so it grows with the text, like the emoji — a square at 1em
+   cannot change the height of the pill. */
 .mark img {
+  width: 1em;
   height: 1em;
-  width: auto;
-  max-width: 4em;
-  object-fit: contain;
+  object-fit: cover;
+  border-radius: 50%;
   vertical-align: -0.08em;
   margin-right: 0.12em;
 }
@@ -301,15 +304,14 @@ body {
   flex-wrap: wrap;
 }
 
-/* The word's picture, at settings size. It is the same data the pill draws, and
-   it is the only place the picture is shown on this page. */
+/* The word's picture, at settings size, drawn as the circle the pill draws. It
+   is the same data, and it is the only place the picture is shown on this page. */
 #settings .thumb {
+  width: 1.6em;
   height: 1.6em;
-  width: auto;
-  max-width: 3em;
-  object-fit: contain;
+  object-fit: cover;
   border: var(--rule) solid var(--ink);
-  border-radius: 0.2em;
+  border-radius: 50%;
 }
 
 #settings .word > .name {
