@@ -7,29 +7,38 @@
  * A new sound cuts off the last, so sounds never stack and the volume never
  * rises.
  */
-export function createSpeech() {
-  const synth = typeof speechSynthesis === "undefined" ? null : speechSynthesis;
-  const clips = new Map();
-  let voice = null;
-  let playing = null;
+import { assetUrl } from "./assets.js";
 
-  function pickVoice() {
+/** The speaker as the rest of the app uses it. */
+export interface Speech {
+  ready(): void;
+  letter(name: string): void;
+  word(text: string): void;
+}
+
+export function createSpeech(): Speech {
+  const synth = typeof speechSynthesis === "undefined" ? null : speechSynthesis;
+  const clips = new Map<string, HTMLAudioElement>();
+  let voice: SpeechSynthesisVoice | null = null;
+  let playing: HTMLAudioElement | null = null;
+
+  function pickVoice(): void {
     if (synth === null) return;
     const local = synth.getVoices().filter((candidate) => candidate.localService);
     voice = local.find((candidate) => candidate.lang && candidate.lang.startsWith("en")) ?? local[0] ?? null;
   }
 
-  function clipFor(letter) {
+  function clipFor(letter: string): HTMLAudioElement {
     let audio = clips.get(letter);
     if (audio === undefined) {
-      audio = new Audio(new URL(`clips/${letter}.wav`, document.baseURI).href);
+      audio = new Audio(assetUrl(`clips/${letter}.wav`));
       audio.preload = "auto";
       clips.set(letter, audio);
     }
     return audio;
   }
 
-  function say(text) {
+  function say(text: string): boolean {
     if (voice === null || synth === null) return false;
     synth.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
@@ -40,7 +49,7 @@ export function createSpeech() {
     return true;
   }
 
-  function cutOffLast() {
+  function cutOffLast(): void {
     if (synth !== null) synth.cancel();
     if (playing !== null) {
       playing.pause();
@@ -50,13 +59,13 @@ export function createSpeech() {
 
   return {
     /** Chooses the voice and keeps it current as the device reports them. */
-    ready() {
+    ready(): void {
       pickVoice();
       if (synth !== null) synth.onvoiceschanged = pickVoice;
     },
 
     /** Speaks a letter's name: the device voice, or the clip when there is none. */
-    letter(name) {
+    letter(name: string): void {
       const letter = name.toLowerCase();
       cutOffLast();
       if (say(letter)) return;
@@ -67,7 +76,7 @@ export function createSpeech() {
     },
 
     /** Speaks a completed word or number. Silent when the device has no voice. */
-    word(text) {
+    word(text: string): void {
       say(text);
     },
   };

@@ -125,7 +125,7 @@ body {
 
 /* A marked word is drawn in its colour, its outline included: the outline is
    `currentColor`. The colour is the word's own, or the one its emoji names
-   (src/emoji-colors.js), or its list's, or the ink. */
+   (src/lib/emoji-colors.ts), or its list's, or the ink. */
 .mark[data-color="red"] { color: var(--ink-red); }
 .mark[data-color="orange"] { color: var(--ink-orange); }
 .mark[data-color="amber"] { color: var(--ink-amber); }

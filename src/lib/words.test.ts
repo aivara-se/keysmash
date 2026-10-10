@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
-import { markText, newUtterances } from "./words.js";
+import { markText, newUtterances, type Drawing } from "./words.js";
 
-const words = new Map([
+const words = new Map<string, Drawing>([
   ["cat", { emoji: "🐱", color: "animals" }],
   ["cats", {}],
   ["dog", { emoji: "🐶", color: "animals" }],

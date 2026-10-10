@@ -13,12 +13,11 @@ import {
   setImage,
   validWord,
   wordsFor,
+  type List,
 } from "./lists.js";
 
-type Entry = { word: string; emoji?: string; color?: string; image?: string };
-type List = { id: string; name: string; color?: string; words: Entry[] };
-
-const DIR = join(import.meta.dir, "..", "lists");
+/** The built-in lists live beside the app, in the directory they are served from. */
+const DIR = join(import.meta.dir, "..", "..", "static", "lists");
 
 /** The built-in lists exactly as they ship, read from their own files. */
 async function shipped(): Promise<{ ids: string[]; lists: List[] }> {
@@ -159,11 +158,13 @@ describe("adding a word", () => {
   test("handles every other list the same object, so only one is written back", () => {
     const result = addWord(lists, CUSTOM_LIST_ID, "doggy");
     for (const list of result.lists) {
+      const kept = lists.find((candidate) => candidate.id === list.id);
+      expect(kept).toBeDefined();
       if (list.id === CUSTOM_LIST_ID) {
-        expect(list).not.toBe(lists.find((candidate) => candidate.id === list.id));
+        expect(kept).not.toBe(list);
         continue;
       }
-      expect(list).toBe(lists.find((candidate) => candidate.id === list.id));
+      expect(kept).toBe(list);
     }
   });
 });
@@ -184,7 +185,7 @@ describe("editing a word", () => {
   });
 
   test("removes it from its list", () => {
-    const next = removeWord(lists, "animals", "cat") as List[];
+    const next = removeWord(lists, "animals", "cat");
     expect(ownerOf(next, "cat")).toBeNull();
     expect(next.find((list) => list.id === "animals")?.words.length).toBe(
       (lists.find((list) => list.id === "animals")?.words.length ?? 0) - 1,
