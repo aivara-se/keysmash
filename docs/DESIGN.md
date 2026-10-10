@@ -40,7 +40,7 @@ The text keeps clear of every edge: the screen is inset by its padding on all fo
 ## a word's picture
 
 - A word the parent has given a picture is drawn with the picture in the emoji's place, inside the pill before the word. The picture or the emoji, never both.
-- It is drawn at the text's own size: `height: 1em`, its width from its own proportions and never more than `4em`. Measured: a pill is 152.6px tall whether its word is drawn with an emoji, with a picture, or with neither, so a picture cannot change a pill's height or where a line wraps.
+- It is drawn as a circle `1em` across: a square box the picture fills, so whatever its shape it is cropped to its middle rather than squeezed to fit a circle. Measured: a pill is 152.6px tall whether its word is drawn with an emoji, with a picture, or with neither, so a picture cannot change a pill's height or where a line wraps.
 - It sits on the text's baseline, dropped `0.08em`, and holds a `0.12em` gap before the word — the emoji's gap.
 - It is an element carrying no text, so the pill still holds exactly the characters the child typed.
 
