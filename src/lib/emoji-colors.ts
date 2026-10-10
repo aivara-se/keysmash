@@ -7,9 +7,9 @@
  * whatever colour the font felt like, and a robot is grey. Those words take
  * their list's colour instead, or the ink.
  *
- * The names are palette keys; the values are in `styles.css` (DESIGN.md).
+ * The names are palette keys; the values are in `src/app.css` (DESIGN.md).
  */
-export const EMOJI_COLORS = {
+export const EMOJI_COLORS: Readonly<Record<string, string>> = {
   // animals
   "🐱": "amber", "🐶": "amber", "🐮": "slate", "🐷": "pink", "🦆": "green",
   "🐔": "red", "🐤": "yellow", "🐦": "blue", "🦉": "brown", "🐟": "sky",
@@ -56,3 +56,8 @@ export const EMOJI_COLORS = {
   // doing words
   "🎤": "slate", "😢": "sky", "🥵": "red", "🥶": "sky",
 };
+
+/** The colour an emoji names, or nothing when the emoji names none. */
+export function colorOfEmoji(emoji: string | undefined): string | undefined {
+  return emoji === undefined ? undefined : EMOJI_COLORS[emoji];
+}

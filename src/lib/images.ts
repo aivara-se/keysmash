@@ -11,14 +11,16 @@ const MAX_EDGE = 512;
  * to fit MAX_EDGE and returned as a data URL, so it is stored in the same
  * record as the word and drawn without an object URL to keep alive (SYSTEM.md).
  */
-export async function toPillImage(file) {
+export async function toPillImage(file: File): Promise<string> {
   const bitmap = await createImageBitmap(file);
   try {
     const scale = Math.min(1, MAX_EDGE / Math.max(bitmap.width, bitmap.height));
     const canvas = document.createElement("canvas");
     canvas.width = Math.max(1, Math.round(bitmap.width * scale));
     canvas.height = Math.max(1, Math.round(bitmap.height * scale));
-    canvas.getContext("2d").drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const context = canvas.getContext("2d");
+    if (context === null) throw new Error("this device will not draw the picture");
+    context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
     return canvas.toDataURL("image/png");
   } finally {
     bitmap.close();
