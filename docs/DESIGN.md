@@ -41,7 +41,8 @@ The text keeps clear of every edge: the screen is inset by its padding on all fo
 
 - A word the parent has given a picture is drawn with the picture in the emoji's place, inside the pill before the word. The picture or the emoji, never both.
 - It is drawn as a circle `1em` across: a square box the picture fills, so whatever its shape it is cropped to its middle rather than squeezed to fit a circle. Measured: a pill is 152.6px tall whether its word is drawn with an emoji, with a picture, or with neither, so a picture cannot change a pill's height or where a line wraps.
-- It sits on the text's baseline, dropped `0.08em`, and holds a `0.12em` gap before the word — the emoji's gap.
+- The gap is measured from ink, not from a box. An emoji's glyph carries the typeface's side bearings: at the app's text size the middle emoji of the lists sits `8px` (`0.08em`) inside its box on each side, measured from the pixels on the emoji font the build has. The pill's `0.12em` gap to its word therefore falls `0.20em` from an emoji's ink. A picture's ink fills its box, so the picture takes those bearings as its own margins — `0.08em` left, `0.2em` right — and sits exactly where an emoji's ink sits. A device whose emoji font carries different bearings draws those; the picture keeps these margins, and the browser suite measures the two and fails if they drift apart.
+- It sits on the text's baseline, dropped `0.08em`.
 - It is an element carrying no text, so the pill still holds exactly the characters the child typed.
 
 ## the settings page
