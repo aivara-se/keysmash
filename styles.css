@@ -156,14 +156,20 @@ body {
    drawn round a picture squeezed to fit. It is an element and it carries no
    text, so the pill still reads as exactly the characters the child typed.
    Sized in em so it grows with the text, like the emoji — a square at 1em
-   cannot change the height of the pill. */
+   cannot change the height of the pill.
+
+   The margins are the emoji's own side bearings, measured from the pixels. An
+   emoji's glyph sits 8px (0.08em) inside its box on each side at the app's text
+   size, so the pill's 0.12em gap to a word falls 0.20em from an emoji's ink. A
+   picture's ink fills its box, so without these margins it sits 8px closer to
+   its word and to the pill's edge than an emoji does. */
 .mark img {
   width: 1em;
   height: 1em;
   object-fit: cover;
   border-radius: 50%;
+  margin: 0 0.2em 0 0.08em;
   vertical-align: -0.08em;
-  margin-right: 0.12em;
 }
 
 /* The caret is a bar in the ink, as thick as a word's outline and taller than
