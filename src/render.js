@@ -50,7 +50,15 @@ export function createRender({ screen, wordsFor }) {
       word.className = "mark";
       word.textContent = text.slice(mark.start, mark.end);
       if (mark.kind === "number") word.dataset.kind = "number";
-      if (mark.emoji !== undefined) word.dataset.emoji = mark.emoji;
+      // A picture is the alternative to an emoji: one is drawn, never both.
+      if (mark.image !== undefined) {
+        const picture = document.createElement("img");
+        picture.src = mark.image;
+        picture.alt = "";
+        word.prepend(picture);
+      } else if (mark.emoji !== undefined) {
+        word.dataset.emoji = mark.emoji;
+      }
       if (mark.color !== undefined) word.dataset.color = mark.color;
       nodes.push(word);
       cursor = mark.end;
@@ -70,6 +78,15 @@ export function createRender({ screen, wordsFor }) {
     resize() {
       screen.scrollTop = screen.scrollHeight;
       fade();
+    },
+
+    /**
+     * Draws the text again. The lists may have changed under it — the parent can
+     * add a word while the child's text is on the screen — so the marks are read
+     * afresh without touching a character the child typed.
+     */
+    repaint() {
+      paint();
     },
 
     /** Writes one character at the caret. */

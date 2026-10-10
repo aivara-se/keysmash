@@ -1,0 +1,26 @@
+{
+  "id": "actions",
+  "name": "Doing words",
+  "words": [
+    { "word": "eat", "emoji": "🍽️" },
+    { "word": "sleep", "emoji": "😴" },
+    { "word": "run", "emoji": "🏃" },
+    { "word": "jump", "emoji": "🤸" },
+    { "word": "walk", "emoji": "🚶" },
+    { "word": "sing", "emoji": "🎤" },
+    { "word": "sit", "emoji": "🪑" },
+    { "word": "clap", "emoji": "👏" },
+    { "word": "wash", "emoji": "🧼" },
+    { "word": "read", "emoji": "📖" },
+    { "word": "play" },
+    { "word": "lips", "emoji": "💋" },
+    { "word": "cry", "emoji": "😢" },
+    { "word": "big" },
+    { "word": "small" },
+    { "word": "hot", "emoji": "🥵" },
+    { "word": "cold", "emoji": "🥶" },
+    { "word": "wet" },
+    { "word": "good" },
+    { "word": "tall" }
+  ]
+}

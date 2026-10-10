@@ -1,7 +1,9 @@
 import { createRender } from "./render.js";
 import { createSpeech } from "./speech.js";
 import { createSettings } from "./settings.js";
-import { LISTS, wordsFor } from "./lists.js";
+import { createSettingsPage } from "./settings-page.js";
+import { createStore } from "./store.js";
+import { wordsFor } from "./lists.js";
 import { markText, newUtterances } from "./words.js";
 import { READ_IDLE_MS, SPEAK_DEBOUNCE_MS } from "./thresholds.js";
 
@@ -11,21 +13,71 @@ const EXIT_HOLD_MS = 3000;
 const screen = document.getElementById("screen");
 const controls = document.getElementById("controls");
 const fullscreenButton = document.getElementById("fullscreen");
-const clearButton = document.getElementById("clear");
-const parentScreen = document.getElementById("parent");
-const listContainer = document.getElementById("lists");
+const settingsButton = document.getElementById("settings-button");
+const settingsScreen = document.getElementById("settings");
+const settingsBody = document.getElementById("settings-body");
+const closeButton = document.getElementById("settings-close");
 
+const store = createStore();
 const settings = createSettings();
 const speech = createSpeech();
-const render = createRender({ screen, wordsFor: () => activeWords });
-const spoken = new Map();
 
-let activeWords = wordsFor(settings.activeListIds());
+/** The word lists the app draws from: the device's copy, seeded on first run. */
+let lists = [];
+let activeWords = new Map();
 let exitTimer = null;
 let readTimer = null;
 let speakTimer = null;
 let paused = false;
 const exitDown = new Set();
+const spoken = new Map();
+
+const render = createRender({ screen, wordsFor: () => activeWords });
+
+/** The active list ids, read against the lists the app currently knows. */
+function activeListIds() {
+  return settings.activeListIds(lists.map((list) => list.id));
+}
+
+/** Reads the active lists' words again, and draws the text against them. */
+function markAgain() {
+  activeWords = wordsFor(activeListIds(), lists);
+  spoken.clear();
+  render.repaint();
+}
+
+const page = createSettingsPage({
+  container: settingsBody,
+  lists: () => lists,
+  activeIds: activeListIds,
+
+  setActiveIds(ids) {
+    settings.setActiveListIds(ids);
+    markAgain();
+  },
+
+  /** Shows the parent's change at once, then keeps it; a device that will not keep it says so. */
+  async applyLists(next) {
+    const before = new Map(lists.map((list) => [list.id, list]));
+    lists = next;
+    markAgain();
+    for (const list of next) {
+      if (before.get(list.id) === list) continue;
+      try {
+        await store.put(list);
+      } catch {
+        return "The device would not keep that change.";
+      }
+    }
+    return null;
+  },
+
+  async restore() {
+    await store.restore();
+    lists = await store.lists();
+    markAgain();
+  },
+});
 
 /**
  * Writes the character at the caret, and speaks its name only when nothing else
@@ -60,7 +112,7 @@ function noteStop() {
 function holdExit(code) {
   exitDown.add(code);
   if (exitDown.size === EXIT_KEYS.size && exitTimer === null) {
-    exitTimer = setTimeout(openParent, EXIT_HOLD_MS);
+    exitTimer = setTimeout(openSettings, EXIT_HOLD_MS);
   }
 }
 
@@ -84,16 +136,17 @@ function onKeyUp(event) {
   if (EXIT_KEYS.has(event.code)) releaseExit(event.code);
 }
 
-function openParent() {
+function openSettings() {
   paused = true;
   clearTimeout(readTimer);
   exitDown.clear();
   exitTimer = null;
-  parentScreen.hidden = false;
+  settingsScreen.hidden = false;
+  page.render();
 }
 
-function closeParent() {
-  parentScreen.hidden = true;
+function closeSettings() {
+  settingsScreen.hidden = true;
   paused = false;
 }
 
@@ -110,44 +163,29 @@ function syncControls() {
   controls.hidden = document.fullscreenElement !== null;
 }
 
-/** The parent asks for a blank screen. Nothing else ever edits the child's text. */
-function clearScreen() {
-  render.reset();
-  spoken.clear();
-  clearTimeout(readTimer);
-}
-
-function selectLists() {
-  const active = new Set(settings.activeListIds());
-  for (const list of LISTS) {
-    const label = document.createElement("label");
-    const input = document.createElement("input");
-    input.type = "checkbox";
-    input.checked = active.has(list.id);
-    input.addEventListener("change", () => {
-      const ids = [...listContainer.querySelectorAll("input:checked")].map((box) => box.dataset.id);
-      settings.setActiveListIds(ids);
-      activeWords = wordsFor(ids);
-      spoken.clear();
-    });
-    input.dataset.id = list.id;
-    label.append(input, document.createTextNode(` ${list.name}`));
-    listContainer.append(label);
+/** The lists the app draws from, read from the device on start. */
+async function boot() {
+  try {
+    lists = await store.lists();
+  } catch {
+    // A device that will not give the page a database still plays; nothing is marked.
+    lists = [];
   }
+  markAgain();
 }
 
 fullscreenButton.addEventListener("click", toggleFullscreen);
-clearButton.addEventListener("click", clearScreen);
+settingsButton.addEventListener("click", openSettings);
+closeButton.addEventListener("click", closeSettings);
 document.addEventListener("fullscreenchange", syncControls);
-document.getElementById("close").addEventListener("click", closeParent);
 window.addEventListener("keydown", onKeyDown);
 window.addEventListener("keyup", onKeyUp);
 window.addEventListener("resize", () => render.resize());
 
-selectLists();
 render.reset();
 speech.ready();
 syncControls();
+boot();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {

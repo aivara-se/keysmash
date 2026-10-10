@@ -14,6 +14,7 @@ Everything static: the repository is the app, the committed files are the publis
 
 - One page fills the viewport. Nothing navigates; the child is given no second screen.
 - The only third-party file, if any, is vendored in the repository, pinned and hashed, with its licence beside it — never a CDN. The app promises no third-party request, and a CDN is one more thing that must be up for it to work offline.
+- The built-in word lists are the JSON under `lists/`: `index.json` names them in order, and each list has its own file. They are read into the device on a first run, and they are precached with the shell — an install whose first run has the network off would otherwise open with no words on it at all.
 - Keyboard input is the browser's own key events. Every character key is written as it goes down; the system's key auto-repeat is ignored (the event's own repeat flag), which is what "a held key gives one character, no repeat" means in code.
 
 ## speech
@@ -31,7 +32,9 @@ Everything static: the repository is the app, the committed files are the publis
 
 ## storage
 
-- The parent's settings — the active word lists — live in the visitor's `localStorage`, on the device.
+- The word lists, their words, each word's emoji and each word's picture live in IndexedDB, on the device. The built-in lists are read into it from `lists/` on a first run; after that the database is the copy the app marks from, the parent's edits and pictures included.
+- A word's picture is stored as a data URL, scaled on the way in to fit 512px on its long edge. A photo off a camera roll would otherwise put megabytes into the database and megabytes through the DOM on every redraw.
+- The parent's settings — which lists are on — live in the visitor's `localStorage`.
 - The child's text is never stored; it is gone when the app closes.
 
 ## full screen
@@ -45,12 +48,18 @@ Neither is a lock. Esc, an OS shortcut, a notification, and the volume or power 
 
 ## checks
 
-There is no build, so nothing here needs a browser for the site to exist. The pure rules are held to by `bun run check` — a type-check and the unit tests for word and number matching. What needs a browser, run against a served copy in a real Chrome:
+There is no build, so nothing here needs a browser for the site to exist. The pure rules are held to by `bun run check` — a type-check and the unit tests for the lists, words and numbers. What needs a browser, run against a served copy in a real Chrome:
 
 - a keypress writes its character, within the 150 ms budget, measured;
 - a replayed drag across the keyboard writes every character it passed, and is read aloud only at the letter it ends on;
 - a held key gives one character;
-- a reload with the network off opens the app;
+- the settings page opens from the corner control and from the Shift-hold, and leaves the child's text alone;
+- a list turned off stops being marked, and the choice survives a reload;
+- a word added on the settings page is marked, is drawn with its emoji or its picture, and is still there after a reload;
+- a word another list already holds is refused, naming that list;
+- Restore takes the parent's own words off the device;
+- the built-in lists are precached with the shell;
+- a reload with the network off opens the app and still marks words;
 - no console error.
 
 Screenshots are looked at; a check does not prove a screen is right to a child.

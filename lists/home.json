@@ -1,0 +1,31 @@
+{
+  "id": "home",
+  "name": "Home and things",
+  "color": "green",
+  "words": [
+    { "word": "house", "emoji": "🏠" },
+    { "word": "door", "emoji": "🚪" },
+    { "word": "bed", "emoji": "🛏️" },
+    { "word": "chair", "emoji": "🪑" },
+    { "word": "cup", "emoji": "🥤" },
+    { "word": "spoon", "emoji": "🥄" },
+    { "word": "sock", "emoji": "🧦" },
+    { "word": "shoe", "emoji": "👟" },
+    { "word": "hat", "emoji": "🧢" },
+    { "word": "coat", "emoji": "🧥" },
+    { "word": "key", "emoji": "🔑" },
+    { "word": "light", "emoji": "💡" },
+    { "word": "clock", "emoji": "🕐" },
+    { "word": "phone", "emoji": "📞" },
+    { "word": "box", "emoji": "📦" },
+    { "word": "bag", "emoji": "👜" },
+    { "word": "soap", "emoji": "🧼" },
+    { "word": "broom", "emoji": "🧹" },
+    { "word": "tree", "emoji": "🌳" },
+    { "word": "flower", "emoji": "🌸" },
+    { "word": "leaf", "emoji": "🍃" },
+    { "word": "bucket", "emoji": "🪣" },
+    { "word": "basket", "emoji": "🧺" },
+    { "word": "candle", "emoji": "🕯️" }
+  ]
+}

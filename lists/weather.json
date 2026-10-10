@@ -1,0 +1,25 @@
+{
+  "id": "weather",
+  "name": "Weather and sky",
+  "color": "sky",
+  "words": [
+    { "word": "sun", "emoji": "☀️" },
+    { "word": "moon", "emoji": "🌙" },
+    { "word": "star", "emoji": "⭐" },
+    { "word": "cloud", "emoji": "☁️" },
+    { "word": "rain", "emoji": "🌧️" },
+    { "word": "snow", "emoji": "❄️" },
+    { "word": "wind", "emoji": "🌬️" },
+    { "word": "storm", "emoji": "⛈️" },
+    { "word": "rainbow", "emoji": "🌈" },
+    { "word": "ice", "emoji": "🧊" },
+    { "word": "fog", "emoji": "🌫️" },
+    { "word": "snowman", "emoji": "⛄" },
+    { "word": "comet", "emoji": "☄️" },
+    { "word": "fire", "emoji": "🔥" },
+    { "word": "water", "emoji": "💧" },
+    { "word": "umbrella", "emoji": "☂️" },
+    { "word": "gloves", "emoji": "🧤" },
+    { "word": "boots", "emoji": "🥾" }
+  ]
+}

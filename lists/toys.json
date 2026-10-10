@@ -1,0 +1,25 @@
+{
+  "id": "toys",
+  "name": "Toys and play",
+  "color": "pink",
+  "words": [
+    { "word": "ball", "emoji": "⚽" },
+    { "word": "teddy", "emoji": "🧸" },
+    { "word": "doll", "emoji": "🪆" },
+    { "word": "block", "emoji": "🧱" },
+    { "word": "kite", "emoji": "🪁" },
+    { "word": "drum", "emoji": "🥁" },
+    { "word": "balloon", "emoji": "🎈" },
+    { "word": "puzzle", "emoji": "🧩" },
+    { "word": "bell", "emoji": "🔔" },
+    { "word": "paint", "emoji": "🎨" },
+    { "word": "crayon", "emoji": "🖍️" },
+    { "word": "robot", "emoji": "🤖" },
+    { "word": "book", "emoji": "📖" },
+    { "word": "game", "emoji": "🎮" },
+    { "word": "dice", "emoji": "🎲" },
+    { "word": "guitar", "emoji": "🎸" },
+    { "word": "song", "emoji": "🎵" },
+    { "word": "ticket", "emoji": "🎟️" }
+  ]
+}
