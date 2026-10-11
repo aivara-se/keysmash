@@ -22,9 +22,6 @@ jobs:
         run: bun run check
 
       - name: Build
-        env:
-          # A Pages project site is served under the repository's name.
-          BASE_PATH: /${{ github.event.repository.name }}
         run: bun run build
 
       - name: Upload the site
