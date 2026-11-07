@@ -1,21 +1,33 @@
-name: Deploy to GitHub Pages
+name: publish
+
+# A merge to `main` publishes the app: the build writes `build/`, and that
+# directory is the site. There is no staging step and no release to cut — the
+# app is one static page, and the merge is the deploy.
 
 on:
   push:
-    branches: main
+    branches: [main]
+    paths-ignore:
+      - "**.md"
   workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - name: Checkout
-        uses: actions/checkout@v7
+      - uses: actions/checkout@v7
 
-      - name: Install Bun
-        uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@v2
 
-      - name: Install dependencies
+      - name: Install
         run: bun install --frozen-lockfile
 
       - name: Check
