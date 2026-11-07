@@ -7,7 +7,7 @@ import type { Drawing } from "./words.js";
  *
  * A pack is one language's words, or the parent's own. The built-in packs are
  * the JSON under `static/lists/`, read into the device's database on first run
- * (SYSTEM.md). Everything here is pure — it takes the packs and returns new
+ * (SYSTEMS.md). Everything here is pure — it takes the packs and returns new
  * ones — so the rules can be read and tested without a database or a page.
  * Keeping them is `src/lib/store.ts`; drawing them is
  * `src/lib/components/SettingsPage.svelte`.

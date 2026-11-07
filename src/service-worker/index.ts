@@ -1,6 +1,6 @@
 /**
  * The offline shell: the files the app boots from and draws its one screen
- * with, precached so the app opens with the network off (SYSTEM.md).
+ * with, precached so the app opens with the network off (SYSTEMS.md).
  *
  * The cache is named after the build, so a new build is a new cache: a
  * returning device is moved onto it rather than left holding the old files.

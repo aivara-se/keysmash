@@ -9,7 +9,7 @@ const MAX_EDGE = 512;
 /**
  * Turns the file the parent chose into the picture a word is drawn with: scaled
  * to fit MAX_EDGE and returned as a data URL, so it is stored in the same
- * record as the word and drawn without an object URL to keep alive (SYSTEM.md).
+ * record as the word and drawn without an object URL to keep alive (SYSTEMS.md).
  */
 export async function toPillImage(file: File): Promise<string> {
   const bitmap = await createImageBitmap(file);

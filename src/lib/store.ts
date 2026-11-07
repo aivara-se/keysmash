@@ -1,7 +1,7 @@
 /**
  * The device's own database: the word packs, their words and each word's
  * picture. IndexedDB is what a browser hands a page that must keep more than a
- * key's worth of data and still run with the network off (SYSTEM.md).
+ * key's worth of data and still run with the network off (SYSTEMS.md).
  *
  * The built-in packs ship as JSON under `static/lists/` and are read into the
  * database on first run. From then on the database is the copy the app reads,
