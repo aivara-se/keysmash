@@ -1,0 +1,35 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  merge_group:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Type check and test
+        run: bun run check
+
+      - name: Build
+        run: bun run build
+
+  # The document standard, from the one checker in aivara-se/.github. This
+  # repository carries no copy of it.
+  docs:
+    permissions:
+      contents: read
+    uses: aivara-se/.github/.github/workflows/validate-docs.yml@main
