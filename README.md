@@ -2,7 +2,7 @@
 
 A typing app for a two-year-old. Every key is written down, a deliberate press is answered with the letter's name, and the words the child makes are read back. It runs offline, keeps the words on the device, and gives the child no way out.
 
-The behaviour is `docs/PRODUCT.md`, the screen is `docs/DESIGN.md`, and how it is built and served is `docs/SYSTEM.md`.
+The behaviour is `docs/PRODUCT.md`, the screen is `docs/DESIGN.md`, and how it is built and served is `docs/SYSTEMS.md`.
 
 ## Run it locally
 
@@ -32,4 +32,6 @@ Behind it: the language the app marks — English — and the parent's own words
 bun run check
 ```
 
-Type-checks the app and the service worker, and runs the unit tests for the packs, words and numbers. The browser checks in `docs/SYSTEM.md` — a keypress writes its character inside 150 ms, a drag writes every character it passed, a held key gives one character, the settings page opens and edits My words, and a reload with the network off opens the app — are run against a built copy in a real Chrome (`bun run build` then `bun run preview`); they are not part of the gate.
+Type-checks the app and the service worker, and runs the unit tests for the packs, words and numbers. The browser checks in `docs/SYSTEMS.md` — a keypress writes its character inside 150 ms, a drag writes every character it passed, a held key gives one character, the settings page opens and edits My words, and a reload with the network off opens the app — are run against a built copy in a real Chrome (`bun run build` then `bun run preview`); they are not part of the gate.
+
+`.github/workflows/validate.yml` runs the same checks on every pull request, in two jobs: `validate` for the app, and `docs` for the document standard. A merge to `main` publishes the site: `.github/workflows/publish.yml` builds and deploys it to GitHub Pages.

@@ -1,6 +1,6 @@
 // Regenerates the letter clips. Run: bun run scripts/make-clips.ts
 // Requires espeak-ng on PATH. The clips are the letters' voice on a device
-// with no local speech voice (SYSTEM.md).
+// with no local speech voice (SYSTEMS.md).
 import { $ } from "bun";
 import { mkdir } from "node:fs/promises";
 

@@ -8,7 +8,7 @@ export interface Settings {
 
 /**
  * The parent's choice of language, kept on the device in localStorage
- * (SYSTEM.md). The packs themselves, and everything in them, live in the
+ * (SYSTEMS.md). The packs themselves, and everything in them, live in the
  * database (`src/lib/store.ts`).
  *
  * The key carries a version: a device holding the old choice of lists must not

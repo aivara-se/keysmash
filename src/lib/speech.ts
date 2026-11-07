@@ -3,7 +3,7 @@
  *
  * The device's own local voice is preferred. Where the device has none —
  * nothing that stays off the network — the letters fall back to the committed
- * clips: the same single voice, offline, inside the answer budget (SYSTEM.md).
+ * clips: the same single voice, offline, inside the answer budget (SYSTEMS.md).
  * A new sound cuts off the last, so sounds never stack and the volume never
  * rises.
  */
