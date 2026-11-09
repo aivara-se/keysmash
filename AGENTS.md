@@ -35,6 +35,7 @@ The organisation's skills live in `aivara-se/.agents/skills` and every agent rea
 
 ```bash
 bun install --frozen-lockfile
+bun fmt --no-script --check .   # names every file the formatter would rewrite
 bun run check    # svelte-check, tsc over the service worker, and the unit tests
 bun run build    # vite build, and the checks the build reruns
 ```
