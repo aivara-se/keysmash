@@ -1,8 +1,6 @@
 # Agent Instructions
 
-Keysmash is a typing app for a two-year-old: every key the child presses is written down, a
-deliberate press is answered with the letter's name, and the words the child has made are read back.
-It is one static page, it runs with the network off, and the child has no way out of it.
+Keysmash is a typing app for a two-year-old: every key the child presses is written down, a deliberate press is answered with the letter's name, and the words the child has made are read back. It is one static page, it runs with the network off, and the child has no way out of it.
 
 This file is the `aivara-se` agent convention: the rules that hold in every repository. Adopt it, do not fork it. It never describes the state of the work — that lives in the documents below.
 
@@ -17,14 +15,10 @@ One fact, one home: link to a document, never restate it. A sentence here that s
 
 ## House rules
 
-- **Never** break a rule `PRODUCT.md` fixes: nothing typed is withheld, cleared or rewritten, and the
-  parent's actions never edit a character the child typed.
-- **Never** add a request off the device — no CDN, no font host, no analytics, no third-party script.
-  A file the app needs is vendored in the tree or it does not ship.
-- **Never** choose a voice that needs the network: speech is the device's own local voice, or the
-  committed clips in `static/clips/`.
-- **Measure the answer budget, do not assume it.** Every character is written as its key goes down and
-  a letter is named only after 150 ms of quiet; both are measured in a real Chrome against a built copy.
+- **Never** break a rule `PRODUCT.md` fixes: nothing typed is withheld, cleared or rewritten, and the parent's actions never edit a character the child typed.
+- **Never** add a request off the device — no CDN, no font host, no analytics, no third-party script. A file the app needs is vendored in the tree or it does not ship.
+- **Never** choose a voice that needs the network: speech is the device's own local voice, or the committed clips in `static/clips/`.
+- **Measure the answer budget, do not assume it.** Every character is written as its key goes down and a letter is named only after 150 ms of quiet; both are measured in a real Chrome against a built copy.
 - **A word pack is data**, under `static/lists/`, named in `index.json`. Adding words is not a code change.
 
 ## Tooling
@@ -47,12 +41,9 @@ bun run build    # vite build, and the checks the build reruns
 
 Run the whole sequence and read every result — the last exit code says nothing about the first.
 
-What no script can see — a keypress inside 150 ms, a drag written in full, a held key, the settings
-page, a reload with the network off — is `docs/SYSTEMS.md` § Failure modes and the browser pass in
-`README.md` § Checks: a real Chrome against `bun run build` then `bun run preview`.
+What no script can see — a keypress inside 150 ms, a drag written in full, a held key, the settings page, a reload with the network off — is `docs/SYSTEMS.md` § Failure modes and the browser pass in `README.md` § Checks: a real Chrome against `bun run build` then `bun run preview`.
 
-The same commands run in `.github/workflows/validate.yml`, whose job is named `validate` — the name
-the organisation's baseline requires a check under before a merge.
+The same commands run in `.github/workflows/validate.yml`, whose job is named `validate` — the name the organisation's baseline requires a check under before a merge.
 
 ## Version Control
 
@@ -63,4 +54,3 @@ the organisation's baseline requires a check under before a merge.
 - Commit under your own identity, never another agent's.
 - Remote work is a branch plus a pull request: the body says what changed, what was verified and how, and what was left out. Leave the tree clean.
 - Request review from the operator (`thani-sh`) alone for a documents-only change, and from the operator and one peer agent for an implementation one.
-

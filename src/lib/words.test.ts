@@ -25,25 +25,63 @@ describe("markText", () => {
   });
 
   test("a single digit is spoken as its name", () => {
-    expect(markText("3", words)).toEqual([{ start: 0, end: 1, kind: "number", value: "3", spoken: "three" }]);
+    expect(markText("3", words)).toEqual([
+      { start: 0, end: 1, kind: "number", value: "3", spoken: "three" },
+    ]);
   });
 
   test("matching is case-insensitive, and records the covered range", () => {
     expect(markText("Cat", words)).toEqual([
-      { start: 0, end: 3, kind: "word", value: "Cat", spoken: "cat", emoji: "🐱", color: "animals", image: undefined },
+      {
+        start: 0,
+        end: 3,
+        kind: "word",
+        value: "Cat",
+        spoken: "cat",
+        emoji: "🐱",
+        color: "animals",
+        image: undefined,
+      },
     ]);
   });
 
   test("a word carries the emoji and colour its pack gave it", () => {
     expect(markText("cat", words)).toEqual([
-      { start: 0, end: 3, kind: "word", value: "cat", spoken: "cat", emoji: "🐱", color: "animals", image: undefined },
+      {
+        start: 0,
+        end: 3,
+        kind: "word",
+        value: "cat",
+        spoken: "cat",
+        emoji: "🐱",
+        color: "animals",
+        image: undefined,
+      },
     ]);
     // no emoji, no colour and no picture are left undefined rather than invented
     expect(markText("cats", words)).toEqual([
-      { start: 0, end: 4, kind: "word", value: "cats", spoken: "cats", emoji: undefined, color: undefined, image: undefined },
+      {
+        start: 0,
+        end: 4,
+        kind: "word",
+        value: "cats",
+        spoken: "cats",
+        emoji: undefined,
+        color: undefined,
+        image: undefined,
+      },
     ]);
     expect(markText("mum", words)).toEqual([
-      { start: 0, end: 3, kind: "word", value: "mum", spoken: "mum", emoji: undefined, color: "people", image: undefined },
+      {
+        start: 0,
+        end: 3,
+        kind: "word",
+        value: "mum",
+        spoken: "mum",
+        emoji: undefined,
+        color: "people",
+        image: undefined,
+      },
     ]);
   });
 
@@ -55,7 +93,16 @@ describe("markText", () => {
 
   test("a word carries the picture its pack gave it, for the pill to draw instead of an emoji", () => {
     expect(markText("nana", words)).toEqual([
-      { start: 0, end: 4, kind: "word", value: "nana", spoken: "nana", emoji: undefined, color: undefined, image: "data:image/png;base64,AAAA" },
+      {
+        start: 0,
+        end: 4,
+        kind: "word",
+        value: "nana",
+        spoken: "nana",
+        emoji: undefined,
+        color: undefined,
+        image: "data:image/png;base64,AAAA",
+      },
     ]);
   });
 });
@@ -65,6 +112,9 @@ describe("newUtterances", () => {
     const spoken = new Map<number, string>();
     expect(newUtterances(markText("cat", words), spoken)).toEqual(["cat"]);
     expect(newUtterances(markText("cat", words), spoken)).toEqual([]);
-    expect(newUtterances(markText("cats dog", words), spoken)).toEqual(["cats", "dog"]);
+    expect(newUtterances(markText("cats dog", words), spoken)).toEqual([
+      "cats",
+      "dog",
+    ]);
   });
 });

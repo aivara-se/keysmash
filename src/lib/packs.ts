@@ -34,7 +34,21 @@ export interface Pack {
  * The colour keys a word may name. The values, and their measured contrast
  * against the surface, are in `src/app.css` and `docs/DESIGN.md`.
  */
-export const COLORS: readonly string[] = ["red", "orange", "amber", "yellow", "green", "teal", "sky", "blue", "indigo", "violet", "pink", "brown", "slate"];
+export const COLORS: readonly string[] = [
+  "red",
+  "orange",
+  "amber",
+  "yellow",
+  "green",
+  "teal",
+  "sky",
+  "blue",
+  "indigo",
+  "violet",
+  "pink",
+  "brown",
+  "slate",
+];
 
 /**
  * The pack the parent's own words go in. It ships empty and the parent fills
@@ -80,7 +94,10 @@ export function drawingOf(entry: Word): Drawing {
  * image it is drawn with: those of the chosen language and those of the
  * parent's own pack, which the language does not turn off.
  */
-export function wordsFor(language: string, packs: readonly Pack[]): Map<string, Drawing> {
+export function wordsFor(
+  language: string,
+  packs: readonly Pack[],
+): Map<string, Drawing> {
   const words = new Map<string, Drawing>();
   for (const pack of packs) {
     if (pack.id !== language && pack.id !== CUSTOM_PACK_ID) continue;
@@ -92,10 +109,20 @@ export function wordsFor(language: string, packs: readonly Pack[]): Map<string, 
 }
 
 /** Replaces one word of one pack, leaving every other pack as it was. */
-function editWord(packs: readonly Pack[], packId: string, word: string, change: (entry: Word) => Word): Pack[] {
+function editWord(
+  packs: readonly Pack[],
+  packId: string,
+  word: string,
+  change: (entry: Word) => Word,
+): Pack[] {
   return packs.map((pack) => {
     if (pack.id !== packId) return pack;
-    return { ...pack, words: pack.words.map((entry) => (entry.word === word ? change(entry) : entry)) };
+    return {
+      ...pack,
+      words: pack.words.map((entry) =>
+        entry.word === word ? change(entry) : entry,
+      ),
+    };
   });
 }
 
@@ -104,7 +131,11 @@ function editWord(packs: readonly Pack[], packId: string, word: string, change: 
  * untouched and the reason it was refused: a word is letters only, and one word
  * lives in one place, so a word another pack holds comes back naming that pack.
  */
-export function addWord(packs: Pack[], packId: string, typed: string): { packs: Pack[]; error: string | null } {
+export function addWord(
+  packs: Pack[],
+  packId: string,
+  typed: string,
+): { packs: Pack[]; error: string | null } {
   const word = normalizeWord(typed);
   // A refusal hands the packs back by identity, so the caller can see nothing
   // changed and keep the parent's typing where it is.
@@ -116,20 +147,34 @@ export function addWord(packs: Pack[], packId: string, typed: string): { packs: 
   }
   return {
     error: null,
-    packs: packs.map((pack) => (pack.id === packId ? { ...pack, words: [...pack.words, { word }] } : pack)),
+    packs: packs.map((pack) =>
+      pack.id === packId ? { ...pack, words: [...pack.words, { word }] } : pack,
+    ),
   };
 }
 
 /** Takes a word off a pack. */
-export function removeWord(packs: readonly Pack[], packId: string, word: string): Pack[] {
+export function removeWord(
+  packs: readonly Pack[],
+  packId: string,
+  word: string,
+): Pack[] {
   return packs.map((pack) => {
     if (pack.id !== packId) return pack;
-    return { ...pack, words: pack.words.filter((entry) => entry.word !== word) };
+    return {
+      ...pack,
+      words: pack.words.filter((entry) => entry.word !== word),
+    };
   });
 }
 
 /** Sets a word's emoji, or takes it away when the parent leaves the field empty. */
-export function setEmoji(packs: readonly Pack[], packId: string, word: string, typed: string): Pack[] {
+export function setEmoji(
+  packs: readonly Pack[],
+  packId: string,
+  word: string,
+  typed: string,
+): Pack[] {
   const emoji = String(typed).trim();
   return editWord(packs, packId, word, (entry) => {
     const next = { ...entry };
@@ -140,12 +185,24 @@ export function setEmoji(packs: readonly Pack[], packId: string, word: string, t
 }
 
 /** Gives a word a picture, which is drawn instead of its emoji. */
-export function setImage(packs: readonly Pack[], packId: string, word: string, dataUrl: string): Pack[] {
-  return editWord(packs, packId, word, (entry) => ({ ...entry, image: dataUrl }));
+export function setImage(
+  packs: readonly Pack[],
+  packId: string,
+  word: string,
+  dataUrl: string,
+): Pack[] {
+  return editWord(packs, packId, word, (entry) => ({
+    ...entry,
+    image: dataUrl,
+  }));
 }
 
 /** Takes a word's picture away, leaving its emoji or its plain ink. */
-export function clearImage(packs: readonly Pack[], packId: string, word: string): Pack[] {
+export function clearImage(
+  packs: readonly Pack[],
+  packId: string,
+  word: string,
+): Pack[] {
   return editWord(packs, packId, word, (entry) => {
     const next = { ...entry };
     delete next.image;

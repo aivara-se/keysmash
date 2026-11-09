@@ -24,8 +24,15 @@ export function createSpeech(): Speech {
 
   function pickVoice(): void {
     if (synth === null) return;
-    const local = synth.getVoices().filter((candidate) => candidate.localService);
-    voice = local.find((candidate) => candidate.lang && candidate.lang.startsWith("en")) ?? local[0] ?? null;
+    const local = synth
+      .getVoices()
+      .filter((candidate) => candidate.localService);
+    voice =
+      local.find(
+        (candidate) => candidate.lang && candidate.lang.startsWith("en"),
+      ) ??
+      local[0] ??
+      null;
   }
 
   function clipFor(letter: string): HTMLAudioElement {
