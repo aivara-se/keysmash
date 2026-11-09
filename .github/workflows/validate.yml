@@ -21,6 +21,9 @@ jobs:
       - name: Install
         run: bun install --frozen-lockfile
 
+      - name: Format
+        run: bun fmt --no-script --check .
+
       - name: Type check and test
         run: bun run check
 
