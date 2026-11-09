@@ -37,7 +37,8 @@ export interface Store {
 /** The built-in pack ids, in the order the seed file names them. */
 async function readPackIds(): Promise<string[]> {
   const response = await fetch(assetUrl("lists/index.json"));
-  if (!response.ok) throw new Error(`lists/index.json: HTTP ${response.status}`);
+  if (!response.ok)
+    throw new Error(`lists/index.json: HTTP ${response.status}`);
   const ids: unknown = await response.json();
   if (!Array.isArray(ids) || ids.some((id) => typeof id !== "string")) {
     throw new Error("lists/index.json: expected a list of ids");
@@ -48,7 +49,8 @@ async function readPackIds(): Promise<string[]> {
 /** One built-in pack, read from its own file. The file ships with the app. */
 async function readPackFile(id: string): Promise<Pack> {
   const response = await fetch(assetUrl(`lists/${id}.json`));
-  if (!response.ok) throw new Error(`lists/${id}.json: HTTP ${response.status}`);
+  if (!response.ok)
+    throw new Error(`lists/${id}.json: HTTP ${response.status}`);
   return (await response.json()) as Pack;
 }
 
@@ -74,8 +76,10 @@ function open(): Promise<IDBDatabase> {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
     request.onupgradeneeded = () => {
       const database = request.result;
-      if (!database.objectStoreNames.contains(PACK_STORE)) database.createObjectStore(PACK_STORE, { keyPath: "id" });
-      if (!database.objectStoreNames.contains(META_STORE)) database.createObjectStore(META_STORE);
+      if (!database.objectStoreNames.contains(PACK_STORE))
+        database.createObjectStore(PACK_STORE, { keyPath: "id" });
+      if (!database.objectStoreNames.contains(META_STORE))
+        database.createObjectStore(META_STORE);
     };
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject(request.error);
@@ -92,12 +96,22 @@ function open(): Promise<IDBDatabase> {
  * left without work.
  */
 async function seed(database: IDBDatabase): Promise<void> {
-  const held = (await answered(database.transaction(PACK_STORE).objectStore(PACK_STORE).getAllKeys())) as IDBValidKey[];
-  const mine = (await answered(database.transaction(PACK_STORE).objectStore(PACK_STORE).get(CUSTOM_PACK_ID))) as Pack | undefined;
+  const held = (await answered(
+    database.transaction(PACK_STORE).objectStore(PACK_STORE).getAllKeys(),
+  )) as IDBValidKey[];
+  const mine = (await answered(
+    database
+      .transaction(PACK_STORE)
+      .objectStore(PACK_STORE)
+      .get(CUSTOM_PACK_ID),
+  )) as Pack | undefined;
   const ids = await readPackIds();
   const packs = await Promise.all(ids.map((id) => readPackFile(id)));
 
-  const transaction = database.transaction([PACK_STORE, META_STORE], "readwrite");
+  const transaction = database.transaction(
+    [PACK_STORE, META_STORE],
+    "readwrite",
+  );
   const store = transaction.objectStore(PACK_STORE);
   for (const id of held) if (!ids.includes(String(id))) store.delete(id);
   packs.forEach((pack, order) => {
@@ -124,9 +138,16 @@ export function createStore(): Store {
      */
     async packs(): Promise<Pack[]> {
       const db = await database();
-      const seeded = await answered(db.transaction(META_STORE).objectStore(META_STORE).get(SEEDED));
+      const seeded = await answered(
+        db.transaction(META_STORE).objectStore(META_STORE).get(SEEDED),
+      );
       if (seeded !== SEED_VERSION) await seed(db);
-      const all = await answered(db.transaction(PACK_STORE).objectStore(PACK_STORE).getAll() as IDBRequest<Pack[]>);
+      const all = await answered(
+        db
+          .transaction(PACK_STORE)
+          .objectStore(PACK_STORE)
+          .getAll() as IDBRequest<Pack[]>,
+      );
       return all.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     },
 

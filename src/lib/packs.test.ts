@@ -22,7 +22,9 @@ const DIR = join(import.meta.dir, "..", "..", "static", "lists");
 /** The built-in packs exactly as they ship, read from their own files. */
 async function shipped(): Promise<{ ids: string[]; packs: Pack[] }> {
   const ids = (await Bun.file(join(DIR, "index.json")).json()) as string[];
-  const packs = (await Promise.all(ids.map((id) => Bun.file(join(DIR, `${id}.json`)).json()))) as Pack[];
+  const packs = (await Promise.all(
+    ids.map((id) => Bun.file(join(DIR, `${id}.json`)).json()),
+  )) as Pack[];
   return { ids, packs };
 }
 
@@ -32,7 +34,9 @@ const { ids, packs } = await shipped();
 const ENGLISH = "english";
 
 const wordIn = (of: Pack[], packId: string, word: string) =>
-  of.find((pack) => pack.id === packId)?.words.find((entry) => entry.word === word);
+  of
+    .find((pack) => pack.id === packId)
+    ?.words.find((entry) => entry.word === word);
 
 describe("the built-in packs", () => {
   test("have a file each, and the index names none that is missing", () => {
@@ -75,7 +79,9 @@ describe("the built-in packs", () => {
   test("give every word a known colour, or none", () => {
     for (const pack of packs) {
       for (const entry of pack.words) {
-        expect(entry.color === undefined || COLORS.includes(entry.color)).toBe(true);
+        expect(entry.color === undefined || COLORS.includes(entry.color)).toBe(
+          true,
+        );
       }
     }
   });
@@ -101,8 +107,15 @@ describe("the built-in packs", () => {
     // Every word the older seed shipped is on English, drawn as it was: the
     // colour its list gave it is written onto the word by the merge.
     expect(wordIn(packs, ENGLISH, "cat")).toEqual({ word: "cat", emoji: "🐱" });
-    expect(wordIn(packs, ENGLISH, "apple")).toEqual({ word: "apple", emoji: "🍎" });
-    expect(wordIn(packs, ENGLISH, "mama")).toEqual({ word: "mama", emoji: "👩", color: "violet" });
+    expect(wordIn(packs, ENGLISH, "apple")).toEqual({
+      word: "apple",
+      emoji: "🍎",
+    });
+    expect(wordIn(packs, ENGLISH, "mama")).toEqual({
+      word: "mama",
+      emoji: "👩",
+      color: "violet",
+    });
     expect(wordIn(packs, ENGLISH, "play")).toEqual({ word: "play" });
   });
 });
@@ -110,8 +123,16 @@ describe("the built-in packs", () => {
 describe("wordsFor", () => {
   test("gives the chosen language's words, with their emoji, colour and no picture", () => {
     const words = wordsFor(ENGLISH, packs);
-    expect(words.get("cat")).toEqual({ emoji: "🐱", color: "amber", image: undefined });
-    expect(words.get("apple")).toEqual({ emoji: "🍎", color: "red", image: undefined });
+    expect(words.get("cat")).toEqual({
+      emoji: "🐱",
+      color: "amber",
+      image: undefined,
+    });
+    expect(words.get("apple")).toEqual({
+      emoji: "🍎",
+      color: "red",
+      image: undefined,
+    });
   });
 
   test("takes a word's own colour, else its emoji's, else none", () => {
@@ -134,7 +155,9 @@ describe("wordsFor", () => {
 
   test("carries a word's picture through to the screen", () => {
     const sent = setImage(packs, ENGLISH, "hair", "data:image/png;base64,AAAA");
-    expect(wordsFor(ENGLISH, sent).get("hair")?.image).toBe("data:image/png;base64,AAAA");
+    expect(wordsFor(ENGLISH, sent).get("hair")?.image).toBe(
+      "data:image/png;base64,AAAA",
+    );
   });
 
   test("gives nothing for no pack at all", () => {
@@ -145,7 +168,8 @@ describe("wordsFor", () => {
 describe("the shape of a word", () => {
   test("is one run of lower-case letters", () => {
     expect(validWord("cat")).toBe(true);
-    for (const word of ["", "two words", "Cat", "cat1", "cat!", "dog's"]) expect(validWord(word)).toBe(false);
+    for (const word of ["", "two words", "Cat", "cat1", "cat!", "dog's"])
+      expect(validWord(word)).toBe(false);
   });
 
   test("is trimmed and lower-cased when the parent types it", () => {
@@ -163,7 +187,9 @@ describe("adding a word", () => {
   test("puts it on the pack the parent chose", () => {
     const result = addWord(packs, CUSTOM_PACK_ID, "  Doggy ");
     expect(result.error).toBeNull();
-    expect(wordIn(result.packs, CUSTOM_PACK_ID, "doggy")).toEqual({ word: "doggy" });
+    expect(wordIn(result.packs, CUSTOM_PACK_ID, "doggy")).toEqual({
+      word: "doggy",
+    });
   });
 
   test("refuses anything but one run of letters, and changes nothing", () => {
@@ -175,8 +201,12 @@ describe("adding a word", () => {
   });
 
   test("refuses a word another pack already holds, and names that pack", () => {
-    expect(addWord(packs, CUSTOM_PACK_ID, "cat").error).toBe("Already in English.");
-    expect(addWord(packs, CUSTOM_PACK_ID, "CAT").error).toBe("Already in English.");
+    expect(addWord(packs, CUSTOM_PACK_ID, "cat").error).toBe(
+      "Already in English.",
+    );
+    expect(addWord(packs, CUSTOM_PACK_ID, "CAT").error).toBe(
+      "Already in English.",
+    );
     expect(addWord(packs, ENGLISH, "cat").error).toBe("Already in English.");
   });
 
@@ -196,17 +226,25 @@ describe("adding a word", () => {
 
 describe("editing a word", () => {
   test("sets its emoji", () => {
-    expect(wordIn(setEmoji(packs, ENGLISH, "hair", "💇"), ENGLISH, "hair")?.emoji).toBe("💇");
+    expect(
+      wordIn(setEmoji(packs, ENGLISH, "hair", "💇"), ENGLISH, "hair")?.emoji,
+    ).toBe("💇");
   });
 
   test("takes an emoji away when the field is left empty", () => {
-    expect(wordIn(setEmoji(packs, ENGLISH, "cat", "   "), ENGLISH, "cat")).toEqual({ word: "cat" });
+    expect(
+      wordIn(setEmoji(packs, ENGLISH, "cat", "   "), ENGLISH, "cat"),
+    ).toEqual({ word: "cat" });
   });
 
   test("gives it a picture, and takes it away again", () => {
     const sent = setImage(packs, ENGLISH, "hair", "data:image/png;base64,AAAA");
-    expect(wordIn(sent, ENGLISH, "hair")?.image).toBe("data:image/png;base64,AAAA");
-    expect(wordIn(clearImage(sent, ENGLISH, "hair"), ENGLISH, "hair")?.image).toBeUndefined();
+    expect(wordIn(sent, ENGLISH, "hair")?.image).toBe(
+      "data:image/png;base64,AAAA",
+    );
+    expect(
+      wordIn(clearImage(sent, ENGLISH, "hair"), ENGLISH, "hair")?.image,
+    ).toBeUndefined();
   });
 
   test("removes it from its pack", () => {

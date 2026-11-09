@@ -36,13 +36,22 @@ export interface Mark {
  * carries the text it covers and the form to speak, and a word carries the
  * emoji, colour and picture its pack gave it, for the pill to draw.
  */
-export function markText(text: string, words: ReadonlyMap<string, Drawing>): Mark[] {
+export function markText(
+  text: string,
+  words: ReadonlyMap<string, Drawing>,
+): Mark[] {
   const marks: Mark[] = [];
   for (const match of text.matchAll(TOKEN)) {
     const value = match[0];
     const start = match.index;
     if (value[0] >= "0" && value[0] <= "9") {
-      marks.push({ start, end: start + value.length, kind: "number", value, spoken: readDigits(value) });
+      marks.push({
+        start,
+        end: start + value.length,
+        kind: "number",
+        value,
+        spoken: readDigits(value),
+      });
       continue;
     }
     const entry = words.get(value.toLowerCase());
@@ -65,7 +74,10 @@ export function markText(text: string, words: ReadonlyMap<string, Drawing>): Mar
  * The marks to speak now: those not already spoken in that form. Calling it
  * records what is spoken, so a marked word is not spoken again until it changes.
  */
-export function newUtterances(marks: readonly Mark[], spoken: Map<number, string>): string[] {
+export function newUtterances(
+  marks: readonly Mark[],
+  spoken: Map<number, string>,
+): string[] {
   const utterances: string[] = [];
   for (const mark of marks) {
     if (spoken.get(mark.start) === mark.spoken) continue;

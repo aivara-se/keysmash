@@ -126,22 +126,50 @@ body {
 /* A marked word is drawn in its colour, its outline included: the outline is
    `currentColor`. The colour is the word's own, or the one its emoji names
    (src/lib/emoji-colors.ts), or the ink. */
-.mark[data-color="red"] { color: var(--ink-red); }
-.mark[data-color="orange"] { color: var(--ink-orange); }
-.mark[data-color="amber"] { color: var(--ink-amber); }
-.mark[data-color="yellow"] { color: var(--ink-yellow); }
-.mark[data-color="green"] { color: var(--ink-green); }
-.mark[data-color="teal"] { color: var(--ink-teal); }
-.mark[data-color="sky"] { color: var(--ink-sky); }
-.mark[data-color="blue"] { color: var(--ink-blue); }
-.mark[data-color="indigo"] { color: var(--ink-indigo); }
-.mark[data-color="violet"] { color: var(--ink-violet); }
-.mark[data-color="pink"] { color: var(--ink-pink); }
-.mark[data-color="brown"] { color: var(--ink-brown); }
-.mark[data-color="slate"] { color: var(--ink-slate); }
+.mark[data-color="red"] {
+  color: var(--ink-red);
+}
+.mark[data-color="orange"] {
+  color: var(--ink-orange);
+}
+.mark[data-color="amber"] {
+  color: var(--ink-amber);
+}
+.mark[data-color="yellow"] {
+  color: var(--ink-yellow);
+}
+.mark[data-color="green"] {
+  color: var(--ink-green);
+}
+.mark[data-color="teal"] {
+  color: var(--ink-teal);
+}
+.mark[data-color="sky"] {
+  color: var(--ink-sky);
+}
+.mark[data-color="blue"] {
+  color: var(--ink-blue);
+}
+.mark[data-color="indigo"] {
+  color: var(--ink-indigo);
+}
+.mark[data-color="violet"] {
+  color: var(--ink-violet);
+}
+.mark[data-color="pink"] {
+  color: var(--ink-pink);
+}
+.mark[data-color="brown"] {
+  color: var(--ink-brown);
+}
+.mark[data-color="slate"] {
+  color: var(--ink-slate);
+}
 
 /* A number is always its own colour, so a number pill never reads as a word. */
-.mark[data-kind="number"] { color: var(--ink-number); }
+.mark[data-kind="number"] {
+  color: var(--ink-number);
+}
 
 /* The word's emoji, drawn inside the pill before the word. It comes from the
    mark's own data attribute, so the child's text is what sits in the DOM. */
@@ -193,27 +221,69 @@ body {
    values are (1 + cos) / 2 sampled every 5%, so the fade has no flat spot and
    no corner at either end. It runs whatever the device's motion setting says. */
 @keyframes caret-pulse {
-  0% { opacity: 1; }
-  5% { opacity: 0.976; }
-  10% { opacity: 0.905; }
-  15% { opacity: 0.794; }
-  20% { opacity: 0.655; }
-  25% { opacity: 0.5; }
-  30% { opacity: 0.345; }
-  35% { opacity: 0.206; }
-  40% { opacity: 0.095; }
-  45% { opacity: 0.024; }
-  50% { opacity: 0; }
-  55% { opacity: 0.024; }
-  60% { opacity: 0.095; }
-  65% { opacity: 0.206; }
-  70% { opacity: 0.345; }
-  75% { opacity: 0.5; }
-  80% { opacity: 0.655; }
-  85% { opacity: 0.794; }
-  90% { opacity: 0.905; }
-  95% { opacity: 0.976; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  5% {
+    opacity: 0.976;
+  }
+  10% {
+    opacity: 0.905;
+  }
+  15% {
+    opacity: 0.794;
+  }
+  20% {
+    opacity: 0.655;
+  }
+  25% {
+    opacity: 0.5;
+  }
+  30% {
+    opacity: 0.345;
+  }
+  35% {
+    opacity: 0.206;
+  }
+  40% {
+    opacity: 0.095;
+  }
+  45% {
+    opacity: 0.024;
+  }
+  50% {
+    opacity: 0;
+  }
+  55% {
+    opacity: 0.024;
+  }
+  60% {
+    opacity: 0.095;
+  }
+  65% {
+    opacity: 0.206;
+  }
+  70% {
+    opacity: 0.345;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  80% {
+    opacity: 0.655;
+  }
+  85% {
+    opacity: 0.794;
+  }
+  90% {
+    opacity: 0.905;
+  }
+  95% {
+    opacity: 0.976;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /* The settings page sits over the play screen. It is the parent's, so it holds

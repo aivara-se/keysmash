@@ -24,17 +24,27 @@ const MINIMUM = 4.5;
 async function declaredColors(): Promise<Map<string, string>> {
   const css = await Bun.file(APP_CSS).text();
   const colors = new Map<string, string>();
-  for (const match of css.matchAll(/--ink-([a-z]+):\s*(#[0-9a-fA-F]{6})\s*;/g)) colors.set(match[1], match[2].toLowerCase());
+  for (const match of css.matchAll(/--ink-([a-z]+):\s*(#[0-9a-fA-F]{6})\s*;/g))
+    colors.set(match[1], match[2].toLowerCase());
   return colors;
 }
 
 /** The colour table in DESIGN.md: each colour's hex value and its printed ratio. */
-async function documentedColors(): Promise<Map<string, { hex: string; ratio: number }>> {
+async function documentedColors(): Promise<
+  Map<string, { hex: string; ratio: number }>
+> {
   const doc = await Bun.file(DESIGN).text();
   const colors = new Map<string, { hex: string; ratio: number }>();
   for (const line of doc.split("\n")) {
-    const match = /^\s*-\s+(?:a\s+)?([a-z]+)\s+`(#[0-9a-fA-F]{6})`,\s*([0-9.]+):1\s*$/.exec(line);
-    if (match) colors.set(match[1], { hex: match[2].toLowerCase(), ratio: Number(match[3]) });
+    const match =
+      /^\s*-\s+(?:a\s+)?([a-z]+)\s+`(#[0-9a-fA-F]{6})`,\s*([0-9.]+):1\s*$/.exec(
+        line,
+      );
+    if (match)
+      colors.set(match[1], {
+        hex: match[2].toLowerCase(),
+        ratio: Number(match[3]),
+      });
   }
   return colors;
 }
@@ -43,7 +53,9 @@ async function documentedColors(): Promise<Map<string, { hex: string; ratio: num
 function luminance(hex: string): number {
   const [r, g, b] = [1, 3, 5].map((at) => {
     const channel = parseInt(hex.slice(at, at + 2), 16) / 255;
-    return channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+    return channel <= 0.03928
+      ? channel / 12.92
+      : ((channel + 0.055) / 1.055) ** 2.4;
   });
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
@@ -64,21 +76,34 @@ describe("the palette", () => {
     expect([...declared.keys()].sort()).toEqual([...COLORS, "number"].sort());
     const tooLight = [...declared]
       .filter(([, hex]) => contrast(hex, SURFACE) < MINIMUM)
-      .map(([name, hex]) => `${name} ${hex} is ${contrast(hex, SURFACE).toFixed(2)}:1`);
+      .map(
+        ([name, hex]) =>
+          `${name} ${hex} is ${contrast(hex, SURFACE).toFixed(2)}:1`,
+      );
     expect(tooLight).toEqual([]);
   });
 
   test("prints in DESIGN.md the same values and ratios as app.css", () => {
-    const unlisted = [...declared.keys()].filter((name) => !documented.has(name));
+    const unlisted = [...declared.keys()].filter(
+      (name) => !documented.has(name),
+    );
     expect(unlisted).toEqual([]);
-    const invented = [...documented.keys()].filter((name) => !declared.has(name));
+    const invented = [...documented.keys()].filter(
+      (name) => !declared.has(name),
+    );
     expect(invented).toEqual([]);
     const moved = [...declared]
       .filter(([name, hex]) => {
         const printed = documented.get(name);
-        return printed?.hex !== hex || printed.ratio !== Number(contrast(hex, SURFACE).toFixed(2));
+        return (
+          printed?.hex !== hex ||
+          printed.ratio !== Number(contrast(hex, SURFACE).toFixed(2))
+        );
       })
-      .map(([name, hex]) => `${name} ${hex} is ${contrast(hex, SURFACE).toFixed(2)}:1`);
+      .map(
+        ([name, hex]) =>
+          `${name} ${hex} is ${contrast(hex, SURFACE).toFixed(2)}:1`,
+      );
     expect(moved).toEqual([]);
   });
 

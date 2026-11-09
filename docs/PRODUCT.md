@@ -1,28 +1,20 @@
 # Keysmash: product
 
-A typing app for a two-year-old. Every key the child presses is written down; a deliberate press is
-answered with the letter's name, and the words the child has made are read back.
+A typing app for a two-year-old. Every key the child presses is written down; a deliberate press is answered with the letter's name, and the words the child has made are read back.
 
 ## Problem
 
-A small child wants the keyboard and cannot have the parent's work. A text field teaches nothing and
-risks everything: a stray tap sends a message, a shortcut closes a window. A child that young cannot
-read and does not know that a hand across the keys is not a word.
+A small child wants the keyboard and cannot have the parent's work. A text field teaches nothing and risks everything: a stray tap sends a message, a shortcut closes a window. A child that young cannot read and does not know that a hand across the keys is not a word.
 
-The parent hands over the device and wants it back unchanged, so the screen has one input and no way
-out. Keysmash is that screen: presses become text nobody loses, and letters are named back.
+The parent hands over the device and wants it back unchanged, so the screen has one input and no way out. Keysmash is that screen: presses become text nobody loses, and letters are named back.
 
 ## Scope
 
-**In.** One screen. Every key written, a held key written once. A letter named when the child stops.
-Words and numbers marked, coloured and drawn with an emoji. My words, with a parent's emoji and
-picture, and Restore. English. Offline, installed, full screen.
+**In.** One screen. Every key written, a held key written once. A letter named when the child stops. Words and numbers marked, coloured and drawn with an emoji. My words, with a parent's emoji and picture, and Restore. English. Offline, installed, full screen.
 
 **Not this version.** More than one language. A parent dashboard. Listening to the marks.
 
-**Never.** Lessons, levels, scoring, rewards, streaks, curriculum or profiles. Sync, an account, a
-server, analytics or ads. A request that leaves the device. A way out the child can reach, and
-anything that clears or rewrites the text already written.
+**Never.** Lessons, levels, scoring, rewards, streaks, curriculum or profiles. Sync, an account, a server, analytics or ads. A request that leaves the device. A way out the child can reach, and anything that clears or rewrites the text already written.
 
 ## Behaviour
 
@@ -46,14 +38,11 @@ anything that clears or rewrites the text already written.
 
 ## Autonomy
 
-An agent decides alone: wording, layout and the mechanics behind a rule here, inside the scope. It
-stops for a decision on a new dependency, a change to what is stored on the device, a second
-language, or anything `Never` refuses.
+An agent decides alone: wording, layout and the mechanics behind a rule here, inside the scope. It stops for a decision on a new dependency, a change to what is stored on the device, a second language, or anything `Never` refuses.
 
 ## Vision
 
-The child's noise becomes their first words on a screen that never punishes them. What must not
-change: nothing is withheld, and nothing leaves the device.
+The child's noise becomes their first words on a screen that never punishes them. What must not change: nothing is withheld, and nothing leaves the device.
 
 ## Acceptance
 

@@ -19,7 +19,8 @@ export async function toPillImage(file: File): Promise<string> {
     canvas.width = Math.max(1, Math.round(bitmap.width * scale));
     canvas.height = Math.max(1, Math.round(bitmap.height * scale));
     const context = canvas.getContext("2d");
-    if (context === null) throw new Error("this device will not draw the picture");
+    if (context === null)
+      throw new Error("this device will not draw the picture");
     context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
     return canvas.toDataURL("image/png");
   } finally {
