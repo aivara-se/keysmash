@@ -17,7 +17,7 @@ const DESIGN = join(import.meta.dir, "..", "..", "docs", "DESIGN.md");
 /** The surface every colour is drawn on, and measured against. */
 const SURFACE = "#ffffff";
 
-/** The WCAG AAA floor for small text; every colour here is text. */
+/** The WCAG AA floor for normal text (SC 1.4.3); every colour here is text. */
 const MINIMUM = 4.5;
 
 /** The `--ink-*` colours declared in app.css, by their palette key. */
