@@ -1,4 +1,4 @@
-name: publish
+name: deploy
 
 # A merge to `main` publishes the app: the build writes `build/`, and that
 # directory is the site. There is no staging step and no release to cut — the
