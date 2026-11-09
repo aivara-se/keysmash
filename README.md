@@ -34,4 +34,4 @@ bun run check
 
 Type-checks the app and the service worker, and runs the unit tests for the packs, words and numbers. The browser checks in `docs/SYSTEMS.md` — a keypress writes its character inside 150 ms, a drag writes every character it passed, a held key gives one character, the settings page opens and edits My words, and a reload with the network off opens the app — are run against a built copy in a real Chrome (`bun run build` then `bun run preview`); they are not part of the gate.
 
-`.github/workflows/validate.yml` runs the same checks on every pull request, in two jobs: `validate` for the app, and `docs` for the document standard. A merge to `main` publishes the site: `.github/workflows/publish.yml` builds and deploys it to GitHub Pages.
+`.github/workflows/validate.yml` runs the same checks on every pull request, in two jobs: `validate` for the app, and `docs` for the document standard. A merge to `main` deploys the site: `.github/workflows/deploy.yml` builds it and uploads it to GitHub Pages.
