@@ -163,8 +163,8 @@
     return () => document.removeEventListener("fullscreenchange", syncControls);
   });
 
-  // A change of language changes what the text marks, so the words the app has
-  // already spoken are spoken again against the language the parent chose.
+  // A change to the words changes what the text marks, so the words the app has
+  // already spoken are spoken again.
   $effect(() => {
     void activeWords;
     spoken.clear();
