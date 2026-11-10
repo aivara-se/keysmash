@@ -301,19 +301,13 @@ body {
   line-height: 1.5;
 }
 
-/* The title and the way out. The way out is drawn as the play screen draws its
-   corner controls: an outline and no frame of its own. */
+/* The way out, drawn as the play screen draws its corner controls: an outline
+   and no frame of its own. */
 #settings header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 2vmin;
-}
-
-#settings h1 {
-  margin: 0;
-  font-size: 1.7em;
-  font-weight: 400;
 }
 
 #settings .close {
@@ -342,25 +336,6 @@ body {
 
 #settings .count {
   font-size: 0.8em;
-}
-
-#settings .choice {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  cursor: pointer;
-}
-
-#settings .choice input {
-  width: 1.1em;
-  height: 1.1em;
-  margin: 0;
-  accent-color: var(--ink);
-  cursor: pointer;
-}
-
-#settings .choice .name {
-  font-size: 1.2em;
 }
 
 /* The parent's words are drawn as the child's screen draws them: the same
@@ -484,8 +459,7 @@ body {
 }
 
 #settings .pick input[type="text"],
-#settings .pick .picture,
-#settings .restore-button {
+#settings .pick .picture {
   font: inherit;
   color: var(--ink);
   background: var(--surface);
@@ -537,22 +511,4 @@ body {
 
 #settings .error {
   margin: 0.6em 0 0;
-}
-
-#settings .restore {
-  display: flex;
-  align-items: center;
-  gap: 1em;
-  flex-wrap: wrap;
-  margin-top: 2.5em;
-}
-
-#settings .note {
-  margin: 0;
-  flex: 1;
-  min-width: 12em;
-}
-
-#settings .hint {
-  font-size: 0.8em;
 }

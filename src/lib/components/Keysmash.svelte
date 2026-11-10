@@ -109,12 +109,6 @@
     settingsOpen = false;
   }
 
-  /** Keeps the parent's choice of language on the device, and marks by it. */
-  function setLanguage(id: string): void {
-    settings.setLanguage(id);
-    language = id;
-  }
-
   /**
    * Shows the parent's change at once, then keeps it; a device that will not
    * keep it says so.
@@ -133,12 +127,6 @@
       }
     }
     return null;
-  }
-
-  /** Puts the built-in packs back, taking the parent's words and pictures off the device. */
-  async function restore(): Promise<void> {
-    await store.restore();
-    packs = await store.packs();
   }
 
   async function toggleFullscreen(): Promise<void> {
@@ -226,10 +214,7 @@
 
 <SettingsPage
   {packs}
-  {language}
   {applyPacks}
-  {restore}
-  onLanguage={setLanguage}
   onClose={closeSettings}
   hidden={!settingsOpen}
 />

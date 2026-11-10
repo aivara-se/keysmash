@@ -12,9 +12,8 @@
   } from "#lib/packs.js";
 
   /**
-   * The settings page: the language the app marks, and the parent's own words
-   * drawn on it as the child's screen draws them — a pill each, with its
-   * emoji or its picture.
+   * The settings page: the parent's own words, drawn as the child's screen
+   * draws them — a pill each, with its emoji or its picture.
    *
    * It holds no data. It draws the packs it is handed and gives every change
    * back through `applyPacks`; storing them and redrawing the child's screen
@@ -23,46 +22,44 @@
    * (`src/app.css`, DESIGN.md).
    */
 
-  /** How long a Restore waits for its second tap before it stands down. */
-  const RESTORE_ARM_MS = 5000;
-
   let {
     packs,
-    language,
     hidden = false,
     onClose,
-    onLanguage,
     applyPacks,
-    restore,
   }: {
     packs: Pack[];
-    language: string;
     hidden?: boolean;
     onClose: () => void;
-    onLanguage: (id: string) => void;
     applyPacks: (next: Pack[]) => Promise<string | null>;
-    restore: () => Promise<void>;
   } = $props();
 
-  /** The languages to choose between: every pack but the parent's own. */
-  const languages = $derived(
-    packs.filter((pack) => pack.id !== CUSTOM_PACK_ID),
-  );
-  /** The parent's own words, marked whatever language is chosen. */
+  /** The parent's own words. */
   const mine = $derived(packs.find((pack) => pack.id === CUSTOM_PACK_ID));
   /** The word whose emoji or picture the parent is choosing, or null. */
   let picking = $state<string | null>(null);
+  /** The open emoji-and-picture panel, so a click elsewhere can close it. */
+  let panel = $state<HTMLElement | null>(null);
   /** Whether the empty pill a new word is typed into is on the page. */
   let adding = $state(false);
   /** What the parent has typed into that pill. */
   let typed = $state("");
   /** Why a word was refused, or a picture refused. */
   let error = $state<string | null>(null);
-  /** Whether a Restore is waiting for its second tap. */
-  let armed = $state(false);
-  /** Why the last Restore failed, when it did. */
-  let restoreError = $state<string | null>(null);
-  let armTimer: ReturnType<typeof setTimeout> | undefined;
+
+  /** Closes the emoji-and-picture panel when a press lands outside it. */
+  $effect(() => {
+    if (picking === null) return;
+    function onPointerDown(event: PointerEvent): void {
+      // The art button toggles its own panel; a press on it is not "outside".
+      if (!(event.target instanceof Element)) return;
+      if (event.target.closest(".art") !== null) return;
+      if (panel?.contains(event.target) === true) return;
+      picking = null;
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  });
 
   /** Puts the cursor in the new pill's field as soon as it is drawn. */
   function focus(node: HTMLInputElement): void {
@@ -125,31 +122,10 @@
   function remove(word: string): void {
     void change(removeWord(packs, CUSTOM_PACK_ID, word));
   }
-
-  /** Puts the built-in words back, on the second tap of a two-tap Restore. */
-  async function onRestore(): Promise<void> {
-    if (!armed) {
-      armed = true;
-      clearTimeout(armTimer);
-      armTimer = setTimeout(() => {
-        armed = false;
-      }, RESTORE_ARM_MS);
-      return;
-    }
-    armed = false;
-    clearTimeout(armTimer);
-    try {
-      await restore();
-      restoreError = null;
-    } catch {
-      restoreError = "The app could not put the built-in words back.";
-    }
-  }
 </script>
 
 <section id="settings" {hidden}>
   <header>
-    <h1>Settings</h1>
     <button
       type="button"
       class="close"
@@ -169,23 +145,6 @@
       </svg>
     </button>
   </header>
-
-  <section class="language">
-    <h2>Language</h2>
-    {#each languages as pack (pack.id)}
-      <label class="choice">
-        <input
-          type="radio"
-          name="language"
-          value={pack.id}
-          checked={language === pack.id}
-          onchange={() => onLanguage(pack.id)}
-        />
-        <span class="name">{pack.name}</span>
-        <span class="count">({pack.words.length})</span>
-      </label>
-    {/each}
-  </section>
 
   {#if mine !== undefined}
     <section class="mine">
@@ -229,7 +188,7 @@
               </svg>
             </button>
             {#if picking === entry.word}
-              <div class="pick">
+              <div class="pick" bind:this={panel}>
                 <input
                   type="text"
                   class="emoji"
@@ -322,19 +281,4 @@
       {/if}
     </section>
   {/if}
-
-  <div class="restore">
-    <button type="button" class="restore-button" onclick={onRestore}>
-      {armed ? "Tap again to restore" : "Restore built-in words"}
-    </button>
-    <p class="note">
-      {restoreError ??
-        "Restoring puts the built-in words back and takes your words, emojis and pictures off this device."}
-    </p>
-  </div>
-
-  <p class="hint">
-    Hold the left and right Shift keys for three seconds to open this page while
-    the app is full screen.
-  </p>
 </section>

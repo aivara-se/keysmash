@@ -24,7 +24,7 @@ bun run preview
 
 One screen, the keyboard the only input. The parent's controls — full screen and settings — sit in the top corner while the app is not full screen; the settings control opens the settings page. While the app is full screen those controls are gone, and the page opens by holding the left and right Shift keys for three seconds.
 
-Behind it: the language the app marks — English — and the parent's own words, with the emoji or the picture each of them is drawn with, and a Restore that takes them off the device.
+Behind it: the language the app marks — English — and the parent's own words, with the emoji or the picture each of them is drawn with.
 
 ## Checks
 
