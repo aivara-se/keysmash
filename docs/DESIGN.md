@@ -47,7 +47,7 @@ The text keeps clear of every edge: the screen is inset by its padding on all fo
 
 ## the settings page
 
-The parent's page. It covers the play screen and is the app's own surface: white, the ink black, nothing else.
+The parent's page. It covers the play screen and is the app's own surface: white, the ink black, nothing else. Drawn at 1440px: [settings-page.png](settings-page.png).
 
 - One text size for the page, `clamp(17px, 2.4vmin, 26px)`; a section's name `1.2em`.
 - The page draws no rules. The words are the page, and a line under a heading would draw a box round them.
