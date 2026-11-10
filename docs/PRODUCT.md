@@ -10,7 +10,7 @@ The parent hands over the device and wants it back unchanged, so the screen has 
 
 ## Scope
 
-**In.** One screen. Every key written, a held key written once. A letter named when the child stops. Words and numbers marked, coloured and drawn with an emoji. My words, with a parent's emoji and picture, and Restore. English. Offline, installed, full screen.
+**In.** One screen. Every key written, a held key written once. A letter named when the child stops. Words and numbers marked, coloured and drawn with an emoji. My words, with a parent's emoji and picture. English. Offline, installed, full screen.
 
 **Not this version.** More than one language. A parent dashboard. Listening to the marks.
 
@@ -29,8 +29,8 @@ The parent hands over the device and wants it back unchanged, so the screen has 
 - A number is drawn in its own colour, so it never reads as a word.
 - A completed word takes one space after it: the only character the app adds.
 - A digit alone is a name ("three"); digits in a row are one number ("thirty-three").
-- The app marks only words the chosen language holds, and the parent's words whatever the language.
-- The parent adds a word, gives it an emoji or picture, and removes it; Restore puts the shipped words back.
+- The app marks only words the language holds, and the parent's words whatever the language.
+- The parent adds a word, gives it an emoji or picture, and removes it.
 - A word the language already holds is refused, and the refusal names the language.
 - One screen; the only things to tap are full screen and settings, gone in full screen.
 - Holding left and right Shift for three seconds opens settings while in full screen.
@@ -51,6 +51,5 @@ The child's noise becomes their first words on a screen that never punishes them
 3. A held key writes one character.
 4. A real word or number is marked, unasked.
 5. A parent's word draws its emoji or picture.
-6. Parent's words, emojis, pictures and language survive a reload.
-7. Restore drops the parent's words.
-8. Offline, a reload still marks words.
+6. Parent's words, emojis and pictures survive a reload.
+7. Offline, a reload still marks words.

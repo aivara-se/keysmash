@@ -31,7 +31,6 @@ const SEED_VERSION = 2;
 export interface Store {
   packs(): Promise<Pack[]>;
   put(pack: Pack): Promise<void>;
-  restore(): Promise<void>;
 }
 
 /** The built-in pack ids, in the order the seed file names them. */
@@ -157,15 +156,6 @@ export function createStore(): Store {
       const transaction = db.transaction(PACK_STORE, "readwrite");
       transaction.objectStore(PACK_STORE).put(pack);
       await finished(transaction);
-    },
-
-    /** Puts the built-in packs back, taking the parent's own words and pictures off the device. */
-    async restore(): Promise<void> {
-      const db = await database();
-      const transaction = db.transaction(PACK_STORE, "readwrite");
-      transaction.objectStore(PACK_STORE).clear();
-      await finished(transaction);
-      await seed(db);
     },
   };
 }

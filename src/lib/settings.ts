@@ -1,13 +1,12 @@
 const KEY = "keysmash.language.v3";
 
-/** The parent's choice of language, as the rest of the app uses it. */
+/** The language the app marks, as the rest of the app uses it. */
 export interface Settings {
   language(known: readonly string[]): string;
-  setLanguage(id: string): void;
 }
 
 /**
- * The parent's choice of language, kept on the device in localStorage
+ * The language the app marks, read from the device's localStorage
  * (SYSTEMS.md). The packs themselves, and everything in them, live in the
  * database (`src/lib/store.ts`).
  *
@@ -29,14 +28,6 @@ export function createSettings(): Settings {
         return known[0] ?? "";
       }
       return raw !== null && known.includes(raw) ? raw : (known[0] ?? "");
-    },
-
-    setLanguage(id: string): void {
-      try {
-        localStorage.setItem(KEY, id);
-      } catch {
-        // A device that refuses storage still plays; the choice just does not stick.
-      }
     },
   };
 }
