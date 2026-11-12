@@ -1,57 +1,32 @@
 # Agent Instructions
 
-Keysmash is a typing app for a two-year-old: every key the child presses is written down, a deliberate press is answered with the letter's name, and the words the child has made are read back. It is one static page, it runs with the network off, and the child has no way out of it.
+This file is identical in every `aivara-se` repository. Edit `aivara-se/.github`; a differing copy fails.
 
-This file is the `aivara-se` agent convention: the rules that hold in every repository. Adopt it, do not fork it. It never describes the state of the work — that lives in the documents below.
+## Read first
 
-## Where a fact lives
+- `README.md` — what this is, how to run it, and how to check it.
+- `PRODUCT.md` (root or `docs/`) — who it serves, and what would make it done.
+- `SYSTEMS.md`, where present — how it is shaped and what it depends on.
+- `DESIGN.md` — the interface values, where present.
+- `docs/adrs/` — a decision per file, written before the code it decides.
+- `SETTINGS.md`, `aivara-se/.github/docs` — every repository's baseline.
 
-- `docs/PRODUCT.md` — what the app is, who it serves, what it must not do, and what would make it done.
-- `docs/SYSTEMS.md` — how it is built, stored and served, and what it does when a part fails.
-- `docs/DESIGN.md` — the screen and the values it fixes.
-- `README.md` — how to run it locally.
-
-One fact, one home: link to a document, never restate it. A sentence here that starts describing the work instead of how work is done belongs in `PRODUCT.md`.
+Link to a document; never restate it. A per-repository rule belongs in `SYSTEMS.md`.
 
 ## House rules
 
-- **Never** break a rule `PRODUCT.md` fixes: nothing typed is withheld, cleared or rewritten, and the parent's actions never edit a character the child typed.
-- **Never** add a request off the device — no CDN, no font host, no analytics, no third-party script. A file the app needs is vendored in the tree or it does not ship.
-- **Never** choose a voice that needs the network: speech is the device's own local voice, or the committed clips in `static/clips/`.
-- **Measure the answer budget, do not assume it.** Every character is written as its key goes down and a letter is named only after 150 ms of quiet; both are measured in a real Chrome against a built copy.
-- **A word pack is data**, under `static/lists/`, named in `index.json`. Adding words is not a code change.
+- Never commit a secret; a configuration file names one, holding no value.
+- Never report "tests pass" without the command and the tree.
+- Never add a second package manager, lockfile, formatter or test runner; use the one it carries.
+- A script that runs commands is TypeScript on `bun`; shell only for a few lines.
+- Open the skill whose `when-to-use` covers the work, in `aivara-se/.agents/skills`; no copy exists.
+- Never edit a merged ADR. Supersede it, naming the clauses it overrides.
 
-## Tooling
+## Version control
 
-- **Bun runs the scripts.** A script that runs commands is TypeScript, run with `bun run scripts/<name>.ts` — never Python, and a shell script only when it stays a few lines. A command typed at the prompt is not a script.
-- **Never** add a second package manager, lockfile, formatter or test runner. The toolchain is the one the repository already declares.
-- **Never** report "tests pass", "it builds" or "verified" without the command and the tree it ran against.
-
-## Skills
-
-The organisation's skills live in `aivara-se/.agents/skills` and every agent reads them from there; a repository carries no copy. Each declares a `when-to-use`: open the one that covers the work before starting it.
-
-## Verify before pushing
-
-```bash
-bun install --frozen-lockfile
-bun fmt --no-script --check .   # names every file the formatter would rewrite
-bun run check    # svelte-check, tsc over the service worker, and the unit tests
-bun run build    # vite build, and the checks the build reruns
-```
-
-Run the whole sequence and read every result — the last exit code says nothing about the first.
-
-What no script can see — a keypress inside 150 ms, a drag written in full, a held key, the settings page, a reload with the network off — is `docs/SYSTEMS.md` § Failure modes and the browser pass in `README.md` § Checks: a real Chrome against `bun run build` then `bun run preview`.
-
-The same commands run in `.github/workflows/validate.yml`, whose job is named `validate` — the name the organisation's baseline requires a check under before a merge.
-
-## Version Control
-
-- **Branches**: lowercase, hyphens, one per task: `docs/`, `feat/`, `fix/` or `chore/` and a short name — `docs/adopt-agents-config`, `fix-log-timezone`. No uppercase, no underscores, no personal prefixes.
-- **Commits**: Conventional Commits, lowercase, single line, no scopes — `type: short description`.
-- **Never** commit to `main` directly, and **never** force-push a branch someone else has seen.
-- Keep history linear: no merge commits, no empty commits, no work-in-progress commits.
-- Commit under your own identity, never another agent's.
-- Remote work is a branch plus a pull request: the body says what changed, what was verified and how, and what was left out. Leave the tree clean.
-- Request review from the operator (`thani-sh`) alone for a documents-only change, and from the operator and one peer agent for an implementation one.
+- Branch: lowercase and hyphens, one per task — `docs/`, `feat/`, `fix/`, `chore/` and a short name.
+- Commit: Conventional Commits, lowercase, single line, no scope.
+- Never commit to `main`; never force-push a branch another person has seen; keep history linear.
+- Commit under your own name.
+- Land a branch and a pull request. The body says what changed, what was verified, what was left out. Leave the tree clean.
+- The operator reviews a documents-only change alone; an implementation adds a peer.
