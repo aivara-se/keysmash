@@ -37,7 +37,7 @@ async function documentedColors(): Promise<
   const colors = new Map<string, { hex: string; ratio: number }>();
   for (const line of doc.split("\n")) {
     const match =
-      /^\s*-\s+(?:a\s+)?([a-z]+)\s+`(#[0-9a-fA-F]{6})`,\s*([0-9.]+):1\s*$/.exec(
+      /^\|\s*`([a-z]+)`\s*\|\s*`(#[0-9a-fA-F]{6})`\s*\|\s*([0-9.]+):1\s*\|/.exec(
         line,
       );
     if (match)
@@ -71,8 +71,6 @@ const documented = await documentedColors();
 
 describe("the palette", () => {
   test("declares a colour for every key, and measures each at 4.5:1 against the surface", () => {
-    // The number's colour is the palette's own key, so the declared set is the
-    // word colours and it.
     expect([...declared.keys()].sort()).toEqual([...COLORS, "number"].sort());
     const tooLight = [...declared]
       .filter(([, hex]) => contrast(hex, SURFACE) < MINIMUM)
