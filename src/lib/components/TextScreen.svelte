@@ -30,7 +30,11 @@
     return () => window.removeEventListener("resize", onResize);
   });
 
-  /** The text cut into the runs the screen draws: a mark, then the plain text between marks. */
+  /**
+   * The text cut into the runs the screen draws: a mark, then the plain text
+   * between marks. The runs are written with no space between them, so the
+   * screen draws the child's characters and nothing else.
+   */
   function split(text: string, words: ReadonlyMap<string, Drawing>): Piece[] {
     const pieces: Piece[] = [];
     let cursor = 0;
@@ -65,11 +69,13 @@
     container.style.setProperty("-webkit-mask-image", gradient);
   }
 
-  // An effect runs after the DOM the update produced, so this follows what the
-  // screen now holds: the older lines leave at the top and the newest line
-  // stays on the bottom padding. It follows the runs rather than the text, so
-  // a word the parent adds while the child's text is on the screen re-measures
-  // the fade and the bottom anchor too.
+  /**
+   * An effect runs after the DOM the update produced, so this follows what the
+   * screen now holds: the older lines leave at the top and the newest line
+   * stays on the bottom padding. It follows the runs rather than the text, so
+   * a word the parent adds while the child's text is on the screen re-measures
+   * the fade and the bottom anchor too.
+   */
   $effect(() => {
     void pieces;
     void resizes;
@@ -81,8 +87,6 @@
   });
 </script>
 
-<!-- The runs are written with no space between them: the screen draws the
-     child's characters and nothing else. -->
 <main id="screen" bind:this={screen} aria-label="Keysmash">
   <div id="text" bind:this={textEl}>
     {#each pieces as piece}{#if piece.mark !== undefined}<span

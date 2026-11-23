@@ -57,16 +57,20 @@ describe("the built-in packs", () => {
   });
 
   test("hold single lower-case words only", () => {
-    // The tokenizer matches one letter run at a time, so an entry with a space
-    // or a capital could never be found in the text.
+    /**
+     * The tokenizer matches one letter run at a time, so an entry with a space
+     * or a capital could never be found in the text.
+     */
     for (const pack of packs) {
       for (const entry of pack.words) expect(entry.word).toMatch(/^[a-z]+$/);
     }
   });
 
   test("never put one word in two packs", () => {
-    // Two packs would give it two colours, and which one won would depend on
-    // the order they were read in.
+    /**
+     * Two packs would give it two colours, and which one won would depend on
+     * the order they were read in.
+     */
     const seen = new Set<string>();
     for (const pack of packs) {
       for (const entry of pack.words) {
@@ -104,8 +108,10 @@ describe("the built-in packs", () => {
   });
 
   test("draw the words the nine lists used to hold", () => {
-    // Every word the older seed shipped is on English, drawn as it was: the
-    // colour its list gave it is written onto the word by the merge.
+    /**
+     * Every word the older seed shipped is on English, drawn as it was: the
+     * colour its list gave it is written onto the word by the merge.
+     */
     expect(wordIn(packs, ENGLISH, "cat")).toEqual({ word: "cat", emoji: "🐱" });
     expect(wordIn(packs, ENGLISH, "apple")).toEqual({
       word: "apple",
@@ -136,10 +142,15 @@ describe("wordsFor", () => {
   });
 
   test("takes a word's own colour, else its emoji's, else none", () => {
-    expect(wordsFor(ENGLISH, packs).get("butterfly")?.color).toBe("sky"); // the word's own colour wins
-    expect(wordsFor(ENGLISH, packs).get("frog")?.color).toBe("green"); // then what its emoji says
-    expect(wordsFor(ENGLISH, packs).get("mama")?.color).toBe("violet"); // a skin-tone emoji says nothing, so the word's colour decides
-    expect(wordsFor(ENGLISH, packs).get("play")?.color).toBeUndefined(); // a word with neither, left to the ink
+    /**
+     * The word's own colour wins; then what its emoji says; a skin-tone emoji
+     * says nothing, so the word's colour decides; a word with neither is left
+     * to the ink.
+     */
+    expect(wordsFor(ENGLISH, packs).get("butterfly")?.color).toBe("sky");
+    expect(wordsFor(ENGLISH, packs).get("frog")?.color).toBe("green");
+    expect(wordsFor(ENGLISH, packs).get("mama")?.color).toBe("violet");
+    expect(wordsFor(ENGLISH, packs).get("play")?.color).toBeUndefined();
   });
 
   test("marks the parent's own words whatever the language", () => {

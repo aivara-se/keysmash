@@ -84,10 +84,13 @@
     exitTimer = undefined;
   }
 
+  /**
+   * Writes a new press. Auto-repeat is the same key still down, not a new
+   * press, so it writes one character.
+   */
   function onKeyDown(event: KeyboardEvent): void {
     if (settingsOpen) return;
     if (EXIT_KEYS.has(event.code)) return holdExit(event.code);
-    // Auto-repeat is the same key still down, not a new press: one character.
     if (event.repeat || event.key.length !== 1) return;
     noteStop();
     write(event.key);
@@ -111,7 +114,8 @@
 
   /**
    * Shows the parent's change at once, then keeps it; a device that will not
-   * keep it says so.
+   * keep it says so. The packs the page holds are Svelte state objects, so the
+   * database is given a plain snapshot.
    */
   async function applyPacks(next: Pack[]): Promise<string | null> {
     const before = new Map(packs.map((pack) => [pack.id, pack]));
@@ -119,8 +123,6 @@
     for (const pack of next) {
       if (before.get(pack.id) === pack) continue;
       try {
-        // The packs the page holds are Svelte's own state objects, and the
-        // database cannot clone one: it is given plain data.
         await store.put($state.snapshot(pack) as Pack);
       } catch {
         return "The device would not keep that change.";
@@ -129,13 +131,12 @@
     return null;
   }
 
+  /** Asks for full screen or leaves it; a device that refuses still plays. */
   async function toggleFullscreen(): Promise<void> {
     try {
       if (document.fullscreenElement !== null) await document.exitFullscreen();
       else await document.documentElement.requestFullscreen();
-    } catch {
-      // The device refused full screen: the app still plays.
-    }
+    } catch {}
   }
 
   /** The corner controls are the parent's, and they go while the app has the screen. */
@@ -143,6 +144,10 @@
     fullscreen = document.fullscreenElement !== null;
   }
 
+  /**
+   * Loads the packs and the language. A device that will not give the page a
+   * database still plays, with nothing marked.
+   */
   onMount(() => {
     speech.ready();
     syncControls();
@@ -151,7 +156,6 @@
       try {
         packs = await store.packs();
       } catch {
-        // A device that will not give the page a database still plays; nothing is marked.
         packs = [];
       }
       language = settings.language(
@@ -163,8 +167,10 @@
     return () => document.removeEventListener("fullscreenchange", syncControls);
   });
 
-  // A change to the words changes what the text marks, so the words the app has
-  // already spoken are spoken again.
+  /**
+   * A change to the words changes what the text marks, so the words already
+   * spoken are spoken again.
+   */
   $effect(() => {
     void activeWords;
     spoken.clear();

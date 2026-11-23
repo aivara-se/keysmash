@@ -3,19 +3,20 @@
  *
  * The device's own local voice is preferred. Where the device has none —
  * nothing that stays off the network — the letters fall back to the committed
- * clips: the same single voice, offline, inside the answer budget (SYSTEMS.md).
+ * clips: the same single voice, offline, inside the answer budget.
  * A new sound cuts off the last, so sounds never stack and the volume never
  * rises.
  */
 import { assetUrl } from "./assets.js";
 
 /** The speaker as the rest of the app uses it. */
-export interface Speech {
+interface Speech {
   ready(): void;
   letter(name: string): void;
   word(text: string): void;
 }
 
+/** Builds the speaker the app names letters and words with. */
 export function createSpeech(): Speech {
   const synth = typeof speechSynthesis === "undefined" ? null : speechSynthesis;
   const clips = new Map<string, HTMLAudioElement>();

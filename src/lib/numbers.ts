@@ -53,7 +53,7 @@ function underThousand(n: number): string {
 
 /**
  * Spells a non-negative integer the way it is said: 3 is "three", 33 is
- * "thirty-three". Numbers are names, never counts (PRODUCT.md).
+ * "thirty-three". Numbers are names, never counts.
  */
 export function numberToName(n: number): string {
   if (!Number.isInteger(n) || n < 0) {

@@ -6,9 +6,9 @@ import type { Drawing } from "./words.js";
  * edits change them.
  *
  * A pack is one language's words, or the parent's own. The built-in packs are
- * the JSON under `static/lists/`, read into the device's database on first run
- * (SYSTEMS.md). Everything here is pure — it takes the packs and returns new
- * ones — so the rules can be read and tested without a database or a page.
+ * the JSON under `static/lists/`, read into the device's database on first run.
+ * Everything here is pure — it takes the packs and returns new ones — so the
+ * rules can be read and tested without a database or a page.
  * Keeping them is `src/lib/store.ts`; drawing them is
  * `src/lib/components/SettingsPage.svelte`.
  */
@@ -69,7 +69,7 @@ export function normalizeWord(word: string): string {
 /**
  * The id of the pack that already holds the word, or null. One word lives in
  * one place, so a second home would give it a second colour and the colour it
- * won with would depend on the order the packs were read in (PRODUCT.md).
+ * won with would depend on the order the packs were read in.
  */
 export function ownerOf(packs: readonly Pack[], word: string): string | null {
   const key = normalizeWord(word);
@@ -130,6 +130,8 @@ function editWord(
  * Adds a word to a pack. Returns the new packs and a null error, or the packs
  * untouched and the reason it was refused: a word is letters only, and one word
  * lives in one place, so a word another pack holds comes back naming that pack.
+ * A refusal hands the packs back by identity, so the caller can see nothing
+ * changed and keep the parent's typing where it is.
  */
 export function addWord(
   packs: Pack[],
@@ -137,8 +139,6 @@ export function addWord(
   typed: string,
 ): { packs: Pack[]; error: string | null } {
   const word = normalizeWord(typed);
-  // A refusal hands the packs back by identity, so the caller can see nothing
-  // changed and keep the parent's typing where it is.
   if (!validWord(word)) return { packs, error: "A word is letters only." };
   const owner = ownerOf(packs, word);
   if (owner !== null) {
