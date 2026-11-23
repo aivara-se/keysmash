@@ -1,45 +1,36 @@
 name: validate
 
 on:
-  push:
-    branches: [main]
   pull_request:
   merge_group:
 
-permissions:
-  contents: read
-
 jobs:
+  validate-agents:
+    uses: aivara-se/.github/.github/workflows/validate-agents.yml@main
+
+  validate-docs:
+    uses: aivara-se/.github/.github/workflows/validate-docs.yml@main
+
+  validate-config:
+    uses: aivara-se/.github/.github/workflows/validate-config.yml@main
+    secrets:
+      ORG_READ_TOKEN: ${{ secrets.ORG_READ_TOKEN }}
+
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v7
-
       - uses: oven-sh/setup-bun@v2
-
-      - name: Install
-        run: bun install --frozen-lockfile
-
+        with:
+          bun-version: 1.4.4
       - name: Format
         run: bun fmt --no-script --check .
-
-      - name: Type check and test
+      - name: Install
+        run: bun install --frozen-lockfile
+      - name: Check
         run: bun run check
-
       - name: Build
         run: bun run build
-
-  # The document standard, from the one checker in aivara-se/.github. This
-  # repository carries no copy of it.
-  docs:
-    permissions:
-      contents: read
-    uses: aivara-se/.github/.github/workflows/validate-docs.yml@main
-
-  # The organisation's entry file, from the same standard. A copy that drifts
-  # fails here.
-  agents:
-    permissions:
-      contents: read
-    uses: aivara-se/.github/.github/workflows/validate-agents.yml@main
