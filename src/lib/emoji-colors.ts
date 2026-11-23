@@ -8,9 +8,12 @@
  * the colour they carry instead, or the ink.
  *
  * The names are palette keys; the values are in `src/app.css` (DESIGN.md).
+ *
+ * Entries are grouped in this order: animals; fruit and vegetables; food;
+ * weather and sky; vehicles; toys and play; home and things; people and me,
+ * only where the emoji is not just a skin tone; doing words.
  */
 export const EMOJI_COLORS: Readonly<Record<string, string>> = {
-  // animals
   "🐱": "amber",
   "🐶": "amber",
   "🐮": "slate",
@@ -49,7 +52,6 @@ export const EMOJI_COLORS: Readonly<Record<string, string>> = {
   "🐿️": "amber",
   "🦔": "amber",
   "🐓": "red",
-  // fruit and vegetables
   "🍎": "red",
   "🍌": "yellow",
   "🍊": "orange",
@@ -74,7 +76,6 @@ export const EMOJI_COLORS: Readonly<Record<string, string>> = {
   "🌽": "yellow",
   "🍄": "red",
   "🫛": "green",
-  // food
   "🍞": "amber",
   "🥛": "slate",
   "🥚": "slate",
@@ -93,7 +94,6 @@ export const EMOJI_COLORS: Readonly<Record<string, string>> = {
   "🍬": "pink",
   "🍫": "brown",
   "🍿": "yellow",
-  // weather and sky
   "☀️": "yellow",
   "🌙": "yellow",
   "⭐": "yellow",
@@ -111,7 +111,6 @@ export const EMOJI_COLORS: Readonly<Record<string, string>> = {
   "☂️": "violet",
   "🧤": "brown",
   "🥾": "brown",
-  // vehicles
   "🚗": "red",
   "🚌": "orange",
   "🚂": "slate",
@@ -129,7 +128,6 @@ export const EMOJI_COLORS: Readonly<Record<string, string>> = {
   "🛷": "orange",
   "🛶": "orange",
   "🛞": "slate",
-  // toys and play
   "⚽": "slate",
   "🧸": "amber",
   "🪆": "red",
@@ -147,7 +145,6 @@ export const EMOJI_COLORS: Readonly<Record<string, string>> = {
   "🎸": "orange",
   "🎵": "blue",
   "🎟️": "orange",
-  // home and things
   "🏠": "red",
   "🚪": "orange",
   "🛏️": "sky",
@@ -172,12 +169,10 @@ export const EMOJI_COLORS: Readonly<Record<string, string>> = {
   "🪣": "sky",
   "🧺": "amber",
   "🕯️": "yellow",
-  // people and me — only where the emoji is not just a skin tone
   "❤️": "red",
   "💋": "red",
   "🦷": "slate",
   "👁️": "slate",
-  // doing words
   "🎤": "slate",
   "😢": "sky",
   "🥵": "red",

@@ -1,14 +1,14 @@
 const KEY = "keysmash.language.v3";
 
 /** The language the app marks, as the rest of the app uses it. */
-export interface Settings {
+interface Settings {
   language(known: readonly string[]): string;
 }
 
 /**
- * The language the app marks, read from the device's localStorage
- * (SYSTEMS.md). The packs themselves, and everything in them, live in the
- * database (`src/lib/store.ts`).
+ * The language the app marks, read from the device's localStorage. The packs
+ * themselves, and everything in them, live in the database
+ * (`src/lib/store.ts`).
  *
  * The key carries a version: a device holding the old choice of lists must not
  * read one of them as a language.

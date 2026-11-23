@@ -1,5 +1,8 @@
-// The app draws itself in the browser and nothing is rendered on a server: the
-// one page is an empty shell that boots into the app, and the build writes that
-// shell to index.html and, as the fallback, to 404.html (vite.config.ts).
+/** The app draws itself in the browser; nothing is rendered on a server. */
 export const ssr = false;
+
+/**
+ * The build writes the one shell to index.html and, as the fallback, to
+ * 404.html, which Pages serves for any path (vite.config.ts).
+ */
 export const prerender = true;

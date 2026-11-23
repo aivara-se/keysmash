@@ -47,11 +47,13 @@
   /** Why a word was refused, or a picture refused. */
   let error = $state<string | null>(null);
 
-  /** Closes the emoji-and-picture panel when a press lands outside it. */
+  /**
+   * Closes the emoji-and-picture panel when a press lands outside it. The art
+   * button toggles its own panel, so a press on it is not outside.
+   */
   $effect(() => {
     if (picking === null) return;
     function onPointerDown(event: PointerEvent): void {
-      // The art button toggles its own panel; a press on it is not "outside".
       if (!(event.target instanceof Element)) return;
       if (event.target.closest(".art") !== null) return;
       if (panel?.contains(event.target) === true) return;

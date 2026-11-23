@@ -1,7 +1,7 @@
 /**
  * The device's own database: the word packs, their words and each word's
  * picture. IndexedDB is what a browser hands a page that must keep more than a
- * key's worth of data and still run with the network off (SYSTEMS.md).
+ * key's worth of data and still run with the network off.
  *
  * The built-in packs ship as JSON under `static/lists/` and are read into the
  * database on first run. From then on the database is the copy the app reads,
@@ -28,7 +28,7 @@ const SEEDED = "seeded";
 const SEED_VERSION = 2;
 
 /** The store as the rest of the app uses it. */
-export interface Store {
+interface Store {
   packs(): Promise<Pack[]>;
   put(pack: Pack): Promise<void>;
 }
@@ -106,7 +106,6 @@ async function seed(database: IDBDatabase): Promise<void> {
   )) as Pack | undefined;
   const ids = await readPackIds();
   const packs = await Promise.all(ids.map((id) => readPackFile(id)));
-
   const transaction = database.transaction(
     [PACK_STORE, META_STORE],
     "readwrite",
@@ -121,9 +120,9 @@ async function seed(database: IDBDatabase): Promise<void> {
   await finished(transaction);
 }
 
+/** Builds the store the app reads its packs from. */
 export function createStore(): Store {
   let connection: IDBDatabase | null = null;
-
   async function database(): Promise<IDBDatabase> {
     if (connection === null) connection = await open();
     return connection;

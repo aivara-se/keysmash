@@ -1,6 +1,6 @@
 /**
  * The offline shell: the files the app boots from and draws its one screen
- * with, precached so the app opens with the network off (SYSTEMS.md).
+ * with, precached so the app opens with the network off.
  *
  * The cache is named after the build, so a new build is a new cache: a
  * returning device is moved onto it rather than left holding the old files.
@@ -19,8 +19,10 @@ const SHELL = [...immutable, ...assets, ...prerendered].map((entry) =>
 );
 
 self.addEventListener("install", (event) => {
-  // Fetch each shell file past the HTTP cache, or a fresh cache can hold a
-  // stale file it fetched from one.
+  /**
+   * Fetch each shell file past the HTTP cache, or a fresh cache can hold a
+   * stale file it fetched from one.
+   */
   event.waitUntil(
     caches
       .open(CACHE)
@@ -35,8 +37,10 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     (async () => {
       const keys = await caches.keys();
-      // An older keysmash cache means this install replaces one: the open pages
-      // are on the old version, so reload them onto this one at once.
+      /**
+       * An older keysmash cache means this install replaces one: the open pages
+       * are on the old version, so reload them onto this one at once.
+       */
       const replacesOlder = keys.some(
         (key) => key.startsWith("keysmash-") && key !== CACHE,
       );

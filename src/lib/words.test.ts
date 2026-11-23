@@ -58,7 +58,10 @@ describe("markText", () => {
         image: undefined,
       },
     ]);
-    // no emoji, no colour and no picture are left undefined rather than invented
+    /**
+     * No emoji, no colour and no picture are left undefined rather than
+     * invented.
+     */
     expect(markText("cats", words)).toEqual([
       {
         start: 0,
